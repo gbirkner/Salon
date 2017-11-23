@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Salon
+namespace Salon.Models
 {
     using System;
     using System.Data.Entity;

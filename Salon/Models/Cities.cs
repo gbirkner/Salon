@@ -7,29 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Salon
+namespace Salon.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Steps
+    public partial class Cities
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Steps()
+        public Cities()
         {
-            this.StepOptions = new HashSet<StepOptions>();
-            this.TreatmentSteps = new HashSet<TreatmentSteps>();
+            this.Customers = new HashSet<Customers>();
         }
     
-        public int StepId { get; set; }
+        public string CountryId { get; set; }
+        public string PostalCode { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
-        public bool isSensitive { get; set; }
-        public bool isActive { get; set; }
     
+        public virtual Countries Countries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StepOptions> StepOptions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TreatmentSteps> TreatmentSteps { get; set; }
+        public virtual ICollection<Customers> Customers { get; set; }
     }
 }

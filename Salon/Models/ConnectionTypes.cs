@@ -7,25 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Salon
+namespace Salon.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Treatments
+    public partial class ConnectionTypes
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Treatments()
+        public ConnectionTypes()
         {
-            this.TreatmentSteps = new HashSet<TreatmentSteps>();
+            this.Connections = new HashSet<Connections>();
         }
     
-        public int TreatmentId { get; set; }
+        public int ConnectionTypeId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public bool isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TreatmentSteps> TreatmentSteps { get; set; }
+        public virtual ICollection<Connections> Connections { get; set; }
     }
 }

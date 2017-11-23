@@ -7,23 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Salon
+namespace Salon.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Countries
+    public partial class Connections
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Countries()
-        {
-            this.Cities = new HashSet<Cities>();
-        }
-    
-        public string CountryId { get; set; }
+        public int ConnectionId { get; set; }
+        public int ConnectionTypeId { get; set; }
+        public int CustomerId { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cities> Cities { get; set; }
+        public virtual ConnectionTypes ConnectionTypes { get; set; }
+        public virtual Customers Customers { get; set; }
     }
 }

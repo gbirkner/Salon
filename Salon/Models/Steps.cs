@@ -7,34 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Salon
+namespace Salon.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Visits
+    public partial class Steps
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Visits()
+        public Steps()
         {
-            this.Pictures = new HashSet<Pictures>();
-            this.VisitTasks = new HashSet<VisitTasks>();
+            this.StepOptions = new HashSet<StepOptions>();
+            this.TreatmentSteps = new HashSet<TreatmentSteps>();
         }
     
-        public int VisitId { get; set; }
-        public int Duration { get; set; }
-        public Nullable<int> CustomerId { get; set; }
-        public string ModifiedBy { get; set; }
-        public System.DateTime Modified { get; set; }
-        public string CreatedBy { get; set; }
-        public System.DateTime Created { get; set; }
+        public int StepId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool isSensitive { get; set; }
+        public bool isActive { get; set; }
     
-        public virtual AspNetUsers AspNetUsers { get; set; }
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-        public virtual Customers Customers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Pictures> Pictures { get; set; }
+        public virtual ICollection<StepOptions> StepOptions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VisitTasks> VisitTasks { get; set; }
+        public virtual ICollection<TreatmentSteps> TreatmentSteps { get; set; }
     }
 }

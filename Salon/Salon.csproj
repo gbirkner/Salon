@@ -169,28 +169,28 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="AspNetRoles.cs">
+    <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AspNetUsers.cs">
+    <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Cities.cs">
+    <Compile Include="Models\Cities.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Connections.cs">
+    <Compile Include="Models\Connections.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionTypes.cs">
+    <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Countries.cs">
+    <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Customers.cs">
+    <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
@@ -199,42 +199,42 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Pictures.cs">
+    <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SalonModel.Context.cs">
+    <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="SalonModel.cs">
+    <Compile Include="Models\SalonModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SalonModel.Designer.cs">
+    <Compile Include="Models\SalonModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
-    <Compile Include="StepOptions.cs">
+    <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Steps.cs">
+    <Compile Include="Models\Steps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Treatments.cs">
+    <Compile Include="Models\Treatments.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TreatmentSteps.cs">
+    <Compile Include="Models\TreatmentSteps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Visits.cs">
+    <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="VisitTasks.cs">
+    <Compile Include="Models\VisitTasks.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -245,23 +245,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="SalonModel.Context.tt">
+    <Content Include="Models\SalonModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SalonModel.edmx</DependentUpon>
       <LastGenOutput>SalonModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="SalonModel.tt">
+    <Content Include="Models\SalonModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SalonModel.edmx</DependentUpon>
       <LastGenOutput>SalonModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="SalonModel.edmx">
+    <EntityDeploy Include="Models\SalonModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>SalonModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="SalonModel.edmx.diagram">
+    <Content Include="Models\SalonModel.edmx.diagram">
       <DependentUpon>SalonModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

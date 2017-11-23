@@ -1,4 +1,4 @@
-﻿// Die T4-Codegenerierung ist für Modell 'c:\users\localuser\documents\visual studio 2015\Projects\Salon\Salon\SalonModel.edmx' aktiviert. 
+﻿// Die T4-Codegenerierung ist für Modell 'C:\Users\LocalUser\Source\Repos\Salon\Salon\Models\SalonModel.edmx' aktiviert. 
 // Um die Generierung von Legacycode zu aktivieren, ändern Sie den Wert der Designer-Eigenschaft 'Code Generation Strategy'
 // in 'Legacy ObjectContext'. Diese Eigenschaft wird im Eigenschaftenfenster angezeigt, wenn das Modell
 // im Designer geöffnet ist.
