@@ -75,7 +75,7 @@ namespace Salon.Controllers
 
             // Anmeldefehler werden bezüglich einer Kontosperre nicht gezählt.
             // Wenn Sie aktivieren möchten, dass Kennwortfehler eine Sperre auslösen, ändern Sie in "shouldLockout: true".
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,7 +151,7 @@ namespace Salon.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -202,8 +202,12 @@ namespace Salon.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                // search for user by username first
+                var user = await UserManager.FindByNameAsync(model.UserName);
+
+                // check email address
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id))
+                    || (await UserManager.GetEmailAsync(user.Id)) != model.Email)
                 {
                     // Nicht anzeigen, dass der Benutzer nicht vorhanden ist oder nicht bestätigt wurde.
                     return View("ForgotPasswordConfirmation");

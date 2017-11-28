@@ -50,9 +50,8 @@ namespace Salon.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "E-Mail")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -65,6 +64,10 @@ namespace Salon.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "E-Mail")]
@@ -136,5 +139,9 @@ namespace Salon.Models
         [EmailAddress]
         [Display(Name = "E-Mail")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
     }
 }
