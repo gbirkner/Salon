@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Salon.Models.Statistics.StatisticTypes>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Statistics and Graphs</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StatisticName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatisticDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatisticType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatisticUrl)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatisticName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatisticDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatisticType)
+        </td>
+        <td>
+            <a href="@item.StatisticUrl">Go to statistic</a>
+        </td>
+    </tr>
+}
+
+</table>
