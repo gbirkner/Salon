@@ -171,6 +171,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\Reports\CustomerViewModelController.cs" />
     <Compile Include="Controllers\Statistics\LineChartController.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
@@ -243,6 +244,7 @@
     <Compile Include="Models\VisitTasks.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -319,11 +321,14 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
     <Content Include="Views\LineChart\Index.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AverageCustomersTimeSpan\" />
     <Folder Include="Views\AverageCustomerTimeSpan\" />
+    <Folder Include="Views\CustomerViewModel\" />
+    <Folder Include="Views\Reports\Customers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

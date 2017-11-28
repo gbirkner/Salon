@@ -1,18 +1,24 @@
 ﻿using Salon.Models.Statistics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 
 namespace Salon.Controllers.Statistics
 {
     public class StatisticTypesController : Controller
     {
+        private List<StatisticTypes> definedStatistics = new List<StatisticTypes>();
+
+        public object Streamreader { get; private set; }
+
         // GET: StatisticTypes
         public ActionResult Index()
         {
-            List<StatisticTypes> definedStatistics = new List<StatisticTypes>();
             definedStatistics.Add(new StatisticTypes(
                 "Customers per TIME", "Shows the customers for a specific time span", "Report", "/"
                 ));
