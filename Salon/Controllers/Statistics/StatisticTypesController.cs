@@ -21,6 +21,22 @@ namespace Salon.Controllers.Statistics
                 "Visits per TIME", "Shows the visits for a specific time span", "Report", "/"
                 ));
 
+            definedStatistics.Add(new StatisticTypes(
+                "Customerlist", "Shows all customers", "Report", "/"
+                ));
+
+            definedStatistics.Add(new StatisticTypes(
+                "Customers last month", "Shows all customers that visited last month", "Report", "/"
+                ));
+
+            definedStatistics.Add(new StatisticTypes(
+                "Top treatmentes", "Shows the top treatments", "Report", "/"
+                ));
+
+            definedStatistics.Add(new StatisticTypes(
+                "Percentage visits per gender", "Shows the percentage visits per gender for a specific time span", "Report", "/"
+                ));
+
             return View(definedStatistics);
         }
     }
