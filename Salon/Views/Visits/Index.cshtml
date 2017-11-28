@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Salon.Models.VisitShortViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Short Visits", "VisitShort")
+</p>
+
+
+
+<div class="row">
+    <div class="col-sm-7">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(x => x.created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => x.customer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => x.stylist)
+                </th>
+            </tr>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @item.created
+                    </td>
+                    <td>
+                        @item.customer.FName
+                    </td>
+                    <td>
+                        @item.stylist.UserName
+                    </td>
+                    <td>
+                        @Html.ActionLink("...", "VisitDetails", new { id = item.visitId }, new { @class = "visitRow" })
+                    </td>
+                </tr>
+            }
+        </table>
+        @Model.Count() Ergebnisse
+    </div>
+    <div class="col-sm-5" id="VisitTableContainer">
+
+    </div>
+</div>
+
+@section scripts {
+<script type="text/javascript">
+    $(function() {
+        $('.visitRow').on('click', function (e) {
+
+            $.get($(this).prop('href'), function (response) {
+                $('#VisitTableContainer').html(response)
+            });
+            e.preventDefault();
+    });
+});
+</script>
+}
+

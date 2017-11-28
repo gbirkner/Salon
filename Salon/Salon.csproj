@@ -173,6 +173,7 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\VisitsController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -207,6 +208,7 @@
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VisitViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -331,6 +333,13 @@
     <Content Include="Views\Cities\Details.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
+    <Content Include="Views\Visits\VisitShort.cshtml" />
+    <Content Include="Views\Visits\Create.cshtml" />
+    <Content Include="Views\Visits\Delete.cshtml" />
+    <Content Include="Views\Visits\Details.cshtml" />
+    <Content Include="Views\Visits\Edit.cshtml" />
+    <Content Include="Views\Visits\Index.cshtml" />
+    <Content Include="Views\Visits\VisitDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
