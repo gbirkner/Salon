@@ -171,6 +171,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\Statistics\LineChartController.cs" />
+    <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
@@ -316,9 +318,13 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
+    <Content Include="Views\StatisticTypes\Graphs\LineChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AverageCustomersTimeSpan\" />
+    <Folder Include="Views\AverageCustomerTimeSpan\" />
+    <Folder Include="Views\LineChart\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
