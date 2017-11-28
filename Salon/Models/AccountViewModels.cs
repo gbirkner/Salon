@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Salon.Models
@@ -79,8 +80,35 @@ namespace Salon.Models
         [Display(Name = "Kennwort bestätigen")]
         [Compare("Password", ErrorMessage = "Das Kennwort entspricht nicht dem Bestätigungskennwort.")]
         public string ConfirmPassword { get; set; }
-    }
 
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Vorname")]
+        public string firstName { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Nachname")]
+        public string lastName { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Klasse")]
+        public string Class { get; set; }
+
+        [Required]
+        [Display(Name = "Eintrittsdatum")]
+        public DateTime entryDate { get; set; }
+
+        [Required]
+        [Display(Name = "Austrittdatum")]
+        public DateTime resignationDate { get; set; }
+
+        [Required]
+        [Display(Name = "Abschlussklasse")]
+        public bool finalYear { get; set; }
+    }
     public class ResetPasswordViewModel
     {
         [Required]
