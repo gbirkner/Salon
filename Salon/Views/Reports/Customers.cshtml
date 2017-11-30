@@ -6,18 +6,28 @@
 
 <h2>Customers</h2>
 
-<script language="C#" >
-
-    void ExportExcel_Click(Object sender, EventArgs e){
-
-        Message.Text = "Hello World";
-    }    
-
-</script>
+@*https://forums.asp.net/t/2050549.aspx?Exporting+Data+to+PDF+and+Excel+in+MVC5*@
 
 <div>
-    <button onclick="">Export Excel</button>
+    @*<button class="btn btn-info" type="button" id="addressSearch"
+            onclick="location.href='@Url.Action("Test", "ReportsController")'"/>*@
+
+    <input type="button" value="Test button" onclick="exportExcel()" class="btn btn-default" />
+
+        <button id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default" onclick="">Export Excel</button>
+        <button id="btnPdf" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export PDF</button><br />
 </div>
+
+<script>
+    BlankTemplate = function () {
+            $.ajax({
+                url: _rootUrl + "ReportsController/BlankTemplate",
+                data: {
+                },
+                type: "POST"
+            });
+        }
+</script>
 
 <table class="table">
     <tr>

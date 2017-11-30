@@ -36,6 +36,13 @@ namespace Salon.Controllers.Reports
             return View(CustomersViewModel.ToList());
         }
 
+        public ActionResult Test()
+        {
+            var x = 0;
+
+            return new EmptyResult();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
