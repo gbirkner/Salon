@@ -43,8 +43,16 @@ namespace Salon.Controllers
         }
 
         public ActionResult VisitDetails(int? id) {
-            var visits = db.Visits.Find(id);
-            return PartialView(visits);
+            var visit = db.Visits.Find(id);
+            VisitDetailViewModel visitDetails = new VisitDetailViewModel();
+            visitDetails.visitId = visit.VisitId;
+            visitDetails.created = visit.Created;
+            visitDetails.customer = visit.Customers;
+            visitDetails.stylist = visit.AspNetUsers1;
+            visitDetails.modifiedBy = visit.AspNetUsers;
+            visitDetails.modified = visit.Modified;
+            visitDetails.duration = visit.Duration;
+            return PartialView(visitDetails);
         }
 
         // GET: Visits/Details/5
