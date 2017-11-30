@@ -9,12 +9,13 @@ using System.Data.Entity;
 
 namespace Salon.Controllers.Reports
 {
-    public class CustomerViewModelController : Controller
+    //public class CustomerViewModelController : Controller
+    public class ReportsController : Controller
     {
         private SalonEntities db = new SalonEntities();
 
         // GET: CustomerViewModel
-        public ActionResult Index()
+        public ActionResult Customers()
         {
             var customer = db.Customers.Include(c => c.Cities);
             IEnumerable<CustomersViewModel> CustomersViewModel =
@@ -27,7 +28,8 @@ namespace Salon.Controllers.Reports
                      Description = cu.Description,
                      Name = cu.FName + " " + cu.LName,
                      PostalCode = cu.Cities.PostalCode,
-                     Steet = cu.Street
+                     Street = cu.Street,
+                     City = cu.Cities.Title
                  }
                  );
 

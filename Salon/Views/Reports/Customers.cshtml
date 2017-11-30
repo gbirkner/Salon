@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.CustomersViewModel>
+
+@{
+    ViewBag.Title = "Customers";
+}
+
+<h2>Customers</h2>
+
+<script language="C#" >
+
+    void ExportExcel_Click(Object sender, EventArgs e){
+
+        Message.Text = "Hello World";
+    }    
+
+</script>
+
+<div>
+    <button onclick="">Export Excel</button>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th width="30" />
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th width="30" />
+        <th>
+            @Html.DisplayNameFor(model => model.Street)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td />
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td />
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+        </tr>
+    }
+</table>
