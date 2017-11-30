@@ -1,0 +1,45 @@
+﻿@model Salon.Models.Statistics.LineChart
+
+@{
+    ViewBag.Title = "LineChart";
+}
+
+<h2>@Model.ChartTitle</h2>
+
+<canvas id="lineChart"></canvas>
+
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    $(document).ready(function () {
+        var chartData = "@Model.GetChartValueString()";
+        var chartLabels = "@Model.GetDataLabelString()";
+
+        chartData = chartData.replace(/&#39;/g, "");
+        chartLabels = chartLabels.replace(/&#39;/g, "");
+
+        chartLabels = chartLabels.split(",")
+        chartData = chartData.split(",");
+        chartLabels.pop();
+        chartData.pop();
+
+        var ctx = document.getElementById("lineChart");
+        var data = {
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: "@Model.DataLabel",
+                    data: chartData,
+                    backgroundColor: "#57ab26",
+                    borderColor: "#57ab26",
+                    fill: false,
+                }],
+        };
+
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+        });
+    });
+</script>
+

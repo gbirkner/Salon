@@ -318,7 +318,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
-    <Content Include="Views\LineChart\Index.cshtml" />
+    <Content Include="Views\LineChart\LineChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
