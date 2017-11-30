@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Salon.Models.VisitShortViewModel>
+
+@{
+    ViewBag.Title = "VisitOverview";
+}
+
+<h2>VisitOverview</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.created)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.customer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.stylist)
+        </th>
+    </tr>
+    @foreach(var item in Model) {
+        <tr>
+            <td>
+                @item.created
+            </td>
+            <td>
+                @item.customer.FName
+            </td>
+            <td>
+                @item.stylist.UserName
+            </td>
+        </tr>
+    }
+</table>
+@Model.Count() Ergebnisse
