@@ -173,6 +173,8 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\Treatments1Controller.cs" />
+    <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -207,6 +209,7 @@
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -331,6 +334,9 @@
     <Content Include="Views\Cities\Details.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\Index.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentSteps.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentStepOptions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
