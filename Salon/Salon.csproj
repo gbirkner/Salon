@@ -173,6 +173,15 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Migrations\201711300903518_InitialCreate.cs" />
+    <Compile Include="Migrations\201711300903518_InitialCreate.Designer.cs">
+      <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711300955402_AddUserProperties.cs" />
+    <Compile Include="Migrations\201711300955402_AddUserProperties.Designer.cs">
+      <DependentUpon>201711300955402_AddUserProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -345,6 +354,14 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711300903518_InitialCreate.resx">
+      <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711300955402_AddUserProperties.resx">
+      <DependentUpon>201711300955402_AddUserProperties.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

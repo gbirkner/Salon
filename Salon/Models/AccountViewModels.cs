@@ -107,10 +107,6 @@ namespace Salon.Models
         [Required]
         [Display(Name = "Austrittdatum")]
         public DateTime resignationDate { get; set; }
-
-        [Required]
-        [Display(Name = "Abschlussklasse")]
-        public bool finalYear { get; set; }
     }
     public class ResetPasswordViewModel
     {
