@@ -1,0 +1,60 @@
+﻿@model Salon.Models.VisitDetailViewModel
+
+@{
+    ViewBag.Title = "VisitDetails";
+}
+
+<h2>Details</h2>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(x => x.customer)
+    </dt>
+    <dd>
+        @Model.customer.FName @Model.customer.LName
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(x => x.stylist)
+    </dt>
+    <dd>
+        @Model.stylist.UserName
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(x => x.created)
+    </dt>
+    <dd>
+        @Model.created
+    </dd>
+    
+    <dt>
+        @Html.DisplayNameFor(x => x.duration)
+    </dt>
+    <dd>
+        @Model.duration min
+    </dd>
+
+    <!-- only display modified fields if entry was actually modified -->
+    @if (Model.modified != null) { 
+        <dt>
+            @Html.DisplayNameFor(x => x.modifiedBy)
+        </dt>
+        <dd>
+            @Model.modifiedBy.UserName
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.modified)
+        </dt>
+        <dd>
+            @Model.modified
+        </dd>
+    }
+
+</dl>
+
+<div id="treatmentsContainer">
+    TODO Visit Treatments partial view
+</div>
+
