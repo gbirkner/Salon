@@ -21,8 +21,9 @@ namespace Salon.Controllers.Statistics
 
             foreach (var item in data)
             {
+                var nameOfMonth = new DateTime().AddMonths(item.Month).ToString("MMMM");
                 dataPoints.Add(Convert.ToInt32(item.Count));
-                dataLabels.Add(item.Month.ToString());
+                dataLabels.Add(nameOfMonth);
             }
 
             var chart = new LineChart("Customers per Time", "Visits", dataLabels, dataPoints);
