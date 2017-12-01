@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Salon.Models.TreatmentsVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="panel-group" id="accordion">
+
+    @foreach (var item in Model)
+            {
+        <div class="panel">
+            <div class="panel-heading panel-default">
+                <table class="table">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <col width="25%">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.isActive)</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item.isActive)</td>
+                        <td>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId })</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+@section scripts
+{
+    <script>
+        $(function () {
+            $('.steps-viewdetail').on('click', function (e) {
+                $that = $(this);
+                console.log($(this).closest('.panel').find('.collapse'));
+                
+                $.get($that.prop('href'), function (response) {
+                    $that.closest('.panel').find('.panel-body').html(response)
+                });
+                e.preventDefault();
+            });
+        });
+    </script>
+}
+
