@@ -171,7 +171,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\Reports\CustomerViewModelController.cs" />
+    <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\Statistics\LineChartController.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
@@ -320,8 +320,9 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
-    <Content Include="Views\Reports\Customers.cshtml" />
     <Content Include="Views\LineChart\LineChart.cshtml" />
+    <Content Include="Views\Reports\CustomersDownload.cshtml" />
+    <Content Include="Views\Reports\Customers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

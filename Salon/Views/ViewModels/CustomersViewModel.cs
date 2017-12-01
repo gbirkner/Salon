@@ -13,12 +13,5 @@ namespace Salon.Views.ViewModels
         public string Country { get; set; }
         public string Description { get; set; }
         public string City { get; set; }
-
-
-
-        public void ExportExcel_Click(object sender, EventArgs e)
-        {
-            var x = 0;
-        }
     }
 }
