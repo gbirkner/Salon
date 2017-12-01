@@ -7,19 +7,19 @@ using System.Web;
 namespace Salon.Models
 {
     [MetadataType(typeof(Connections))]
-    partial class ConnectionsMetaData
+    public class ConnectionsMetaData
     {
         [Key]
-        public int ConnectionId { get; set; }
+        public int ConnectionId;
 
-        public int ConnectionTypeId { get; set; }
+        public int ConnectionTypeId;
 
-        public int CustomerId { get; set; }
+        public int CustomerId;
 
         [Display(Name = "Connection")]
-        public string Title { get; set; }
+        public string Title;
 
-        public string Description { get; set; }
+        public string Description;
     }
 
     public partial class Connections
