@@ -170,9 +170,13 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Controllers\CitiesController.cs" />
+    <!-- <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\CustomerVisitController.cs" />
+    <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
+    <Compile Include="Controllers\VisitsController.cs" /> -->
+    <Compile Include="Controllers\*.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -188,9 +192,9 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
+<!--     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageController.cs" /> -->
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -200,10 +204,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\*.cs" />
+    <Compile Include="Models\MetaData\*.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MetaData\Connections.cs" />
+    <Compile Include="Models\VisitViewModels.cs" />
+    <!-- <Compile Include="Models\MetaData\Connections.cs" /> -->
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -339,6 +346,7 @@
     <Content Include="Views\Visits\Index.cshtml" />
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\*.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
