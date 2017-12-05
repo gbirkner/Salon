@@ -54,7 +54,7 @@ namespace Salon.Controllers.Reports
 
         public ActionResult Export()
         {          
-            string path = @"C:\"
+            
 
             System.IO.File.WriteAllLines("Downloads", this.ListToStrings(), System.Text.Encoding.UTF8);
             return new EmptyResult();
