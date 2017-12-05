@@ -39,16 +39,14 @@ namespace Salon.Controllers.Reports
 
             if (export == "excel")
             {
-                System.IO.File.WriteAllLines(@"C:\tmp\Salon\test.csv", this.ListToStrings());
 
-                var x = 0;
-                return new EmptyResult();
+
+                System.IO.File.WriteAllLines(@"C:\tmp\Salon\test.csv", this.ListToStrings(), System.Text.Encoding.UTF8);
             }
-            else if (export == "pdf")
-            {
-                var x = 0;
-                return View();
-            }
+            //else if (export == "pdf")
+            //{
+            //    var x = 0;
+            //}
             return View(this.customerList);
         }
 
