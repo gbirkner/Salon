@@ -173,6 +173,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\Reports\CustomerViewModelController.cs" />
     <Compile Include="Controllers\Statistics\LineChartController.cs" />
+    <Compile Include="Models\Statistics\BarChart.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
