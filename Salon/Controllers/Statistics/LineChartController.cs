@@ -13,20 +13,23 @@ namespace Salon.Controllers.Statistics
         private SalonEntities db = new SalonEntities();
 
         // GET: LineChart
-        public ActionResult LineChart()
+        public ActionResult LineChart(string chartName = null)
         {
             var data = db.Visits.GroupBy(c => c.Created.Month).Select(g => new { Month = g.Key, Count = g.Count() });
-            var dataPoints = new List<int>();
-            var dataLabels = new List<string>();
-
+            var Labels = new List<string>();
+            var dataPoints = new List<ChartData>();
+            
+            var visitCount = new List<int>();
             foreach (var item in data)
             {
                 var nameOfMonth = new DateTime().AddMonths(item.Month).ToString("MMMM");
-                dataPoints.Add(Convert.ToInt32(item.Count));
-                dataLabels.Add(nameOfMonth);
+                visitCount.Add(Convert.ToInt32(item.Count));
+                Labels.Add(nameOfMonth);
             }
 
-            var chart = new LineChart("Customers per Time", "Visits", dataLabels, dataPoints);
+            dataPoints.Add(new ChartData("Visits", visitCount, "#57ab26"));
+            var chart = new LineChart("Customers per Month", Labels, dataPoints);
+
             return View(chart);
         }
     }
