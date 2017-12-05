@@ -7,13 +7,13 @@
 
 <h2>Customers</h2>
 
-@*https://forums.asp.net/t/2050549.aspx?Exporting+Data+to+PDF+and+Excel+in+MVC5*@
-
 <div>
-    @*@Html.ActionLink("Test", "Customers", "Reports", null, new { export = "123", @class = "btn btn-default"})
-    @Html.ActionLink("Test", "Customers", new { export = "123", @class = "btn btn-default" })*@
-    <button onclick="location.href='@Url.Action("Customers", "Reports", new { export = "excel" } )'" id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export Excel</button>
-    <button onclick="location.href='@Url.Action("Customers", "Reports", new { export = "pdf" } )'" id="btnPdf" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export PDF</button><br />
+    <button onclick="location.href='@Url.Action("Export", "Reports", new { export = "excel" } )'" id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default" download>Export Excel</button>
+    @*<button onclick="myFunctions()" id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export Excel</button>*@
+    @*<button onclick="location.href='@Url.Action("Customers", "Reports", new { export = "pdf" } )'" id="btnPdf" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export PDF</button>*@<br />
+
+    @*<input id="myFile" type="file" name="testFile" class="input-group"/>*@
+    
 </div>
 
 <table class="table">
@@ -66,3 +66,11 @@
         </tr>
     }
 </table>
+
+
+<script>
+    function getFileName() {
+        var x = document.getElementById("myFile");
+        console.log(x, null);
+    }
+</script>

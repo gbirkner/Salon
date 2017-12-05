@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Salon.Views.ViewModels
 {
+    [Serializable]
     public class CustomersViewModel
     {
         [Key]
