@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Salon.Views.ViewModels.CustomersViewModel>
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
 
 @{
     ViewBag.Title = "Customers";
@@ -6,17 +7,13 @@
 
 <h2>Customers</h2>
 
-<script language="C#" >
-
-    void ExportExcel_Click(Object sender, EventArgs e){
-
-        Message.Text = "Hello World";
-    }    
-
-</script>
+@*https://forums.asp.net/t/2050549.aspx?Exporting+Data+to+PDF+and+Excel+in+MVC5*@
 
 <div>
-    <button onclick="">Export Excel</button>
+    @Html.ActionLink("Test", "Customers", "Reports", null, new { export = "123", @class = "btn btn-default"})
+    @Html.ActionLink("Test", "Customers", new { export = "123", @class = "btn btn-default" })
+    <button id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export Excel</button>
+    <button id="btnPdf" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default">Export PDF</button><br />
 </div>
 
 <table class="table">
