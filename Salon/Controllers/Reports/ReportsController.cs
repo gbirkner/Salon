@@ -7,6 +7,10 @@ using Salon.Models;
 using Salon.Views.ViewModels;
 using System.Data.Entity;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
+using System.Xml;
 
 namespace Salon.Controllers.Reports
 {
@@ -39,15 +43,21 @@ namespace Salon.Controllers.Reports
 
             if (export == "excel")
             {
-
-
-                System.IO.File.WriteAllLines(@"C:\tmp\Salon\test.csv", this.ListToStrings(), System.Text.Encoding.UTF8);
+                
             }
             //else if (export == "pdf")
             //{
             //    var x = 0;
             //}
             return View(this.customerList);
+        }
+
+        public ActionResult Export()
+        {          
+            string path = @"C:\"
+
+            System.IO.File.WriteAllLines("Downloads", this.ListToStrings(), System.Text.Encoding.UTF8);
+            return new EmptyResult();
         }
 
 
