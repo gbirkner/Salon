@@ -338,7 +338,7 @@
     <Content Include="Views\Cities\Index.cshtml" />
     <Content Include="Views\CustomerVisit\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerVisitShort.cshtml" />
-    <Content Include="Views\CustomerVisit\CustomerMasterdata.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
     <Content Include="Views\Visits\VisitShort.cshtml" />
     <Content Include="Views\Visits\Create.cshtml" />
     <Content Include="Views\Visits\Delete.cshtml" />
