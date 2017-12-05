@@ -13,12 +13,12 @@
         <EntityTypeShape EntityType="SalonModel.Countries" Width="1.5" PointX="3.25" PointY="9.875" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Customers" Width="1.5" PointX="7.875" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Pictures" Width="1.5" PointX="4.5" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SalonModel.StepOptions" Width="1.5" PointX="13.5" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SalonModel.Steps" Width="1.5" PointX="16.125" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="SalonModel.Treatments" Width="1.5" PointX="13.625" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalonModel.StepOptions" Width="1.5" PointX="13.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalonModel.Steps" Width="1.5" PointX="16.125" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalonModel.Treatments" Width="1.5" PointX="16.125" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.TreatmentSteps" Width="1.5" PointX="13.625" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Visits" Width="1.5" PointX="2.5" PointY="0.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="10.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="10.375" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="SalonModel.fkCustomerCreatedBy" ManuallyRouted="true" >
           <ConnectorPoint PointX="2" PointY="5.767114022335293" />
           <ConnectorPoint PointX="7.875" PointY="5.7708575574883172" />

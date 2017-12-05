@@ -24,5 +24,8 @@ namespace Salon.Models
 
     public partial class Connections
     {
+
     }
+
+
 }

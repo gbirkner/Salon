@@ -58,6 +58,14 @@
     <span class="glyphicon glyphicon-pencil"></span> Bearbeiten</button>
 
 <div id="treatmentsContainer">
-    TODO Visit Treatments partial view
+    <h3>Behandlungen:</h3>
+    <ul class="list-group" id="lst_visitTreatments">
+        @foreach (var t in Model.treatments) {
+            <li class="list-group-item">
+                @t.name
+            </li>
+        }
+    </ul>
+    
 </div>
 

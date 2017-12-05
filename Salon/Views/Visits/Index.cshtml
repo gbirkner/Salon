@@ -60,7 +60,7 @@
                 </th>
             </tr>
             @foreach (var item in Model) {
-                <tr>
+                <tr class="tr_visits" style="cursor: pointer;">
                     <td>
                         @item.created
                     </td>
@@ -77,13 +77,35 @@
             }
         </table>
         <font id="fnt_hits">
-            @Model.Count() Ergebnisse
+            @Model.Count() Ergebniss(e)
         </font>
+        <ul class="pager">
+            @if (ViewBag.skip == 0) {
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </a>
+                </li>
+            } else {
+                <li >
+                    <a href="@Url.Action("Index", "Visits", new { skip = ViewBag.skip - 1 }) ">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </a>
+                </li>
+            }
+            <li>
+                <a href="@Url.Action("Index", "Visits", new { skip = ViewBag.skip + 1 }) ">
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </a>
+            </li>
+        </ul> 
     </div>
     <div class="col-sm-5" id="VisitTableContainer">
 
     </div>
 </div>
+
+
 
 @section scripts {
 <script type="text/javascript">
@@ -95,13 +117,34 @@
             });
             e.preventDefault();
         });
+
+        $(".tr_visits").each(function () {
+            $(this).on('click', function (e) {
+                
+                $("#tbl_visits").find("tr").each(function (e) {
+                    $(this).removeClass("active");
+                });
+                $(this).toggleClass("active");
+                $.get($(this).find(".visitRow").prop('href'), function (response) {
+                    $('#VisitTableContainer').html(response)
+                });
+                e.preventDefault();
+            });
+        });
     });
+
+    
+    $("#btn_filter").on('click', function (e) {
+        filter();
+    });
+
+
+
 
     /**
      * Visit Table Filter
      */
-    $("#btn_filter").on('click', function (e) {
-        
+    function filter() {
         //get filter
         var fDate = $("#inp_filterDate").val();
         var fCustomer = $("#inp_filterCustomer").val();
@@ -112,16 +155,16 @@
         tr = table.getElementsByTagName("tr");
 
         var hitDate, hitCust, hitStyl, hits = 0;
-        
+
         for (var i = 1; i < tr.length; i++) {       //loop through table rows
             date = tr[i].getElementsByTagName("td")[0];
             cust = tr[i].getElementsByTagName("td")[1];
             styl = tr[i].getElementsByTagName("td")[2];
-            
+
             hitDate = false;
             hitCust = false;
             hitStyl = false;
-            
+
             if (fDate.length > 0 && date.innerHTML.toUpperCase().indexOf(fDate.toUpperCase()) > -1) {
                 hitDate = true;
             }
@@ -131,7 +174,7 @@
             if (fStylist.length > 0 && styl.innerHTML.toUpperCase().indexOf(fStylist.toUpperCase()) > -1) {
                 hitStyl = true;
             }
-            
+
             //check all filtered fields (if filter is empty check succeeds)
             if ((fDate.length == 0 || hitDate) && (fCustomer.length == 0 || hitCust) && (fStylist.length == 0 || hitStyl)) {
                 tr[i].style.display = "";
@@ -141,7 +184,8 @@
             }
         }
         $("#fnt_hits").html(hits + " Ergebnisse");
-    });
+    }
+
 </script>
 }
 
