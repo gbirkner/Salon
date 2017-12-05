@@ -22,7 +22,7 @@
 
 
 <div style="height : 310px; overflow:auto;">
-    <table class="table">
+    <table class="table" id="tbl_cust">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.PostalCode)
@@ -158,24 +158,70 @@
 
 
 @section scripts {
-    <script>
-        $(function () {
-            $('.customer-visitshort').on('click', function (e) {
-                $.get($(this).prop('href'), function (response) {
+    <script type="text/javascript">
+        $(function ()
+        {
+            $('.customer-visitshort').on('click', function (e)
+            {
+                $.get($(this).prop('href'), function (response)
+                {
                     $('#MasterDetail').html(response)
                 });
                 e.preventDefault();
             });
         });
 
-        $(function () {
-            $('.customer-masterdata').on('click', function (e) {
-                $.get($(this).prop('href'), function (response) {
+        $(function ()
+        {
+            $('.customer-masterdata').on('click', function (e)
+            {
+                $.get($(this).prop('href'), function (response)
+                {
                     $('#MasterDetail').html(response)
                 });
                 e.preventDefault();
             });
         });
-    </script>
+    
 
+
+
+
+       /* $("#Search").keyup( function (e) {
+
+            //get filter
+            var Searchtext = $("#Search").val().toLowerCase();
+
+
+            var table, tr, td;
+            table = document.getElementById("tbl_cust");
+            tr = table.$("#Search").keyup("tr");
+
+            var hitrow = 0;
+            var hit = false;
+
+            for (var i = 1; i < tr.length; i++)
+            {       //loop through table rows
+                td = tr[i].getElementsByTagName("td");
+                for (var j = 0; j < td.length; j++)
+                {
+
+                    if (td[j].innerHTML.indexOf(Searchtext))
+                    {
+                        hit = true;
+                    }
+                }
+                if (hit)
+                {
+                    tr[i].style.display = "";
+                }
+                else
+                {
+                    tr[i].style.display = "none";
+                }
+
+            }
+        });*/
+</script>
 }
+
