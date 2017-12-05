@@ -1,0 +1,60 @@
+﻿@model Salon.Models.Statistics.BarChart
+
+@{
+    ViewBag.Title = "BarChart";
+}
+
+<h2>@Model.ChartTitle</h2>
+
+<canvas id="barChart"></canvas>
+
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    function formatString(valueString) {
+        var formatedString = valueString.replace(/&#39;/g, "");
+        formatedString = formatedString.split(",");
+        formatedString.pop();
+        return formatedString;
+    }
+
+    $(document).ready(function () {
+        var chartLabels = "@Model.GetLabelString()";
+        chartLabels = formatString(chartLabels);
+
+        var ctx = document.getElementById("barChart");
+        var data = {
+            labels: chartLabels,
+            datasets: [
+                // todo: implement multilines
+                @foreach (var item in Model.ChartData)
+                {
+                    <text>{
+                    label: "@item.DataLabel",
+                    data: "@item.GetBarChartString()",
+                    backgroundColor: "@item.Color",
+                    borderColor: "@item.Color",
+                    },
+                    </text>
+                }
+            ]
+        };
+
+        var chartOptions = {
+            scales: {
+                yAxes: [{
+                    display: true,
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                    }
+                }]
+            }
+        }
+
+        var barChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: chartOptions,
+        });
+    });
+</script>
