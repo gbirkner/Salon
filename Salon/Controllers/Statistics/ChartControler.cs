@@ -8,7 +8,7 @@ using Salon.Models;
 
 namespace Salon.Controllers.Statistics
 {
-    public class LineChartController : Controller
+    public class ChartController : Controller
     {
         private SalonEntities db = new SalonEntities();
 
