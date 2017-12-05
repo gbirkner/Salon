@@ -67,7 +67,7 @@ namespace Salon.Controllers
                 }
                 ).ToList();
 
-            return View(CustomerViewModels);
+            return PartialView("_CustomerMasterdata", CustomerViewModels);
         }
 
         protected override void Dispose(bool disposing)
