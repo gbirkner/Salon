@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Salon.Models;
 using Salon.Views.ViewModels;
 using System.Data.Entity;
+using System.IO;
 
 namespace Salon.Controllers.Reports
 {
@@ -13,6 +14,7 @@ namespace Salon.Controllers.Reports
     public class ReportsController : Controller
     {
         private SalonEntities db = new SalonEntities();
+        private List<CustomersViewModel> customerList = new List<CustomersViewModel>();
 
         // GET: CustomerViewModel
         public ActionResult Customers(string export = "")
@@ -35,10 +37,13 @@ namespace Salon.Controllers.Reports
                      }
                      );
 
-                return View(CustomersViewModel.ToList());
+                this.customerList = CustomersViewModel.ToList();
+                return View(this.customerList);
             }
             if (export == "excel")
             {
+                //System.IO.File.WriteAllLines(@"C:\tmp\Salon\test.csv", this.customerList.ToArray());
+
                 var x = 0;
                 return View();
             }
