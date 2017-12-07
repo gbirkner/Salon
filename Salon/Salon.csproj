@@ -323,7 +323,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
     <Content Include="Views\Chart\LineChart.cshtml" />
-    <Content Include="Views\Reports\CustomersDownload.cshtml" />
     <Content Include="Views\Reports\Customers.cshtml" />
     <Content Include="Views\Chart\BarChart.cshtml" />
   </ItemGroup>
