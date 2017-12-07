@@ -20,7 +20,7 @@ namespace Salon.Controllers.Statistics
         public ActionResult Index()
         {
             definedStatistics.Add(new StatisticTypes(
-                "Customers per TIME", "Shows the customers for a specific time span", "Report", "/"
+                "Besuche pro Monat", "Zeigt die Anzahl der Kundenbesuche pro Monat", "Graph", "/Graph/LineChart?chartName=VisitsMonth"
                 ));
 
             definedStatistics.Add(new StatisticTypes(

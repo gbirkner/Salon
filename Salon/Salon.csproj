@@ -172,8 +172,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
-    <Compile Include="Controllers\Statistics\ChartControler.cs" />
+    <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\Statistics\BarChart.cs" />
+    <Compile Include="Models\Statistics\ChartData.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
@@ -324,6 +325,7 @@
     <Content Include="Views\Chart\LineChart.cshtml" />
     <Content Include="Views\Reports\CustomersDownload.cshtml" />
     <Content Include="Views\Reports\Customers.cshtml" />
+    <Content Include="Views\Chart\BarChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

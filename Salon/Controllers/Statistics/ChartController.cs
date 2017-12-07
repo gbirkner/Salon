@@ -45,11 +45,30 @@ namespace Salon.Controllers.Statistics
             return View(EmptyChart);
         }
 
+        // GET: BarChart
         public ActionResult BarChart(string chartName = null)
         {
-            if (chartName == "")
+            if (chartName == "TopThreatments")
             {
+                var Labels = new List<string>();
+                var dataPoints = new List<ChartData>();
 
+                Labels.Add("Kurzhaar Frisur");
+                Labels.Add("Dauerwelle");
+                Labels.Add("Faerben");
+
+                var random = new Random();
+
+                dataPoints.Add(new ChartData("Kurzhaar", new List<int>() { 13 }, string.Format("#{0:X6}", random.Next(0x1000000))));
+                dataPoints.Add(new ChartData("Dauerwelle", new List<int>() { 4 }, string.Format("#{0:X6}", random.Next(0x1000000))));
+                dataPoints.Add(new ChartData("Faerben", new List<int>() { 7 }, string.Format("#{0:X6}", random.Next(0x1000000))));
+
+                var chart = new BarChart("Gefragteste Behandlungen", Labels, dataPoints);
+
+                return View(chart);
+
+                // linq to get data
+                // var data = db.Visits.GroupBy(c => c.VisitTasks)
             }
 
             return View();
