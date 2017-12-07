@@ -174,7 +174,6 @@
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Migrations\201711300903518_InitialCreate.cs" />
     <Compile Include="Migrations\201711300903518_InitialCreate.Designer.cs">
       <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
@@ -218,6 +217,7 @@
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\RoleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -347,11 +347,6 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
-    <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

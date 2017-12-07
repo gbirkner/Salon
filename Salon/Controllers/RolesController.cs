@@ -1,127 +1,161 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Salon.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Salon.Models;
 
 namespace Salon.Controllers
 {
     public class RolesController : Controller
     {
-        private SalonEntities db = new SalonEntities();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
+        public RolesController()
+        {
+            RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+        }
+
+        public RolesController(RoleManager<IdentityRole> roleManager)
+        {
+            RoleManager = roleManager;
+        }
+
+        public RoleManager<IdentityRole> RoleManager { get; private set; }
+
+        //
         // GET: Roles
         public ActionResult Index()
         {
-            return View(db.AspNetRoles.ToList());
+            return View(RoleManager.Roles);
         }
 
-        // GET: Roles/Details/5
-        public ActionResult Details(string id)
+        //
+        // GET: /Roles/Details/5
+        public async Task<ActionResult> Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);
-            if (aspNetRoles == null)
-            {
-                return HttpNotFound();
-            }
-            return View(aspNetRoles);
+            var role = await RoleManager.FindByIdAsync(id);
+            return View(role);
         }
 
-        // GET: Roles/Create
+
+        //
+        // GET: /Roles/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Roles/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        //
+        // POST: /Roles/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] AspNetRoles aspNetRoles)
+        public async Task<ActionResult> Create(RoleViewModel roleViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.AspNetRoles.Add(aspNetRoles);
-                db.SaveChanges();
+                var role = new IdentityRole(roleViewModel.Name);
+                var roleresult = await RoleManager.CreateAsync(role);
+                if (!roleresult.Succeeded)
+                {
+                    ModelState.AddModelError("", roleresult.Errors.First().ToString());
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
-
-            return View(aspNetRoles);
+            else
+            {
+                return View();
+            }
         }
 
-        // GET: Roles/Edit/5
-        public ActionResult Edit(string id)
+        //
+        // GET: /Roles/Edit/Admin
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);
-            if (aspNetRoles == null)
+            var role = await RoleManager.FindByIdAsync(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View(aspNetRoles);
+            return View(role);
         }
 
-        // POST: Roles/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        //
+        // POST: /Roles/Edit/5
         [HttpPost]
+
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] AspNetRoles aspNetRoles)
+        public async Task<ActionResult> Edit([Bind(Include = "Name,Id")] IdentityRole role)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(aspNetRoles).State = EntityState.Modified;
-                db.SaveChanges();
+                var result = await RoleManager.UpdateAsync(role);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", result.Errors.First().ToString());
+                    return View();
+                }
                 return RedirectToAction("Index");
             }
-            return View(aspNetRoles);
+            else
+            {
+                return View();
+            }
         }
 
-        // GET: Roles/Delete/5
-        public ActionResult Delete(string id)
+        //
+        // GET: /Roles/Delete/5
+        public async Task<ActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);
-            if (aspNetRoles == null)
+            var role = await RoleManager.FindByIdAsync(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View(aspNetRoles);
+            return View(role);
         }
 
-        // POST: Roles/Delete/5
+        //
+        // POST: /Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(string id)
         {
-            AspNetRoles aspNetRoles = db.AspNetRoles.Find(id);
-            db.AspNetRoles.Remove(aspNetRoles);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            if (ModelState.IsValid)
             {
-                db.Dispose();
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var role = await RoleManager.FindByIdAsync(id);
+                var result = await RoleManager.DeleteAsync(role);
+                if (!result.Succeeded)
+                {
+                    ModelState.AddModelError("", result.Errors.First().ToString());
+                    return View();
+                }
+                return RedirectToAction("Index");
             }
-            base.Dispose(disposing);
+            else
+            {
+                return View();
+            }
         }
     }
 }
