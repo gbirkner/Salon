@@ -28,6 +28,8 @@ public partial class Connections
 
     public string Description { get; set; }
 
+    
+
 
 
     public virtual ConnectionTypes ConnectionTypes { get; set; }

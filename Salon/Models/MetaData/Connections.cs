@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Salon.Models
 {
-    [MetadataType(typeof(Connections))]
+    
     public class ConnectionsMetaData
     {
         [Key]
@@ -22,6 +22,7 @@ namespace Salon.Models
         public string Description;
     }
 
+    [MetadataType(typeof(ConnectionsMetaData))]
     public partial class Connections
     {
     }

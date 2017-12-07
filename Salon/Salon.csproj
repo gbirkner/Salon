@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
@@ -203,10 +204,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\CustomerVisit.cs" />
+    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
     <Compile Include="Models\MetaData\Connections.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VisitViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -332,9 +336,8 @@
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
     <Content Include="Views\CustomerVisit\Index.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerVisitShort.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
-    <Content Include="Views\Visits\VisitShort.cshtml" />
+    <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
     <Content Include="Views\Visits\Create.cshtml" />
     <Content Include="Views\Visits\Delete.cshtml" />
     <Content Include="Views\Visits\Details.cshtml" />
@@ -342,6 +345,9 @@
     <Content Include="Views\Visits\Index.cshtml" />
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
+    <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
