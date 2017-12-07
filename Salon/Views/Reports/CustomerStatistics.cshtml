@@ -1,0 +1,60 @@
+﻿@model Salon.Models.Statistics.CustomerStatistics
+
+@{
+    ViewBag.Title = "CustomersStatistics";
+}
+
+<style>
+    #searchbar {
+    background-image: url('../../Images/searchicon.png');
+    background-position: 10px 12px; /* Position the search icon */
+    background-repeat: no-repeat; /* Do not repeat the icon image */
+    width: 100%; /* Full-width */
+    max-width: none;
+    font-size: 16px; /* Increase font-size */
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+}
+</style>
+
+<h2>Kunden-Statistiken</h2>
+
+<input type="text" id="searchbar" onkeyup="searchTable()" placeholder="Beginne zu tippen...">
+<table class="table" id="searchtable">
+    <tr>
+        <th>Name</th>
+        <th>Stadt</th>
+    </tr>
+
+    @foreach (var item in Model.Customers)
+    {
+        <tr>
+            <td>@item.LName @item.FName</td>
+            <td>Innsbruck</td>
+        </tr>
+    }
+</table>
+
+<script>
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("searchbar");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("searchtable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>

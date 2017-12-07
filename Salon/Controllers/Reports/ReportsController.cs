@@ -14,6 +14,7 @@ using System.Xml;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using Salon.Models.Statistics;
 
 namespace Salon.Controllers.Reports
 {
@@ -96,6 +97,13 @@ namespace Salon.Controllers.Reports
             if (disposing)
                 db.Dispose();
             base.Dispose(disposing);
+        }
+
+        public ActionResult CustomerStatistics()
+        {
+            var customerStats = new CustomerStatistics(db.Customers);
+
+            return View(customerStats);
         }
     }
 }
