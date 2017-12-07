@@ -105,5 +105,29 @@ namespace Salon.Controllers.Reports
 
             return View(customerStats);
         }
+
+
+        public ActionResult WorkPerStudent()
+        {
+            return View();
+        }
+
+        public ActionResult WorkPerStudentPartial()
+        {
+            var visits = db.Visits;
+            IEnumerable<WorkPerStudentViewModel> WorkPerStudent =
+                (from v in visits
+                 select new WorkPerStudentViewModel
+                 {
+                     StudentName = "Matthias Feurstein",
+                     Class = "4aINF",
+                     TeacherName = "Gert Birkner",
+                     Treatment = "Nix",
+                     Date = DateTime.Now
+                 }
+                 );
+
+            return PartialView(WorkPerStudent.ToList());
+        }
     }
 }

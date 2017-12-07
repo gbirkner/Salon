@@ -36,6 +36,11 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Class" Type="nvarchar" MaxLength="100" />
+          <Property Name="entryDate" Type="datetime" />
+          <Property Name="resignationDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -479,6 +484,11 @@
           <NavigationProperty Name="Visits" Relationship="Self.fkVisitCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="Visits1" Relationship="Self.fkVisitModifiedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="entryDate" Type="DateTime" Precision="3" />
+          <Property Name="resignationDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -955,6 +965,11 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SalonModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
+                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />

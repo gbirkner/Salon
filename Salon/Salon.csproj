@@ -248,6 +248,7 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
+    <Compile Include="Views\ViewModels\WorkPerStudent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -328,6 +329,8 @@
     <Content Include="Views\Reports\Customers.cshtml" />
     <Content Include="Views\Chart\BarChart.cshtml" />
     <Content Include="Views\Reports\CustomerStatistics.cshtml" />
+    <Content Include="Views\Reports\WorkPerStudent.cshtml" />
+    <Content Include="Views\ViewModels\WorkPerStudentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

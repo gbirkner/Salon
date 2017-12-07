@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerStudentViewModel>
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
+
+@{
+    ViewBag.Title = "Work per student";
+}
+
+<h2>Customers</h2>
+
+<div>
+@*    <button onclick="location.href='@Url.Action("Export", "Reports", new { export = "excel" } )'" id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default" download>Export Excel</button>*@
+</div>
+
+<div>
+    @{ Html.RenderAction("WorkPerStudentPartial")}
+</div>
