@@ -50,16 +50,11 @@ namespace Salon.Controllers.Reports
         /// </summary>
         /// <returns></returns>
         public ActionResult Export()
-        {
-            //Gets the directory of the logged in windows user
-            string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                path = Directory.GetParent(path).ToString() + @"\downloads\";
-            }
+        {          
+            
 
-            System.IO.File.WriteAllLines(path + @"\Kundenliste.csv", this.ListToStrings(), System.Text.Encoding.UTF8);
-            return RedirectToAction("Customers");   //redirect to action customer, otherwise site will load up empty
+            System.IO.File.WriteAllLines("Downloads", this.ListToStrings(), System.Text.Encoding.UTF8);
+            return new EmptyResult();
         }
 
         /// <summary>
