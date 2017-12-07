@@ -58,9 +58,8 @@ namespace Salon.Controllers.Reports
             {
                 path = Directory.GetParent(path).ToString() + @"\downloads\";
             }
-
             System.IO.File.WriteAllLines(path + @"\Kundenliste.csv", this.ListToStrings(), System.Text.Encoding.UTF8);
-            return RedirectToAction("Customers");   //redirect to action customer, otherwise site will load up empty
+            return RedirectToAction("Customers");   //redirect to action customer, otherwise site will load up empty        
         }
 
         /// <summary>
@@ -73,17 +72,12 @@ namespace Salon.Controllers.Reports
             string headers = string.Empty;
 
             var properties = typeof(CustomersViewModel).GetProperties();
-            int numberOfProperties = properties.Count();
-            int counter = 1;
-            foreach(var property in properties)
+            foreach(var property in properties) //headers
             {
                 var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
 
                 if (display != null)
                     headers += display.Name + ";";
-
-                if (counter == numberOfProperties)
-                    headers = headers.Remove(headers.Length - 1);
             }
 
             returnValue.Add(headers);
