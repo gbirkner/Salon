@@ -172,7 +172,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
-    <Compile Include="Controllers\Statistics\ChartControler.cs" />
+    <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\Statistics\BarChart.cs" />
     <Compile Include="Models\Statistics\ChartData.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />

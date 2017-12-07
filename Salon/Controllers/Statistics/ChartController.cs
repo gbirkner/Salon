@@ -55,9 +55,13 @@ namespace Salon.Controllers.Statistics
 
                 Labels.Add("Kurzhaar Frisur");
                 Labels.Add("Dauerwelle");
+                Labels.Add("Faerben");
 
-                dataPoints.Add(new ChartData("Kurzhaar", new List<int>() { 13 }, "#57ab26"));
-                dataPoints.Add(new ChartData("Kurzhaar", new List<int>() { 4 }, "#ccc"));
+                var random = new Random();
+
+                dataPoints.Add(new ChartData("Kurzhaar", new List<int>() { 13 }, string.Format("#{0:X6}", random.Next(0x1000000))));
+                dataPoints.Add(new ChartData("Dauerwelle", new List<int>() { 4 }, string.Format("#{0:X6}", random.Next(0x1000000))));
+                dataPoints.Add(new ChartData("Faerben", new List<int>() { 7 }, string.Format("#{0:X6}", random.Next(0x1000000))));
 
                 var chart = new BarChart("Gefragteste Behandlungen", Labels, dataPoints);
 
