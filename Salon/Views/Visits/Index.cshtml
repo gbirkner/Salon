@@ -4,10 +4,19 @@
     ViewBag.Title = "Index";
 }
 
+<link rel="stylesheet" href="~/Views/Visits/VisitStyle.css" />
+
+<style>
+#visitTableContainer{
+    height: 75vh;
+    overflow-y: scroll;
+}
+</style>
+
 <h2>Besuche</h2>
 
 <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-7" id="visitTableContainer">
         <div id="filterContainer">
             <div class="row">
                 <div class="col-sm-3">
@@ -30,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    <input type="text" id="inp_filterDate" class="form-control" />
+                    <input type="text" id="inp_filterDate" class="form-control" on />
                 </div>
                 <div class="col-sm-3">
                     <input type="text" id="inp_filterCustomer" class="form-control" />
@@ -133,12 +142,28 @@
         });
     });
 
-    
+    // ====================================== EVENT LISTENERS ======================= //
     $("#btn_filter").on('click', function (e) {
         filter();
     });
 
+    $("#inp_filterDate").keyup(function (event) {
+        if (event.keyCode === 13) {
+            filter();
+        }
+    });
 
+    $("#inp_filterCustomer").keyup(function (event) {
+        if (event.keyCode === 13) {
+            filter();
+        }
+    });
+
+    $("#inp_filterStylist").keyup(function (event) {
+        if (event.keyCode === 13) {
+            filter();
+        }
+    });
 
 
     /**

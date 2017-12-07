@@ -65,4 +65,13 @@ namespace Salon.Models {
             this.tasks = new List<VisitTasks>();
         }
     }
+
+    public class CustomerPicker {
+        [Key]
+        public int customerId { get; set; }
+        [Display(Name = "Vorname")]
+        public string fName { get; set; }
+        [Display(Name = "Nachname")]
+        public string lName { get; set; }
+    }
 }

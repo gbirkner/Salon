@@ -7,8 +7,11 @@
 <h2>Besuch</h2>
 
 <div class="row">
-    <div class="col-sm-6 customerContainer">
-
+    <div class="col-sm-6" id="customerContainer">
+        <div class="row">
+            <font class="col-sm-6">Vorname</font>
+            <font class="col-sm-6">Nachname</font>
+        </div>
     </div>
 
     <div class="col-sm-6">
@@ -39,4 +42,32 @@
         
     </div>
 </div>
+
+@Html.ActionLink("n/A", "_CustomerPicker", new { @class = "hidden" }, new { id = "lnk_customerPicker"})
+<div id="customerPickerContainer">
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $.get($("#lnk_customerPicker").prop('href'), function (response) {
+                $('#customerPickerContainer').html(response);
+
+                $("#btn_customerPickerSelect").on('click', function (e) {
+
+                });
+            });
+
+
+            
+        });
+
+
+        $("#customerContainer").on("click", function (e) {
+            $("#customerPicker").modal();
+        });
+    </script>    
+}
 

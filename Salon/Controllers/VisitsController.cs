@@ -99,6 +99,18 @@ namespace Salon.Controllers
             return View(model);
         }
 
+        public ActionResult _CustomerPicker() {
+            var customers = db.Customers;
+            IEnumerable<CustomerPicker> picker = (from c in customers
+                                                  orderby c.LName
+                                                  select new CustomerPicker {
+                                                      lName = c.LName,
+                                                      fName = c.FName,
+                                                      customerId = c.CustomerId
+                                                  }).ToList();
+            return PartialView(picker);
+        }
+
         // GET: Visits/Details/5
         public ActionResult Details(int? id)
         {
