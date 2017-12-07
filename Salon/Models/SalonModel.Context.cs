@@ -12,6 +12,8 @@ namespace Salon.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SalonEntities : DbContext
     {
@@ -40,5 +42,19 @@ namespace Salon.Models
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+    
+        public virtual int AnonymizeCustomerByID(Nullable<int> customerID)
+        {
+            var customerIDParameter = customerID.HasValue ?
+                new ObjectParameter("CustomerID", customerID) :
+                new ObjectParameter("CustomerID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AnonymizeCustomerByID", customerIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AnonymizeCustomerByDays");
+        }
     }
 }

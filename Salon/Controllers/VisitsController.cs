@@ -16,7 +16,7 @@ namespace Salon.Controllers
 
         // GET: Visits
         public ActionResult Index(int? skip)
-        {
+        {                       
             if (skip == null || skip < 0)
                 skip = 0;
             ViewBag.skip = skip;

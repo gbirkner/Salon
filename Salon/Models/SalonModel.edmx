@@ -36,6 +36,11 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Class" Type="nvarchar" MaxLength="100" />
+          <Property Name="entryDate" Type="datetime" />
+          <Property Name="resignationDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -105,9 +110,9 @@
           <Key>
             <PropertyRef Name="SettingID" />
           </Key>
-          <Property Name="SettingID" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="SettingValue" Type="nvarchar" MaxLength="255" />
-          <Property Name="SettingDescription" Type="nvarchar" MaxLength="255" />
+          <Property Name="SettingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnonymizeUserByDays" Type="smallint" Nullable="false" />
+          <Property Name="AnonymizeCustomerByDays" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="StepOptions">
           <Key>
@@ -377,6 +382,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="AnonymizeCustomerByDays" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="AnonymizeCustomerByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
@@ -488,6 +497,11 @@
           <NavigationProperty Name="Visits" Relationship="Self.fkVisitCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="Visits1" Relationship="Self.fkVisitModifiedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="entryDate" Type="DateTime" Precision="3" />
+          <Property Name="resignationDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -947,14 +961,18 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="Settings" EntityType="SalonModel.Settings" />
+          <FunctionImport Name="AnonymizeCustomerByID">
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
         </EntityContainer>
         <EntityType Name="Settings">
           <Key>
             <PropertyRef Name="SettingID" />
           </Key>
-          <Property Name="SettingID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="SettingValue" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SettingDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SettingID" Type="Int32" Nullable="false" />
+          <Property Name="AnonymizeUserByDays" Type="Int16" Nullable="false" />
+          <Property Name="AnonymizeCustomerByDays" Type="Int16" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -973,6 +991,11 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SalonModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
+                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -1137,12 +1160,14 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="SalonModel.Settings">
               <MappingFragment StoreEntitySet="Settings">
-                <ScalarProperty Name="SettingDescription" ColumnName="SettingDescription" />
-                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="AnonymizeCustomerByDays" ColumnName="AnonymizeCustomerByDays" />
                 <ScalarProperty Name="SettingID" ColumnName="SettingID" />
+                <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

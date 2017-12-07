@@ -14,8 +14,8 @@ namespace Salon.Models
     
     public partial class Settings
     {
-        public string SettingID { get; set; }
-        public string SettingValue { get; set; }
-        public string SettingDescription { get; set; }
+        public int SettingID { get; set; }
+        public short AnonymizeUserByDays { get; set; }
+        public short AnonymizeCustomerByDays { get; set; }
     }
 }
