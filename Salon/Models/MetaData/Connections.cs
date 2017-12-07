@@ -25,5 +25,8 @@ namespace Salon.Models
     [MetadataType(typeof(ConnectionsMetaData))]
     public partial class Connections
     {
+
     }
+
+
 }

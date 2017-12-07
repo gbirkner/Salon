@@ -15,8 +15,11 @@ namespace Salon.Controllers
         private SalonEntities db = new SalonEntities();
 
         // GET: Visits
-        public ActionResult Index()
+        public ActionResult Index(int? skip)
         {
+            if (skip == null || skip < 0)
+                skip = 0;
+            ViewBag.skip = skip;
             var visits = db.Visits.Include(v => v.AspNetUsers).Include(v => v.AspNetUsers1).Include(v => v.Customers);
             IEnumerable<VisitShortViewModel> shortVisitViewModels = (from v in visits
                                                                      orderby v.Created
@@ -25,7 +28,7 @@ namespace Salon.Controllers
                                                                          created = v.Created,
                                                                          customer = v.Customers,
                                                                          stylist = v.AspNetUsers1
-                                                                     }).ToList();
+                                                                     }).Skip((int)skip * 30).Take(30).ToList();
             return View(shortVisitViewModels);
         }
 
@@ -52,7 +55,48 @@ namespace Salon.Controllers
             visitDetails.modifiedBy = visit.AspNetUsers;
             visitDetails.modified = visit.Modified;
             visitDetails.duration = visit.Duration;
+            visitDetails.treatments = getVisitTreatments(visit);
+            
             return PartialView(visitDetails);
+        }
+
+        private List<VisitTreatment> getVisitTreatments(Visits v) {
+            List<VisitTreatment> treatments = new List<VisitTreatment>();
+
+            bool ok;
+            foreach(VisitTasks vt in v.VisitTasks) {
+                ok = false;
+                foreach(VisitTreatment t in treatments) {
+                    if(t.treatmentID == vt.TreatmentId) {
+                        t.tasks.Add(vt);
+                        ok = true;
+                        break;
+                    }
+                }
+                if (!ok) {
+                    VisitTreatment visitTreatment = new VisitTreatment();
+                    visitTreatment.treatmentID = vt.TreatmentId;
+                    visitTreatment.name = vt.getTreatment().Title;
+                    visitTreatment.tasks.Add(vt);
+                    treatments.Add(visitTreatment);
+                }
+            }
+
+            return treatments;
+        }
+
+        public ActionResult VisitCreate() {
+            Customers customer = db.Customers.Find(1);
+            AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
+      
+
+            VisitCreateViewModel model = new VisitCreateViewModel();
+            model.created = new DateTime();
+            model.customer = customer;
+            model.stylist = stylist;
+            model.availableTreatments = db.Treatments.ToList();
+            model.selectedTreatments = new List<Treatments>();
+            return View(model);
         }
 
         // GET: Visits/Details/5
