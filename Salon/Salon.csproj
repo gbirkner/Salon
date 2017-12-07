@@ -175,6 +175,7 @@
     <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\Statistics\BarChart.cs" />
     <Compile Include="Models\Statistics\ChartData.cs" />
+    <Compile Include="Models\Statistics\CustomerStatistics.cs" />
     <Compile Include="Models\Statistics\LineChart.cs" />
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
@@ -255,6 +256,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\searchicon.png" />
     <Content Include="Models\SalonModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SalonModel.edmx</DependentUpon>
@@ -326,6 +328,7 @@
     <Content Include="Views\Reports\CustomersDownload.cshtml" />
     <Content Include="Views\Reports\Customers.cshtml" />
     <Content Include="Views\Chart\BarChart.cshtml" />
+    <Content Include="Views\Reports\CustomerStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -358,7 +361,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6241</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
