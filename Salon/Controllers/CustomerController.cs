@@ -9,7 +9,7 @@ using System.Net;
 
 namespace Salon.Controllers
 {
-    public class CustomerVisitController : Controller
+    public class CustomerController : Controller
     {
         private SalonEntities db = new SalonEntities();
 
@@ -25,7 +25,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderID = c.GenderID,
+                    GenderId = c.GenderID,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
@@ -40,9 +40,6 @@ namespace Salon.Controllers
 
         public ActionResult CustomerOverview(string searchstring = null)
         {
-            var i = db.AnonymizeCustomerByDays();
-
-
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
                 from c in cust
@@ -53,7 +50,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderID = c.GenderID,
+                    GenderId = c.GenderID,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
@@ -62,7 +59,7 @@ namespace Salon.Controllers
                 }
                 ).ToList();
 
-            return PartialView("_CustomerOverview",CustomerViewModels);
+            return PartialView("_CustomerOverview", CustomerViewModels);
         }
 
         public ActionResult Edit(int? id)
@@ -84,15 +81,15 @@ namespace Salon.Controllers
         public ActionResult VisitShort(int? id = null)
         {
             IEnumerable<VisitShortViewModel> Visits = (from v in db.Visits
-                                                  where v.CustomerId == id
-                                                  orderby v.Created
-                                                  select new VisitShortViewModel
-                                                  {
-                                                      visitId = v.VisitId,
-                                                      created = v.Created,
-                                                      customer = v.Customers,
-                                                      stylist = v.AspNetUsers1
-                                                  }).ToList();
+                                                       where v.CustomerId == id
+                                                       orderby v.Created
+                                                       select new VisitShortViewModel
+                                                       {
+                                                           visitId = v.VisitId,
+                                                           created = v.Created,
+                                                           customer = v.Customers,
+                                                           stylist = v.AspNetUsers1
+                                                       }).ToList();
 
             return PartialView("_VisitShort", Visits);
         }

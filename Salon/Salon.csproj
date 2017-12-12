@@ -171,6 +171,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
@@ -211,7 +212,6 @@
     <Compile Include="Models\MetaData\Settings.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <!-- <Compile Include="Models\MetaData\Connections.cs" /> -->
     <Compile Include="Models\MetaData\Connections.cs" />
     <Compile Include="Models\MetaData\VisitTasks.cs" />
     <Compile Include="Models\Pictures.cs">
@@ -367,7 +367,6 @@
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
-    <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>

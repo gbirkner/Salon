@@ -1211,6 +1211,7 @@
             <EntityTypeMapping TypeName="SalonModel.Settings">
               <MappingFragment StoreEntitySet="Settings">
                 <ScalarProperty Name="AnonymizeCustomerByDays" ColumnName="AnonymizeCustomerByDays" />
+                <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />
                 <ScalarProperty Name="SettingID" ColumnName="SettingID" />
                 <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />
               </MappingFragment>
@@ -1218,6 +1219,14 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
           <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="SalonModel.Genders">
+              <MappingFragment StoreEntitySet="Genders">
+                <ScalarProperty Name="GenderTitle" ColumnName="GenderTitle" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Genders">
             <EntityTypeMapping TypeName="SalonModel.Genders">
               <MappingFragment StoreEntitySet="Genders">

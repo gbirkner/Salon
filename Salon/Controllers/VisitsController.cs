@@ -86,7 +86,7 @@ namespace Salon.Controllers
         }
 
         public ActionResult VisitCreate() {
-            Customers customer = db.Customers.Find(1);
+            Models.Customers customer = db.Customers.Find(1);
             AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
       
 
