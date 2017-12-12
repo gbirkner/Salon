@@ -25,7 +25,7 @@ namespace Salon.Models
         public string Country { get; set; }
 
         public bool isActive { get; set; }
-        public int GenderId { get; set; }
+        public int GenderID { get; set; }
 
         public string Description { get; set; }
 
