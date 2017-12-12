@@ -15,14 +15,18 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Settings
+public partial class AspNetUserLogin
 {
 
-    public int SettingID { get; set; }
+    public string LoginProvider { get; set; }
 
-    public short AnonymizeUserByDays { get; set; }
+    public string ProviderKey { get; set; }
 
-    public short AnonymizeCustomerByDays { get; set; }
+    public string UserId { get; set; }
+
+
+
+    public virtual AspNetUsers AspNetUser { get; set; }
 
 }
 

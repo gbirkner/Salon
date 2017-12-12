@@ -57,7 +57,7 @@ public partial class Customers
 
     public System.DateTime Created { get; set; }
 
-    public int Sex { get; set; }
+    public int GenderID { get; set; }
 
 
 
@@ -74,6 +74,8 @@ public partial class Customers
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Visits> Visits { get; set; }
+
+    public virtual Gender Gender { get; set; }
 
 }
 

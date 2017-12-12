@@ -32,6 +32,10 @@ public partial class AspNetUsers
 
         this.AspNetRoles = new HashSet<AspNetRoles>();
 
+        this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
+
+        this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
+
     }
 
 
@@ -59,6 +63,16 @@ public partial class AspNetUsers
 
     public string UserName { get; set; }
 
+    public string firstName { get; set; }
+
+    public string lastName { get; set; }
+
+    public string Class { get; set; }
+
+    public Nullable<System.DateTime> entryDate { get; set; }
+
+    public Nullable<System.DateTime> resignationDate { get; set; }
+
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -80,6 +94,14 @@ public partial class AspNetUsers
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
 
 }
 

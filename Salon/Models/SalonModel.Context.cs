@@ -60,6 +60,16 @@ public partial class SalonEntities : DbContext
 
     public virtual DbSet<VisitTasks> VisitTasks { get; set; }
 
+    public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+
+    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<Gender> Genders { get; set; }
+
+    public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+
     public virtual DbSet<Settings> Settings { get; set; }
 
 }

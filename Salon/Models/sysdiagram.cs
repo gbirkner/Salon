@@ -15,14 +15,18 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Settings
+public partial class sysdiagram
 {
 
-    public int SettingID { get; set; }
+    public string name { get; set; }
 
-    public short AnonymizeUserByDays { get; set; }
+    public int principal_id { get; set; }
 
-    public short AnonymizeCustomerByDays { get; set; }
+    public int diagram_id { get; set; }
+
+    public Nullable<int> version { get; set; }
+
+    public byte[] definition { get; set; }
 
 }
 

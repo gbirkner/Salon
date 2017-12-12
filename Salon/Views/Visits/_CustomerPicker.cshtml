@@ -35,9 +35,9 @@
                 <div>
                     <hr />
                     <h4>Bestehenden Kunden ausw&auml;len:</h4>
-                    <ul id="customerSelectModalCustomerList" class="list-group">
+                    <div id="customerSelectModalCustomerList" class="list-group">
                         @foreach(var c in Model) {
-                            <li class="list-group-item customerPickerEntry">
+                            <a class="list-group-item customerPickerEntry">
                                 <font class="customerPickerId" style="display: none;">
                                     @c.customerId
                                 </font>
@@ -47,16 +47,12 @@
                                 <font class="customerPickerLName">
                                     @c.lName
                                 </font>
-                            </li>
+                            </a>
                         }
-                    </ul>
-
-                    <button type="button" class="btn btn-success" id="btn_customerPickerSelect"></button>
+                    </div>
 
                     <div id="customerPickerSelected" style="display: none;">
                         <font id="customerPickerSelectedId"></font>
-                        <font id="customerPickerSelectedFName"></font>
-                        <font id="customerPickerSelectedLName"></font>
                     </div>
                 </div>
             </div>
@@ -64,15 +60,16 @@
     </div>
 </div>
 
+<style>
+    .customerPickerEntry{
+        cursor: pointer;
+    }
+
+</style>
+
 @section scripts{
     <script type="text/javascript">
-        $(function () {
-            $(".customerPickerEntry").each(function (e) {
-                $(this).on('click', function (event) {
-
-                });
-            });
-        });
+        
     </script>    
 }
 

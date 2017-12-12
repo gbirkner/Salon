@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="830b72f4158948638d9763bd28e29f98" Name="Diagram1" ZoomLevel="101">
+      <Diagram DiagramId="830b72f4158948638d9763bd28e29f98" Name="Diagram1" ZoomLevel="75">
         <EntityTypeShape EntityType="SalonModel.AspNetRoles" Width="1.5" PointX="0.5" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.AspNetUsers" Width="1.5" PointX="0.5" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Cities" Width="1.5" PointX="5.625" PointY="9.875" IsExpanded="true" />
@@ -20,8 +20,8 @@
         <EntityTypeShape EntityType="SalonModel.Visits" Width="1.5" PointX="2.5" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="10.375" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="SalonModel.fkCustomerCreatedBy" ManuallyRouted="true" >
-          <ConnectorPoint PointX="2" PointY="4.9378056243540662" />
-          <ConnectorPoint PointX="7.875" PointY="5.2238336673282477" />
+          <ConnectorPoint PointX="2" PointY="5.1161916912508065" />
+          <ConnectorPoint PointX="7.875" PointY="5.2292425267318494" />
         </AssociationConnector>
         <AssociationConnector Association="SalonModel.fkCustomerModifiedBy" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.fkVisitCreatedBy" ManuallyRouted="false" />
@@ -31,8 +31,8 @@
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_Customers_CustomerId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_Visits_dbo_Customers_CustomerId" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7.875" PointY="4.3194487421875" />
-          <ConnectorPoint PointX="2.84375" PointY="4.3194487421875" />
+          <ConnectorPoint PointX="7.875" PointY="4.5590675055534247" />
+          <ConnectorPoint PointX="2.84375" PointY="4.5590675055534247" />
           <ConnectorPoint PointX="2.84375" PointY="3.951396484375" />
         </AssociationConnector>
         <AssociationConnector Association="SalonModel.FK_dbo_Pictures_dbo_Visits_VisitId" ManuallyRouted="false" />
@@ -43,7 +43,15 @@
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="10.375" PointY="6" />
+        <EntityTypeShape EntityType="SalonModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="SalonModel.AspNetUserClaim" Width="1.5" PointX="3.125" PointY="14.875" />
+        <EntityTypeShape EntityType="SalonModel.AspNetUserLogin" Width="1.5" PointX="3.125" PointY="12.25" />
+        <EntityTypeShape EntityType="SalonModel.Gender" Width="1.5" PointX="8.75" PointY="8.875" />
+        <EntityTypeShape EntityType="SalonModel.sysdiagram" Width="1.5" PointX="10.75" PointY="8.75" />
+        <AssociationConnector Association="SalonModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SalonModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SalonModel.fk_CustomersGenders" />
+        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="10.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

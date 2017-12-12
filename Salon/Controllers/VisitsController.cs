@@ -85,15 +85,37 @@ namespace Salon.Controllers
             return treatments;
         }
 
-        public ActionResult VisitCreate() {
-            Customers customer = db.Customers.Find(1);
+        public ActionResult VisitCreate(int? id) {
+            Customers customer = null;
             AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
-      
+            Visits visit;
+            int cusId = 20;
+            if (Request["cusId"] != null) {
+                cusId = Int32.Parse(Request["cusId"]);
+                customer = db.Customers.Find(cusId);
 
+            } else {
+                customer = db.Customers.Find(20);
+            }
+
+            if (id == null) {
+                visit = new Visits();
+                visit.Created = DateTime.Now;
+                visit.AspNetUsers1 = stylist;
+                visit.CreatedBy = stylist.Id;
+                visit.Customers = customer;
+                visit.CustomerId = cusId;
+                db.Visits.Add(visit);
+
+            }else {
+                visit = db.Visits.Find(id);
+            }
+
+            
             VisitCreateViewModel model = new VisitCreateViewModel();
-            model.created = new DateTime();
-            model.customer = customer;
-            model.stylist = stylist;
+            model.created = visit.Created;
+            model.customer = visit.Customers;
+            model.stylist = visit.AspNetUsers1;
             model.availableTreatments = db.Treatments.ToList();
             model.selectedTreatments = new List<Treatments>();
             return View(model);
@@ -109,6 +131,11 @@ namespace Salon.Controllers
                                                       customerId = c.CustomerId
                                                   }).ToList();
             return PartialView(picker);
+        }
+
+        public ActionResult _TreatmentForm(int? id) {
+            Treatments model = db.Treatments.Find(id);
+            return View(model);
         }
 
         // GET: Visits/Details/5

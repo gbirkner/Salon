@@ -7,67 +7,204 @@
 <h2>Besuch</h2>
 
 <div class="row">
-    <div class="col-sm-6" id="customerContainer">
-        <div class="row">
-            <font class="col-sm-6">Vorname</font>
-            <font class="col-sm-6">Nachname</font>
+    
+    <div class="col-sm-4">
+        <div id="customerContainer">
+            @if (Model.customer != null) {
+                <div class="row">
+                    <h3 class="col-sm-6">
+                        @Model.customer.FName
+                    </h3>
+                    <h3 class="col-sm-6">
+                        @Model.customer.LName
+                    </h3>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-warning col-sm-12" id="btn_setCustomer">
+                        Kunden &Auml;ndern
+                    </button>
+                </div>
+            } else {
+                <div class="row">
+                    <div class="alert alert-warning">
+                        Kein Kunde ausgew&auml;hlt!
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-success col-sm-12" id="btn_setCustomer">
+                        Kunden Auswahl
+                    </button>
+                </div>
+            }
         </div>
+        
+
     </div>
 
-    <div class="col-sm-6">
-
+    <div class="col-sm-8">
+        <h2>
+            Datum: 
+            @Model.created
+        </h2>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-6 treatmentContainer">
+    <div class="col-sm-4 treatmentContainer">
         <h3>Behandlungen:</h3>
+
+        <button type="button" class="btn" id="btn_addTreatment">
+            <span class="glyphicon glyphicon-plus-sign"></span> 
+            Behandlung hinzuf&uuml;gen....
+        </button>
         @if (Model.selectedTreatments.Count() < 1) {
             <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> Keine Behandlungen ausgew&auml;hlt</div>
         }
-        <ul class="list-group">
+        <div class="list-group">
 
-        </ul>
+        </div>
+        
+        <button type="button" class="btn btn-success" id="btn_saveVisit">
+            Besuch abschließen
+        </button>
     </div>
 
-    <div class="col-sm-6 addTreatmentsContainer">
-        <h3>Behandlung hinzuf&uuml;gen:</h3>
-        <ul class="list-group">
-            @foreach (var t in Model.availableTreatments) {
-                <li class="list-group-item">
-                    @t.Title
-                </li>
-            }
-        </ul>
+    <div class="col-sm-8 addTreatmentsContainer">
         
     </div>
 </div>
 
-@Html.ActionLink("n/A", "_CustomerPicker", new { @class = "hidden" }, new { id = "lnk_customerPicker"})
+<div class="modal fade" role="dialog" id="addTreatmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Behandlung ausw&auml;hlen</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach (var t in Model.availableTreatments) {
+                        <a class="list-group-item addTreatmentEntry">
+                            @t.Title
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<a id="lnk_customerPicker" style="display: none;" href="@Url.Action("_CustomerPicker", "Visits")">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+</a>
+
 <div id="customerPickerContainer">
 
 </div>
 
-@section scripts{
-    <script type="text/javascript">
+@section scripts{  
+        <script>
+            $("#customerContainer").on("click", function (e) {
+                $("#customerPicker").modal();
+            });
 
-        $(function () {
-            $.get($("#lnk_customerPicker").prop('href'), function (response) {
-                $('#customerPickerContainer').html(response);
-
-                $("#btn_customerPickerSelect").on('click', function (e) {
-
+            $(".addTreatmentEntry").each(function (e) {
+                $(this).on('click', function (event) {
+                    //TODO load according treatment view
                 });
             });
 
+            $(function () {
 
-            
+                $("#btn_addTreatment").on('click', function (e) {
+                    $("#addTreatmentModal").modal();
+                });
+
+                /**
+                 * Load customer picker partial view
+                 */
+                $.get($("#lnk_customerPicker").prop('href'), function (response) {
+                    $('#customerPickerContainer').html(response);
+
+                    //$("#customerPicker").modal();
+
+                    $(".customerPickerEntry").each(function (e) {
+                        $(this).on('click', function (event) {
+                            var id = $(this).find(".customerPickerId").html();
+                            id = id.trim();
+                            var tst = window.location + "";
+                            $.ajax({
+                                type: "POST",
+                                url: tst,
+                                data: {
+                                    cusId: id
+                                },
+                                success: function () {
+                                    location.reload();
+                                }
+                            });
+                            /*
+                            var arr = url.split("/");
+                            if (arr[arr.length - 1] == "VisitCreate") {
+                                url += "/" + id;
+                            } else {
+                                url = arr[0] + "/" + arr[1] + "/" + arr[2] + "/" + arr[3] + "/" + arr[4] + "/" + id;
+                            }
+                            window.location = url;*/
+                        });
+                    });
+
+                    $("#inp_fName").on("input", function (e) {
+                        filterList();
+                    });
+                    $("#inp_lName").on("input", function (e) {
+                        filterList();
+                    });
+
+                    function filterList() {
+                        var fNameFilter = $("#inp_fName").val().toUpperCase();
+                        var lNameFilter = $("#inp_lName").val().toUpperCase();
+                        var list = $("#customerSelectModalCustomerList");
+
+                        list.find(".customerPickerEntry").each(function (e) {
+                            var fOk = false;
+                            var lOk = false;
+                            if ($(this).find(".customerPickerFName").html().toUpperCase().indexOf(fNameFilter) > -1) {
+                                fOk = true;
+                            }
+                            if ($(this).find(".customerPickerLName").html().toUpperCase().indexOf(lNameFilter) > -1) {
+                                lOk = true;
+                            }
+
+                            if ((lNameFilter.length < 1 || lOk) && (fNameFilter.length < 1 || fOk)) {
+                                $(this).css("display", "");
+                            } else {
+                                $(this).css("display", "none");
+                            }
+
+                        });
+                    }
+
+                    $("#btn_setCustomer").on('click', function (e) {
+                        $("#customerPicker").modal();
+                    });
+                });
         });
 
+        </script>
 
-        $("#customerContainer").on("click", function (e) {
-            $("#customerPicker").modal();
-        });
-    </script>    
 }
+
+<style>
+    #customerContainer{
+        border: 2px solid #000000;
+        padding: 25px;
+    }
+</style>
+
+
+
+
 

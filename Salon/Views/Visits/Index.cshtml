@@ -17,41 +17,39 @@
 
 <div class="row">
     <div class="col-sm-7" id="visitTableContainer">
-        <div id="filterContainer">
-            <div class="row">
-                <div class="col-sm-3">
-                    <label for="inp_filterDate">
-                        @Html.DisplayNameFor(x => x.created)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                    <label for="inp_filterCustomer">
-                        @Html.DisplayNameFor(x => x.customer)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                    <label for="inp_filterStylist">
-                        @Html.DisplayNameFor(x => x.stylist)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="inp_filterDate">
+                    @Html.DisplayNameFor(x => x.created)
+                </label>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterDate" class="form-control" on />
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterCustomer" class="form-control" />
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterStylist" class="form-control" />
-                </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-primary" id="btn_filter">
-                        <span class="glyphicon glyphicon-search"></span> Suche
-                    </button>
-                </div>
+            <div class="col-sm-3">
+                <label for="inp_filterCustomer">
+                    @Html.DisplayNameFor(x => x.customer)
+                </label>
+            </div>
+            <div class="col-sm-3">
+                <label for="inp_filterStylist">
+                    @Html.DisplayNameFor(x => x.stylist)
+                </label>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterDate" class="form-control" on />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterCustomer" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterStylist" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-primary" id="btn_filter">
+                    <span class="glyphicon glyphicon-search"></span> Suche
+                </button>
             </div>
         </div>
             
@@ -109,8 +107,10 @@
             </li>
         </ul> 
     </div>
-    <div class="col-sm-5" id="VisitTableContainer">
+    <div class="col-sm-5">
+        <div id="VisitTableContainer">
 
+        </div>
     </div>
 </div>
 
@@ -140,6 +140,8 @@
                 e.preventDefault();
             });
         });
+
+        
     });
 
     // ====================================== EVENT LISTENERS ======================= //
