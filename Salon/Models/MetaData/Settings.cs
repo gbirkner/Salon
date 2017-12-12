@@ -10,13 +10,13 @@ namespace Salon.Models
     public class SettingsMetaData
     {
         [Key, Display(Name ="Einstellungsname")]
-        public string SettingID { get; set; }
+        public int SettingID { get; set; }
 
         [Display(Name = "Einstellungswert")]
-        public string SettingValue { get; set; }
+        public short AnonymizeUserByDays { get; set; }
 
         [Display(Name = "Beschreibung"), DataType(DataType.MultilineText)]
-        public string SettingDescription { get; set; }
+        public short AnonymizeCustomerByDays { get; set; }
     }
 
     [MetadataType(typeof(SettingsMetaData))]

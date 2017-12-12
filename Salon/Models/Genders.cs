@@ -15,14 +15,27 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Settings
+public partial class Genders
 {
 
-    public int SettingID { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public Genders()
+    {
 
-    public short AnonymizeUserByDays { get; set; }
+        this.Customers = new HashSet<Customers>();
 
-    public short AnonymizeCustomerByDays { get; set; }
+    }
+
+
+    public int GenderID { get; set; }
+
+    public string GenderTitle { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Customers> Customers { get; set; }
 
 }
 

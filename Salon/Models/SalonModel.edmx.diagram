@@ -20,8 +20,8 @@
         <EntityTypeShape EntityType="SalonModel.Visits" Width="1.5" PointX="2.5" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="10.375" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="SalonModel.fkCustomerCreatedBy" ManuallyRouted="true" >
-          <ConnectorPoint PointX="2" PointY="4.9378056243540662" />
-          <ConnectorPoint PointX="7.875" PointY="5.2238336673282477" />
+          <ConnectorPoint PointX="2" PointY="5.4490326165983278" />
+          <ConnectorPoint PointX="7.875" PointY="5.3272447283611131" />
         </AssociationConnector>
         <AssociationConnector Association="SalonModel.fkCustomerModifiedBy" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.fkVisitCreatedBy" ManuallyRouted="false" />
@@ -31,8 +31,8 @@
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_Customers_CustomerId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_Visits_dbo_Customers_CustomerId" ManuallyRouted="true" >
-          <ConnectorPoint PointX="7.875" PointY="4.3194487421875" />
-          <ConnectorPoint PointX="2.84375" PointY="4.3194487421875" />
+          <ConnectorPoint PointX="7.875" PointY="4.6080686063680556" />
+          <ConnectorPoint PointX="2.84375" PointY="4.6080686063680556" />
           <ConnectorPoint PointX="2.84375" PointY="3.951396484375" />
         </AssociationConnector>
         <AssociationConnector Association="SalonModel.FK_dbo_Pictures_dbo_Visits_VisitId" ManuallyRouted="false" />
@@ -43,7 +43,9 @@
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="10.375" PointY="6" />
+        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="11.5" PointY="6.625" />
+        <EntityTypeShape EntityType="SalonModel.Genders" Width="1.5" PointX="8.375" PointY="8.875" />
+        <AssociationConnector Association="SalonModel.fk_CustomersGenders" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
