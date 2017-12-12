@@ -25,7 +25,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderId = c.GenderID,
+                    GenderID = c.GenderID,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
@@ -40,6 +40,9 @@ namespace Salon.Controllers
 
         public ActionResult CustomerOverview(string searchstring = null)
         {
+            var i = db.AnonymizeCustomerByDays();
+
+
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
                 from c in cust
@@ -50,7 +53,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderId = c.GenderID,
+                    GenderID = c.GenderID,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
