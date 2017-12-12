@@ -192,9 +192,9 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-<!--     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" /> -->
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -351,12 +351,12 @@
     <Content Include="Views\Visits\Index.cshtml" />
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
-    <Content Include="Views\TreatmentStepsVMs\*.cshtml" />
-
+    <Content Include="Views\TreatmentStepsVMs\Index.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentStepOptions.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentSteps.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
-
     <Content Include="Views\Settings\Create.cshtml" />
     <Content Include="Views\Settings\Delete.cshtml" />
     <Content Include="Views\Settings\Details.cshtml" />
@@ -364,6 +364,7 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\CreatEditTreatments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

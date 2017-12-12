@@ -33,7 +33,7 @@ textarea {
 
 #treatments .inline-text{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 

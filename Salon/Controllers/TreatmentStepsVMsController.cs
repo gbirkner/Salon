@@ -58,5 +58,85 @@ namespace Salon.Controllers
                                                    }).ToList();
             return PartialView("_TreatmentStepOptions", TreatmentStepOptions);
         }
+
+        public ActionResult CreateTreatment()
+        {
+            return View("CreateEditTreatments", new Treatments());
+        }
+        public ActionResult EditTreatment(int id)
+        {
+            return View("CreateEditTreatments", db.Treatments.Find(id));
+        }
+
+        // Submit and add or update database
+        public ActionResult CreatEditTreatments()
+        {
+            return View(db.Treatments.ToList());
+        }
+
+
+        public ActionResult CreateStep()
+        {
+            return View("CreateEditTreatments", new Steps());
+        }
+        public ActionResult EditStep(int id)
+        {
+            return View("CreateEditTreatments", db.Steps.Find(id));
+        }
+
+        // Submit and add or update database
+        [HttpPost]
+        public ActionResult CreateEditStep(Steps model)
+        {
+            if (ModelState.IsValid)
+            {
+                // No id so we add it to database
+                if (model.StepId <= 0)
+                {
+                    db.Steps.Add(model);
+                }
+                // Has Id, therefore it's in database so we update
+                else
+                {
+                    db.Entry(model).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+                return RedirectToAction("CreateEditTreatments");
+            }
+
+            return View(model);
+        }
+
+        public ActionResult CreateOption()
+        {
+            return View("CreateEditTreatments", new StepOptions());
+        }
+        public ActionResult EditOption(int id)
+        {
+            return View("CreateEditTreatments", db.Steps.Find(id));
+        }
+
+        // Submit and add or update database
+        [HttpPost]
+        public ActionResult CreateEditOption(StepOptions model)
+        {
+            if (ModelState.IsValid)
+            {
+                // No id so we add it to database
+                if (model.StepId <= 0)
+                {
+                    db.StepOptions.Add(model);
+                }
+                // Has Id, therefore it's in database so we update
+                else
+                {
+                    db.Entry(model).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+                return RedirectToAction("CreateEditTreatments");
+            }
+
+            return View(model);
+        }
     }
 }

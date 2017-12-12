@@ -6,7 +6,6 @@
     <p>@Html.DisplayNameFor(model => model.Title)</p>
     <p>@Html.DisplayNameFor(model => model.Description)</p>
     <p>@Html.DisplayNameFor(model => model.isSensitive)</p>
-    <p>@Html.DisplayNameFor(model => model.isActive)</p>
     <p>@Html.DisplayNameFor(model => model.Duration)</p>
     <p>@Html.DisplayNameFor(model => model.Order)</p>
     <p></p>
@@ -15,21 +14,23 @@
 
 @foreach (var item in Model)
 {
-    <div class="panel">
-        <div class="panel-heading panel-default">
-                <div class="inline-text">
-                    <p>@Html.DisplayFor(modelItem => item.Title)</p>
-                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
-                    <p>@Html.DisplayFor(modelItem => item.isSensitive)</p>
-                    <p>@Html.DisplayFor(modelItem => item.isActive)</p>
-                    <p>@Html.DisplayFor(modelItem => item.Duration)</p>
-                    <p>@Html.DisplayFor(modelItem => item.Order)</p>
-                    <p>@Html.ActionLink("View Options", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + item.StepsId })</p>
-                </div>
-        </div>
-        <div id="collapse-step-@Html.DisplayFor(modelItem => item.StepsId)" class="panel-collapse collapse">
-            <div class="panel-body">
+    if (item.isActive)
+    {
+        <div class="panel">
+            <div class="panel-heading panel-default">
+                    <div class="inline-text">
+                        <p>@Html.DisplayFor(modelItem => item.Title)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                        <p>@Html.DisplayFor(modelItem => item.isSensitive)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Duration)</p>
+                        <p>@Html.DisplayFor(modelItem => item.Order)</p>
+                        <p>@Html.ActionLink("View Options", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + item.StepsId })</p>
+                    </div>
             </div>
-        </div>
-   </div>
+            <div id="collapse-step-@Html.DisplayFor(modelItem => item.StepsId)" class="panel-collapse collapse">
+                <div class="panel-body">
+                </div>
+            </div>
+       </div>
+    }
 }
