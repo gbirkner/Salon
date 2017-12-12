@@ -205,6 +205,9 @@
     </Compile>
     <Compile Include="Models\ViewModels\*.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Genders.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MetaData\Settings.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -363,6 +366,9 @@
     <Content Include="Views\Settings\Details.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
+    <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

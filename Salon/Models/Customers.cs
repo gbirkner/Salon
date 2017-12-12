@@ -35,7 +35,7 @@ namespace Salon.Models
         public System.DateTime Modified { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime Created { get; set; }
-        public int Sex { get; set; }
+        public int GenderID { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
@@ -44,5 +44,6 @@ namespace Salon.Models
         public virtual ICollection<Connections> Connections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Visits> Visits { get; set; }
+        public virtual Genders Genders { get; set; }
     }
 }
