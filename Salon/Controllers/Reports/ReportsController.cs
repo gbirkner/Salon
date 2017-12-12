@@ -109,11 +109,6 @@ namespace Salon.Controllers.Reports
 
         public ActionResult WorkPerStudent()
         {
-            return View();
-        }
-
-        public ActionResult WorkPerStudentPartial()
-        {
             var visits = db.Visits;
             IEnumerable<WorkPerStudentViewModel> WorkPerStudent =
                 (from v in visits
@@ -127,7 +122,7 @@ namespace Salon.Controllers.Reports
                  }
                  );
 
-            return PartialView(WorkPerStudent.ToList());
+            return View(WorkPerStudent.ToList());
         }
     }
 }

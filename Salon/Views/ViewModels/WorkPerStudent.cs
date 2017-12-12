@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Salon.Views.ViewModels
@@ -19,5 +20,11 @@ namespace Salon.Views.ViewModels
 
         [Display(Name = "Datum")]
         public DateTime Date { get; set; }
+    }
+
+
+    public class ClassList
+    {
+        public string Class { get; set; }
     }
 }

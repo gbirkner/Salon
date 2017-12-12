@@ -330,7 +330,6 @@
     <Content Include="Views\Chart\BarChart.cshtml" />
     <Content Include="Views\Reports\CustomerStatistics.cshtml" />
     <Content Include="Views\Reports\WorkPerStudent.cshtml" />
-    <Content Include="Views\ViewModels\WorkPerStudentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
