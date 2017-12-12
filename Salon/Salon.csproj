@@ -176,7 +176,6 @@
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
