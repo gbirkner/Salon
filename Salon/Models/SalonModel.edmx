@@ -94,7 +94,7 @@
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="Created" Type="datetime" Nullable="false" />
-          <Property Name="Sex" Type="int" Nullable="false" />
+          <Property Name="GenderID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -374,6 +374,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetWorkPerClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="class" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
@@ -553,7 +557,7 @@
           <NavigationProperty Name="Cities" Relationship="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" FromRole="Customers" ToRole="Cities" />
           <NavigationProperty Name="Connections" Relationship="Self.FK_dbo_Connections_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Connections" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_Visits_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Visits" />
-          <Property Name="Sex" Type="Int32" Nullable="false" />
+          <Property Name="GenderID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -947,7 +951,21 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
+          <Parameter Name="class" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
         </EntityContainer>
+        <ComplexType Name="GetWorkPerClass">
+          <Property Type="String" Name="StudentName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetClasses">
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1025,7 +1043,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="SalonModel.Customers">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -1131,6 +1149,24 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Treatement" ColumnName="Treatement" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetClasses">
+                <ScalarProperty Name="Class" ColumnName="Class" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

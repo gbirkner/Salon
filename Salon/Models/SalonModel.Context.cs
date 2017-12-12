@@ -12,6 +12,8 @@ namespace Salon.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class SalonEntities : DbContext
     {
@@ -39,5 +41,19 @@ namespace Salon.Models
         public virtual DbSet<TreatmentSteps> TreatmentSteps { get; set; }
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
+    
+        public virtual ObjectResult<GetWorkPerClass> GetWorkPerClass(string @class)
+        {
+            var classParameter = @class != null ?
+                new ObjectParameter("class", @class) :
+                new ObjectParameter("class", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass>("GetWorkPerClass", classParameter);
+        }
+    
+        public virtual ObjectResult<GetClasses> GetClasses()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClasses>("GetClasses");
+        }
     }
 }

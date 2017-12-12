@@ -106,23 +106,60 @@ namespace Salon.Controllers.Reports
             return View(customerStats);
         }
 
-
-        public ActionResult WorkPerStudent()
+        /// <summary>
+        /// Get: WorkPerClassViewModel
+        /// </summary>
+        /// <param name="cl">class</param>
+        /// <returns></returns>
+        public ActionResult WorkPerClass(string cl = "")
         {
             var visits = db.Visits;
-            IEnumerable<WorkPerStudentViewModel> WorkPerStudent =
-                (from v in visits
-                 select new WorkPerStudentViewModel
-                 {
-                     StudentName = "Matthias Feurstein",
-                     Class = "4aINF",
-                     TeacherName = "Gert Birkner",
-                     Treatment = "Nix",
-                     Date = DateTime.Now
-                 }
+            //IEnumerable<WorkPerStudentViewModel> WorkPerStudent =
+            //    (from v in visits
+            //     select new WorkPerStudentViewModel
+            //     {
+            //         StudentName = "Matthias Feurstein",
+            //         Class = "4aINF",
+            //         TeacherName = "Gert Birkner",
+            //         Treatment = "Nix",
+            //         Date = DateTime.Now
+            //     }
+            //     );
+
+            if (cl != "")
+            {
+                IEnumerable<WorkPerClassViewModel> WorkPerClass =
+                    db.GetWorkPerClass(cl)
+                        .Select(c => new WorkPerClassViewModel()
+                        {
+                            Class = c.Class,
+                            StudentName = c.StudentName,
+                            TeacherName = c.TeacherName,
+                            Treatment = c.Treatement,
+                            Date = c.Date
+                        }).ToList();
+
+                return View("~/Views/Reports/WorkPerClassResponse.cshtml", WorkPerClass.ToList());
+            }
+            else
+            {
+                IEnumerable<WorkPerClassViewModel> empty =
+                    (
+                    from cu in db.Customers
+                    orderby cu.LName
+                    select new WorkPerClassViewModel
+                    {
+                        Class = "",
+                        StudentName = "",
+                        TeacherName = "",
+                        Treatment = "",
+                        Date = DateTime.Now
+                    }
                  );
 
-            return View(WorkPerStudent.ToList());
+                return View(empty.ToList());
+            }
+                
         }
     }
 }
