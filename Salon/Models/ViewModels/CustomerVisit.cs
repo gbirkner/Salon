@@ -11,6 +11,7 @@ namespace Salon.Models
         [Key]
         public string CountryId { get; set; }
 
+        [Display(Name = "PLZ")]
         public string PostalCode { get; set; }
 
         public int CustomerId { get; set; }
@@ -24,6 +25,7 @@ namespace Salon.Models
         public string Country { get; set; }
 
         public bool isActive { get; set; }
+        public int Sex { get; set; }
 
         public string Description { get; set; }
 
@@ -64,5 +66,27 @@ namespace Salon.Models
         public string CreatedBy { get; set; }
 
         public System.DateTime Created { get; set; }
+    }
+
+    public class ConnectionViewModel
+    {
+        public int ConnectionId { get; set; }
+
+        public int ConnectionTypeId { get; set; }
+
+        public int CustomerId { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Value { get; set; }
+        
+
+
+
+        /*public virtual ConnectionTypes ConnectionTypes { get; set; }
+
+        public virtual Customers Customers { get; set; }*/
     }
 }

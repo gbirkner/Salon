@@ -24,11 +24,12 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    CountryId = c.CountryId,
+                    Sex = c.Sex,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
-                    Street = c.Street
+                    Street = c.Street,
+                    Description = c.Description
                 }
                 ).ToList();
 
@@ -36,38 +37,63 @@ namespace Salon.Controllers
         }
 
 
-
-        public ActionResult CustomerVisitShort(int? id = null)
+        public ActionResult CustomerOverview(string searchstring = null)
         {
-            IEnumerable<VisitViewModel> Visits = (from v in db.Visits
-                                                  where v.CustomerId == id
-                                                  orderby v.Created
-                                                  select new VisitViewModel
-                                                  {
-                                                      VisitId = v.VisitId,
-                                                      Created = v.Created,
-                                                      Duration = v.Duration
-                                                  }).ToList();
-
-            return PartialView("_CustomerVisitShort", Visits);
-        }
-
-
-        public ActionResult CustomerMasterdata(int? id = null)
-        {
+            var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
-                from c in db.Customers
-                where c.CustomerId == id
+                from c in cust
+                where c.FName.Contains(searchstring) || c.LName.Contains(searchstring) || c.PostalCode.Contains(searchstring) || c.Cities.Title.Contains(searchstring) || c.Cities.Countries.Title.Contains(searchstring) || c.Street.Contains(searchstring) || c.Description.Contains(searchstring)
                 orderby c.LName
                 select new CustomerViewModel
                 {
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
+                    Sex = c.Sex,
+                    PostalCode = c.PostalCode,
+                    CityName = c.Cities.Title,
+                    Country = c.Cities.Countries.Title,
+                    Street = c.Street,
+                    Description = c.Description
                 }
                 ).ToList();
 
-            return View(CustomerViewModels);
+            return PartialView("_CustomerOverview",CustomerViewModels);
+        }
+
+
+
+        public ActionResult VisitShort(int? id = null)
+        {
+            IEnumerable<VisitShortViewModel> Visits = (from v in db.Visits
+                                                  where v.CustomerId == id
+                                                  orderby v.Created
+                                                  select new VisitShortViewModel
+                                                  {
+                                                      visitId = v.VisitId,
+                                                      created = v.Created,
+                                                      customer = v.Customers,
+                                                      stylist = v.AspNetUsers1
+                                                  }).ToList();
+
+            return PartialView("_VisitShort", Visits);
+        }
+
+        public ActionResult CustomerConnection(int? id = null)
+        {
+            var con = db.Connections.Include(c => c.ConnectionTypes);
+            IEnumerable<ConnectionViewModel> ConViewModels = (
+                from c in con
+                where c.CustomerId == id
+                orderby c.Title
+                select new ConnectionViewModel
+                {
+                    Title = c.ConnectionTypes.Title,
+                    Value = c.Title
+                }
+                ).ToList();
+
+            return PartialView("_CustomerConnection", ConViewModels);
         }
 
         protected override void Dispose(bool disposing)
