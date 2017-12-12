@@ -3,57 +3,59 @@
 @{
     ViewBag.Title = "Index";
 }
+<div id="treatments">
+    <h2>Index</h2>
+    <div class="inline-text title">
+        <p>@Html.DisplayNameFor(model => model.Title)</p>
+        <p>@Html.DisplayNameFor(model => model.Description)</p>
+        <p>@Html.DisplayNameFor(model => model.isActive)</p>
+        <p></p>
+    </div>
+    <div class="panel-group" id="accordion">
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<div class="panel-group" id="accordion">
-
-    @foreach (var item in Model)
-            {
-        <div class="panel">
-            <div class="panel-heading panel-default">
-                <table class="table">
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => model.Title)</th>
-                        <th>@Html.DisplayNameFor(model => model.Description)</th>
-                        <th>@Html.DisplayNameFor(model => model.isActive)</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td>@Html.DisplayFor(modelItem => item.isActive)</td>
-                        <td>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId })</td>
-                    </tr>
-                </table>
-            </div>
-            <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">
-                <div class="panel-body">
+        @foreach (var item in Model)
+        {
+            <div class="panel">
+                <div class="panel-heading panel-default">
+                        <div class="inline-text">
+                            <p>@Html.DisplayFor(modelItem => item.Title)</p>
+                            <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                            <p>@Html.DisplayFor(modelItem => item.isActive)</p>
+                            <p>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId })</p>
+                        </div>
+                </div>
+                <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">
+                    <div class="panel-body">
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 
+    </div>
 </div>
+
 @section scripts
 {
     <script>
         $(function () {
             $('.steps-viewdetail').on('click', function (e) {
                 $that = $(this);
-                console.log($(this).closest('.panel').find('.collapse'));
                 
                 $.get($that.prop('href'), function (response) {
                     $that.closest('.panel').find('.panel-body').html(response)
                 });
                 e.preventDefault();
+            });
+
+
+            $('body').on('click', '.options-viewdetail', function (e) {
+                e.preventDefault();
+                console.log('test')
+                $that = $(this);
+
+                $.get($that.prop('href'), function (response) {
+                    $that.closest('.panel').find('.panel-body').html(response)
+                });
             });
         });
     </script>

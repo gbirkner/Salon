@@ -1,53 +1,35 @@
 ﻿@model IEnumerable<Salon.Models.StepsVM>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isSensitive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duration)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Order)
-        </th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isSensitive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Order)
-        </td>
-        <td>
-        <td>@Html.ActionLink("View Steps", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "steps-viewdetail", data_toggle = "collapse", data_target = "#collapse-" + item.StepsId })</td>
-    </tr>
+<div class="inline-text title">
+
+    <p>@Html.DisplayNameFor(model => model.Title)</p>
+    <p>@Html.DisplayNameFor(model => model.Description)</p>
+    <p>@Html.DisplayNameFor(model => model.isSensitive)</p>
+    <p>@Html.DisplayNameFor(model => model.isActive)</p>
+    <p>@Html.DisplayNameFor(model => model.Duration)</p>
+    <p>@Html.DisplayNameFor(model => model.Order)</p>
+    <p></p>
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="panel">
+        <div class="panel-heading panel-default">
+                <div class="inline-text">
+                    <p>@Html.DisplayFor(modelItem => item.Title)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                    <p>@Html.DisplayFor(modelItem => item.isSensitive)</p>
+                    <p>@Html.DisplayFor(modelItem => item.isActive)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Duration)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Order)</p>
+                    <p>@Html.ActionLink("View Options", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + item.StepsId })</p>
+                </div>
+        </div>
+        <div id="collapse-step-@Html.DisplayFor(modelItem => item.StepsId)" class="panel-collapse collapse">
+            <div class="panel-body">
+            </div>
+        </div>
+   </div>
 }
-
-</table>
