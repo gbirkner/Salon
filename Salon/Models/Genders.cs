@@ -12,15 +12,18 @@ namespace Salon.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Connections
+    public partial class Genders
     {
-        public int ConnectionId { get; set; }
-        public int ConnectionTypeId { get; set; }
-        public int CustomerId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Genders()
+        {
+            this.Customers = new HashSet<Customers>();
+        }
     
-        public virtual ConnectionTypes ConnectionTypes { get; set; }
-        public virtual Customers Customers { get; set; }
+        public int GenderID { get; set; }
+        public string GenderTitle { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Customers> Customers { get; set; }
     }
 }

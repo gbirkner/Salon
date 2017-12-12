@@ -42,6 +42,7 @@ namespace Salon.Models
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+        public virtual DbSet<Genders> Genders { get; set; }
     
         public virtual int AnonymizeCustomerByID(Nullable<int> customerID)
         {
