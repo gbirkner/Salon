@@ -217,10 +217,6 @@
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-
-    <Compile Include="Models\Settings.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SalonModel.Context.cs">
       <AutoGen>True</AutoGen>
