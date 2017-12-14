@@ -252,6 +252,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\customerstat.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -328,6 +329,7 @@
     <Content Include="Views\Reports\Customers.cshtml" />
     <Content Include="Views\Chart\BarChart.cshtml" />
     <Content Include="Views\Reports\CustomerStatistics.cshtml" />
+    <Content Include="Views\Reports\CustomerConnections.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,38 +4,44 @@
     ViewBag.Title = "CustomersStatistics";
 }
 
-<style>
-    #searchbar {
-    background-image: url('../../Images/searchicon.png');
-    background-position: 10px 12px; /* Position the search icon */
-    background-repeat: no-repeat; /* Do not repeat the icon image */
-    width: 100%; /* Full-width */
-    max-width: none;
-    font-size: 16px; /* Increase font-size */
-    padding: 12px 20px 12px 40px; /* Add some padding */
-    border: 1px solid #ddd; /* Add a grey border */
-    margin-bottom: 12px; /* Add some space below the input */
-}
-</style>
+<link rel="stylesheet" href="~/Content/customerstat.css"/>
 
-<h2>Kunden-Statistiken</h2>
+<h2>Kunden-Auswertung</h2>
 
 <input type="text" id="searchbar" onkeyup="searchTable()" placeholder="Beginne zu tippen...">
 <table class="table" id="searchtable">
     <tr>
         <th>Name</th>
-        <th>Stadt</th>
+        <th>Ort</th>
+        <th>Kontakt</th>        
     </tr>
 
     @foreach (var item in Model.Customers)
     {
         <tr>
             <td>@item.LName @item.FName</td>
-            <td>Innsbruck</td>
+            <td>@Model.GetCity(item.PostalCode, item.CountryId)</td>
+            <td><button id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
         </tr>
     }
 </table>
 
+<!-- The Modal -->
+<div id="modalBox" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn">&times;</span>
+            <h2>Kontakt-Informationen</h2>
+        </div>
+        <div class="modal-body">
+            <p>Telefon: 12344567</p>
+            <p>Email: example@example.com</p>
+        </div>        
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
     function searchTable() {
         // Declare variables
@@ -55,6 +61,36 @@
                     tr[i].style.display = "none";
                 }
             }
+        }
+    }
+
+    var modal = document.getElementById("modalBox");
+
+    /* customer contact button click */
+    $(".contact-btn").click(function () {
+        var custID = $(this).attr("id");
+        $.ajax({
+            type: 'get',
+            url: '/Reports/CustomerStatistics?cust=' + custID,
+            success: function (result) {                
+                $(".modal-body").html(result);
+                $("#modalBox").show();
+            },
+            failure: function (error) {
+                alert("die Kontaktinformationen konnten nicht geladen werden");
+            }
+        });        
+    });
+    
+    /* MODAL functions */
+    /* close modal onclick */
+    $(".close").click(function () {
+        $("#modalBox").hide();
+    });
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
     }
 </script>

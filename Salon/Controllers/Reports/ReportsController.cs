@@ -99,11 +99,19 @@ namespace Salon.Controllers.Reports
             base.Dispose(disposing);
         }
 
-        public ActionResult CustomerStatistics()
+        public ActionResult CustomerStatistics(string cust = null)
         {
-            var customerStats = new CustomerStatistics(db.Customers);
+            var customerStats = new CustomerStatistics(db.Customers, db.Visits, db.Treatments, db.Cities, db.Countries, db.Connections, db.ConnectionTypes);
 
-            return View(customerStats);
+            if (cust != null)
+            {
+                var connectionData = customerStats.GetConnections(Convert.ToInt32(cust));
+                return View("~/Views/Reports/CustomerConnections.cshtml", connectionData);
+            }
+            else
+            {                
+                return View(customerStats);
+            }            
         }
     }
 }

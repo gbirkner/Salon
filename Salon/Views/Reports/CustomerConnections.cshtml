@@ -1,0 +1,22 @@
+﻿@model Salon.Models.Statistics.CustomerConnections
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <div>
+        <table class="table" id="ajax-table-response">
+            <tr>
+                <th>Kontakt-Typ</th>
+                <th>Daten</th>
+                <th>Zusatzinformationen</th>
+            </tr>
+            <tr>
+                <td>@Model.ConnectionType</td>
+                <td>@Model.ConnectionValue</td>
+                <td>@Model.ConnectionDescription</td>
+            </tr>            
+        </table>
+    </div>
+</body>
+</html>
