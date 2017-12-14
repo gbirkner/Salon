@@ -365,6 +365,8 @@
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\CreatEditTreatments.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_CreatEditSteps.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

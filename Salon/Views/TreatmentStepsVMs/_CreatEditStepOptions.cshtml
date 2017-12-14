@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Salon.Models.StepOptions>
+
+<div class="inline-text title">
+    <p>@Html.DisplayNameFor(model => model.Position)</p>
+    <p>@Html.DisplayNameFor(model => model.Option)</p>
+    <p>@Html.DisplayNameFor(model => model.Description)</p>
+    <p>@Html.DisplayNameFor(model => model.isActive)</p>
+    <p></p>
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="panel">
+        <div class="panel-heading panel-default">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="inline-text">
+                @Html.HiddenFor(modelItem => item.StepOptionId)
+                <div class="form-group">
+                    @Html.EditorFor(modelItem => item.Position, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(modelItem => item.Position, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(modelItem => item.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(modelItem => item.Description, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(modelItem => item.Option, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(modelItem => item.Option, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(modelItem => item.isActive, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(modelItem => item.isActive, "", new { @class = "text-danger" })
+                </div>
+                <div>
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        }
+    </div>
+    </div>
+}
+
+

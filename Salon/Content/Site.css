@@ -55,3 +55,13 @@ textarea {
 #treatments .inline-text.title p{
     font-weight: bold;
 }
+
+#treatments .form-group{
+    margin: 0;
+    width: 25%;
+}
+
+#treatments .form-group input[type="radio"], #treatments .form-group input[type="checkbox"]{
+    margin: 0;
+    box-shadow: none;
+}
