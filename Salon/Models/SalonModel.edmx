@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -36,6 +36,11 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Class" Type="nvarchar" MaxLength="100" />
+          <Property Name="entryDate" Type="datetime" />
+          <Property Name="resignationDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -89,6 +94,7 @@
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="GenderID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -234,20 +240,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Customers_dbo_Cities_CountryId_PostalCode">
-          <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
-          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cities">
-              <PropertyRef Name="CountryId" />
-              <PropertyRef Name="PostalCode" />
-            </Principal>
-            <Dependent Role="Customers">
-              <PropertyRef Name="CountryId" />
-              <PropertyRef Name="PostalCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_Pictures_dbo_Visits_VisitId">
           <End Role="Visits" Type="Self.Visits" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -358,30 +350,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fkCustomerCreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Customers">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fkCustomerModifiedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Customers">
-              <PropertyRef Name="ModifiedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fkVisitCreatedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
@@ -406,6 +374,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetWorkPerClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="class" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
@@ -442,10 +414,6 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Connections" EntitySet="Connections" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" Association="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode">
-            <End Role="Cities" EntitySet="Cities" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_Pictures_dbo_Visits_VisitId" Association="Self.FK_dbo_Pictures_dbo_Visits_VisitId">
             <End Role="Visits" EntitySet="Visits" />
             <End Role="Pictures" EntitySet="Pictures" />
@@ -478,14 +446,6 @@
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
           </AssociationSet>
-          <AssociationSet Name="fkCustomerCreatedBy" Association="Self.fkCustomerCreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="fkCustomerModifiedBy" Association="Self.fkCustomerModifiedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
           <AssociationSet Name="fkVisitCreatedBy" Association="Self.fkVisitCreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
@@ -495,8 +455,7 @@
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -529,6 +488,11 @@
           <NavigationProperty Name="Visits" Relationship="Self.fkVisitCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="Visits1" Relationship="Self.fkVisitModifiedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="entryDate" Type="DateTime" Precision="3" />
+          <Property Name="resignationDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -593,6 +557,7 @@
           <NavigationProperty Name="Cities" Relationship="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" FromRole="Customers" ToRole="Cities" />
           <NavigationProperty Name="Connections" Relationship="Self.FK_dbo_Connections_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Connections" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_Visits_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Visits" />
+          <Property Name="GenderID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -986,7 +951,21 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
+          <Parameter Name="class" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
         </EntityContainer>
+        <ComplexType Name="GetWorkPerClass">
+          <Property Type="String" Name="StudentName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="true" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="GetClasses">
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1004,6 +983,11 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SalonModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
+                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -1059,6 +1043,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="SalonModel.Customers">
               <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -1164,6 +1149,24 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Treatement" ColumnName="Treatement" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetClasses">
+                <ScalarProperty Name="Class" ColumnName="Class" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

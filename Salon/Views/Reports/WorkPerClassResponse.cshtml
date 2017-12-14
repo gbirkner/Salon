@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerClassViewModel>
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <div id="ajaxContent"> 
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StudentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Class)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TeacherName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Treatment)
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StudentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Class)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TeacherName)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Date)*@
+                        @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Treatment)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

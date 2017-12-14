@@ -10,16 +10,9 @@
 namespace Salon.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Pictures
+    public partial class GetClasses
     {
-        public int PictureId { get; set; }
-        public byte[] Photo { get; set; }
-        public bool isSketch { get; set; }
-        public int VisitId { get; set; }
-        public string Description { get; set; }
-    
-        public virtual Visits Visits { get; set; }
+        public string Class { get; set; }
     }
 }

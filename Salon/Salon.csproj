@@ -173,6 +173,12 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\Statistics\ChartController.cs" />
+    <Compile Include="Models\GetClasses.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetWorkPerClass.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Statistics\BarChart.cs" />
     <Compile Include="Models\Statistics\ChartData.cs" />
     <Compile Include="Models\Statistics\CustomerStatistics.cs" />
@@ -248,6 +254,7 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
+    <Compile Include="Views\ViewModels\WorkPerClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -330,6 +337,8 @@
     <Content Include="Views\Chart\BarChart.cshtml" />
     <Content Include="Views\Reports\CustomerStatistics.cshtml" />
     <Content Include="Views\Reports\CustomerConnections.cshtml" />
+    <Content Include="Views\Reports\WorkPerClass.cshtml" />
+    <Content Include="Views\Reports\WorkPerClassResponse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
