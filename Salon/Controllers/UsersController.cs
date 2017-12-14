@@ -110,13 +110,21 @@ namespace Salon.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Id", "Name");
 
             var user = await UserManager.FindByIdAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
+
+            var userRoles = await UserManager.GetRolesAsync(user.Id);
+            ViewBag.RoleList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+            {
+                Selected = userRoles.Contains(x.Name),
+                Text = x.Name,
+                Value = x.Id
+            });
+
             return View(user);
         }
 
@@ -124,7 +132,7 @@ namespace Salon.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserName,Id,HomeTown")] ApplicationUser formuser, string id, string RoleId)
+        public async Task<ActionResult> Edit([Bind(Include = "UserName,Id,firstName,lastName,Class,entryDate,resignationDate,Email")] ApplicationUser formuser, string id, string RoleId)
         {
             if (id == null)
             {
@@ -171,59 +179,5 @@ namespace Salon.Controllers
                 return View();
             }
         }
-
-        ////
-        //// GET: /Users/Delete/5
-        //public async Task<ActionResult> Delete(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    var user = await context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(user);
-        //}
-
-        ////
-        //// POST: /Users/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> DeleteConfirmed(string id)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-
-        //        var user = await context.Users.FindAsync(id);
-        //        var logins = user.Logins;
-        //        foreach (var login in logins)
-        //        {
-        //            context.UserLogins.Remove(login);
-        //        }
-        //        var rolesForUser = await IdentityManager.Roles.GetRolesForUserAsync(id, CancellationToken.None);
-        //        if (rolesForUser.Count() > 0)
-        //        {
-
-        //            foreach (var item in rolesForUser)
-        //            {
-        //                var result = await IdentityManager.Roles.RemoveUserFromRoleAsync(user.Id, item.Id, CancellationToken.None);
-        //            }
-        //        }
-        //        context.Users.Remove(user);
-        //        await context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }
