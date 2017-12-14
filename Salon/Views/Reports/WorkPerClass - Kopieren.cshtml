@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerClassViewModel>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
+
+@{
+    ViewBag.Title = "Work per student";
+}
+
+<h2>Arbeit pro Klasse</h2>
+
+<div style="margin-bottom: 30px;">
+@*    <button onclick="location.href='@Url.Action("Export", "Reports", new { export = "excel" } )'" id="btnExcel" style="width: 150px; display: inline-block; margin: 10px" class="btn btn-default" download>Export Excel</button>*@
+
+    <select class="form-control" style="width: 150px" id="classSelector" onchange="changeClass();">
+        @foreach(var item in Model.First().GetClasses())
+        {
+            <option>@item</option>
+        }
+    </select>    
+</div>
+
+<div id="workTable" style="display: none;">
+    @*@{ Html.RenderAction("WorkPerStudentPartial")}*@
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeacherName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Treatment)
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Class)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeacherName)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Date)*@
+                    @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Treatment)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    function changeClass() {
+
+
+        $.ajax({
+            url: "/reports/workperclass?cl=" + $("#classSelector").val(),
+            type: "get",
+            success: function (result) {
+                $("#workTable").html(result);
+                $("#workTable").show();
+            }
+        });
+    }
+</script>
