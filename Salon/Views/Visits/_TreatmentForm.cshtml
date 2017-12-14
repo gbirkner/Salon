@@ -9,17 +9,19 @@
 
 <div id="treatmentFormContainer">
     @foreach (var tStep in Model.TreatmentSteps) {
-        <div class="row">
+        <div class="form-group">
             <div class="col-sm-3">
                 <label>
                     @tStep.Steps.Title
                 </label>
             </div>
             <div class="col-sm-9">
-                <input type="text" id="inp_step_@tStep.StepId" class="form-control" />
+                <input type="text" name="inp_step_@tStep.TreatmentId _@tStep.StepId" class="form-control" />
             </div>
         </div>
     }
 </div>
+
+<hr />
 
 

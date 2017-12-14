@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
+using System.Collections.Specialized;
 
 namespace Salon.Controllers
 {
@@ -89,36 +90,57 @@ namespace Salon.Controllers
             Customers customer = null;
             AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             Visits visit;
-            int cusId = 20;
-            if (Request["cusId"] != null) {
-                cusId = Int32.Parse(Request["cusId"]);
-                customer = db.Customers.Find(cusId);
 
-            } else {
-                customer = db.Customers.Find(20);
-            }
-
-            if (id == null) {
-                visit = new Visits();
-                visit.Created = DateTime.Now;
-                visit.AspNetUsers1 = stylist;
-                visit.CreatedBy = stylist.Id;
-                visit.Customers = customer;
-                visit.CustomerId = cusId;
-                db.Visits.Add(visit);
-
-            }else {
+            DateTime created = DateTime.Now;
+            if(id != null) {
                 visit = db.Visits.Find(id);
+                created = visit.Created;
+                stylist = visit.AspNetUsers1;
             }
-
             
             VisitCreateViewModel model = new VisitCreateViewModel();
-            model.created = visit.Created;
-            model.customer = visit.Customers;
-            model.stylist = visit.AspNetUsers1;
+            model.created = DateTime.Now;
+            model.customer = customer;
+            model.stylist = stylist;
             model.availableTreatments = db.Treatments.ToList();
             model.selectedTreatments = new List<Treatments>();
             return View(model);
+        }
+
+        public ActionResult SaveVisit() {
+            Visits visit = new Visits();
+            NameValueCollection nvc = Request.Form;
+
+            int cusId;
+            string stylistId;
+
+            if (!string.IsNullOrEmpty(nvc["slc_customerId"]) && Int32.TryParse(nvc["slc_customerId"], out cusId)) {
+                cusId = Int32.Parse(nvc["slc_customerId"]);
+                
+            } else {
+                //TODO ERROR
+                return View();
+            }
+            if (!string.IsNullOrEmpty(nvc["inp_stylistId"])) {
+                stylistId = nvc["inp_stylistId"];
+            }else {
+                //TODO ERROR
+                return View();
+            }
+
+            visit.AspNetUsers1 = db.AspNetUsers.Find(stylistId);
+            visit.Customers = db.Customers.Find(cusId);
+
+            int i = 0;
+            foreach (string key in nvc.AllKeys) {
+                if(i < 2) {
+                    i++;
+                }else {
+                    Console.WriteLine(nvc[key]);
+                }
+            }
+
+            return View();
         }
 
         public ActionResult _CustomerPicker() {
@@ -135,7 +157,7 @@ namespace Salon.Controllers
 
         public ActionResult _TreatmentForm(int? id) {
             Treatments model = db.Treatments.Find(id);
-            return View(model);
+            return PartialView(model);
         }
 
         // GET: Visits/Details/5

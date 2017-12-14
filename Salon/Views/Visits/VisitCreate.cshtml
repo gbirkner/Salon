@@ -6,73 +6,54 @@
 
 <h2>Besuch</h2>
 
-<div class="row">
-    
-    <div class="col-sm-4">
-        <div id="customerContainer">
-            @if (Model.customer != null) {
-                <div class="row">
-                    <h3 class="col-sm-6">
-                        @Model.customer.FName
-                    </h3>
-                    <h3 class="col-sm-6">
-                        @Model.customer.LName
-                    </h3>
+
+<form method="post" action="@Url.Action("SaveVisit", "Visits")" class="form-horizontal">
+    <input type="hidden" id="inp_stylistId" name="inp_stylistId" value="@Model.stylist.Id" />
+    <div class="row">
+
+        <div class="col-sm-4">
+            <div id="customerContainer" class="well">
+                <input type="hidden" id="slc_customerId" name="slc_customerId" />
+                <h4>Kunde:</h4>
+                <div id="slc_customer">
+                    <div class="alert alert-warning">Kein Kunde ausgew&auml;hlt!</div>
                 </div>
-                <div class="row">
-                    <button type="button" class="btn btn-warning col-sm-12" id="btn_setCustomer">
-                        Kunden &Auml;ndern
-                    </button>
-                </div>
-            } else {
-                <div class="row">
-                    <div class="alert alert-warning">
-                        Kein Kunde ausgew&auml;hlt!
-                    </div>
-                </div>
-                <div class="row">
-                    <button type="button" class="btn btn-success col-sm-12" id="btn_setCustomer">
-                        Kunden Auswahl
-                    </button>
-                </div>
-            }
+            </div>
         </div>
-        
 
-    </div>
-
-    <div class="col-sm-8">
-        <h2>
-            Datum: 
-            @Model.created
-        </h2>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-4 treatmentContainer">
-        <h3>Behandlungen:</h3>
-
-        <button type="button" class="btn" id="btn_addTreatment">
-            <span class="glyphicon glyphicon-plus-sign"></span> 
-            Behandlung hinzuf&uuml;gen....
-        </button>
-        @if (Model.selectedTreatments.Count() < 1) {
-            <div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> Keine Behandlungen ausgew&auml;hlt</div>
-        }
-        <div class="list-group">
-
+        <div class="col-sm-8">
+            <h2>
+                Datum:
+                @Model.created
+            </h2>
         </div>
-        
-        <button type="button" class="btn btn-success" id="btn_saveVisit">
-            Besuch abschließen
-        </button>
     </div>
 
-    <div class="col-sm-8 addTreatmentsContainer">
-        
+    <div class="row">
+        <h3 class="col-sm-12">Behandlungen:</h3>
     </div>
-</div>
+    <div class="row">
+        <div class="col-sm-4 treatmentContainer">
+            <button type="button" class="btn btn-primary" id="btn_addTreatment">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Behandlung hinzuf&uuml;gen....
+            </button>
+            <hr />
+            <div class="list-group" id="selectedTreatmentsContainer" data-nextId="0">
+
+            </div>
+
+            <button type="submit" class="btn btn-success" id="btn_saveVisit">
+                <span class="glyphicon glyphicon-floppy-disk"></span> 
+                Besuch abschließen
+            </button>
+        </div>
+
+        <div class="col-sm-8" id="addTreatmentsContainer">
+            <!-- BUILD VISIT FORM -->
+        </div>
+    </div>
+</form>
 
 <div class="modal fade" role="dialog" id="addTreatmentModal">
     <div class="modal-dialog">
@@ -85,6 +66,8 @@
                 <div class="list-group">
                     @foreach (var t in Model.availableTreatments) {
                         <a class="list-group-item addTreatmentEntry">
+                            <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
+                            <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
                             @t.Title
                         </a>
                     }
@@ -93,6 +76,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 
@@ -113,8 +98,54 @@
             $(".addTreatmentEntry").each(function (e) {
                 $(this).on('click', function (event) {
                     //TODO load according treatment view
+                    var id = $(this).find(".inp_addTreatmentId").val();
+                    var name = $(this).find(".inp_addTreatmentName").val();
+                    var con = $("#selectedTreatmentsContainer");
+                    var entryId = parseInt(con.data("nextid"));
+                    con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' "+
+                        "onclick=\"switchTreatment('"+entryId+"')\">" + name +
+                        "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
+                        "onclick=\"removeTreatment('" + entryId + "')\">" +
+                        "<span class='glyphicon glyphicon-remove'></span></button></div></a>");
+                    
+
+                    $.ajax({
+                        url: '@Url.Action("_TreatmentForm", "Visits")/' + id
+                    }).done(function (data) {
+                        $("#addTreatmentsContainer").append(
+                            "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
+                        switchTreatment(entryId);
+                    });
+
+                    var tmp = entryId + 1;
+                    con.data("nextid", tmp);
                 });
             });
+
+            function removeTreatment(id) {
+                var item = $("#item_treatment_" + id);
+                var form = $("#form_treatment_" + id);
+                item.remove();
+                form.remove();
+            }
+
+            function switchTreatment(id) {
+                var item = $("#item_treatment_" + id);
+                var form = $("#form_treatment_" + id);
+
+                $(".item_treatment").each(function () {
+                    if ($(this).hasClass("active")) {
+                        $(this).removeClass("active");
+                    }
+                });
+
+                $(".form_treatment").each(function () {
+                    $(this).css("display", "none");
+                });
+
+                item.addClass("active");
+                form.css("display", "");
+            }
 
             $(function () {
 
@@ -134,25 +165,14 @@
                         $(this).on('click', function (event) {
                             var id = $(this).find(".customerPickerId").html();
                             id = id.trim();
-                            var tst = window.location + "";
-                            $.ajax({
-                                type: "POST",
-                                url: tst,
-                                data: {
-                                    cusId: id
-                                },
-                                success: function () {
-                                    location.reload();
-                                }
-                            });
-                            /*
-                            var arr = url.split("/");
-                            if (arr[arr.length - 1] == "VisitCreate") {
-                                url += "/" + id;
-                            } else {
-                                url = arr[0] + "/" + arr[1] + "/" + arr[2] + "/" + arr[3] + "/" + arr[4] + "/" + id;
-                            }
-                            window.location = url;*/
+
+                            var fName = $(this).find(".customerPickerFName").html();
+                            var lName = $(this).find(".customerPickerLName").html();
+
+                            $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
+                            $("#slc_customerId").val(id);
+                            $("#customerPicker").modal('hide');
+
                         });
                     });
 
@@ -191,17 +211,18 @@
                         $("#customerPicker").modal();
                     });
                 });
-        });
 
+                
+        });
+           /* $(window).bind('beforeunload', function () {
+                return 'Are you sure you want to leave?';
+            });*/
         </script>
 
 }
 
 <style>
-    #customerContainer{
-        border: 2px solid #000000;
-        padding: 25px;
-    }
+
 </style>
 
 
