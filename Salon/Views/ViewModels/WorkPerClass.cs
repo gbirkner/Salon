@@ -43,7 +43,6 @@ namespace Salon.Views.ViewModels
                     returnValue.Add(cl.Class);
                 }
             }
-
             return returnValue;
         }
     }
