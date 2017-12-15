@@ -6,25 +6,55 @@
 
 <link rel="stylesheet" href="~/Content/customerstat.css"/>
 
-<h2>Kunden-Auswertung</h2>
+<h2>Kunden-Statistik</h2>
 
-<input type="text" id="searchbar" onkeyup="searchTable()" placeholder="Beginne zu tippen...">
-<table class="table" id="searchtable">
-    <tr>
-        <th>Name</th>
-        <th>Ort</th>
-        <th>Kontakt</th>        
-    </tr>
+<div style="display: inline-block; width: 100%;">
+    <!-- city dropdown -->
+    <div class="dropdown">
+        <button onclick="dropCities();" class="dropbtn btn btn-primary">Ort &#x21e3;</button>
+        <div id="cityDrop" class="dropdown-content">
+            @foreach (var item in Model.Cities.OrderBy(c=> c.Title).ToList())
+            {
+                <a href="#">@item.Title</a>
+            }            
+        </div>
+    </div>
 
-    @foreach (var item in Model.Customers)
-    {
+    <!-- treatment dropdown -->
+    <div class="dropdown" style="margin-left: 3px;">
+        <button onclick="" class="dropbtn btn btn-primary">Behandlung &#x21e3;</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <!-- export button -->
+    <button style="float: right;" class="btn btn-primary">Export <span style="font-size: 14pt;">&#x21e9;</span></button>
+</div>
+
+<div style="width: 100%;">
+    <input type="text" id="searchbar" onkeyup="searchTable()" placeholder="Beginne zu tippen...">
+    <table class="table" id="searchtable">
         <tr>
-            <td>@item.LName @item.FName</td>
-            <td>@Model.GetCity(item.PostalCode, item.CountryId)</td>
-            <td><button id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
+            <th>Name</th>
+            <th>Ort</th>
+            <th>Letzte Behandlung</th>
+            <th>Kontakt</th>            
         </tr>
-    }
-</table>
+
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>@item.LName @item.FName</td>
+                <td>@Model.GetCity(item.PostalCode, item.CountryId)</td>
+                <td>empty</td>
+                <td><button id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>                
+            </tr>
+        }
+    </table>
+</div>
 
 <!-- The Modal -->
 <div id="modalBox" class="modal">
@@ -54,10 +84,15 @@
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[0];
+            td1 = tr[i].getElementsByTagName("td")[1];
             if (td) {
                 if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
                     tr[i].style.display = "";
-                } else {
+                }
+                if (td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else {
                     tr[i].style.display = "none";
                 }
             }
@@ -84,13 +119,33 @@
     
     /* MODAL functions */
     /* close modal onclick */
-    $(".close").click(function () {
+    $(".close-btn").click(function () {
         $("#modalBox").hide();
     });
 
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
+        }
+    }
+
+    /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+    function dropCities() {
+        document.getElementById("cityDrop").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
         }
     }
 </script>
