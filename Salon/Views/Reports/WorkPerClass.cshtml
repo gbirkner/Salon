@@ -6,58 +6,69 @@
 	ViewBag.Title = "Work per student";
 }
 
-<h2>Arbeit pro Klasse</h2>
+<h2>Arbeit nach Klasse</h2>
 
-<div style="margin-bottom: 30px;">
-	<select class="form-control" style="width: 150px" id="classSelector" onchange="changeClass();">
+<div style="margin: 30px 0px 30px 0px; display: inline-block; width: 100%">
+	<select class="form-control" style="width: 150px; height:40px; display: inline-block" id="classSelector">
 		@foreach(var item in Model.First().GetClasses())
 		{
 			<option>@item</option>
 		}
-	</select>    
+	</select>
+	<button style="margin-left: 10px; width: 150px; height: 40px; display: inline-block; clear: both" class="btn btn-primary" onclick="changeClass();">Anzeigen</button>
+    <button style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary">Download &#x21e9</button>
 </div>
 
 <div id="workTable" style="display: none;">
-	<table class="table">
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.StudentName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Class)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TeacherName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Date)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Treatment)
-			</th>
-		</tr>
-		@foreach (var item in Model)
-		{
+	
+	@if (Model.FirstOrDefault().StudentName != "")
+	{
+		<table class="table">
 			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.StudentName)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Class)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TeacherName)
-				</td>
-				<td>
-					@*@Html.DisplayFor(modelItem => item.Date)*@
-					@Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Treatment)
-				</td>
+				<th>
+					@Html.DisplayNameFor(model => model.StudentName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Class)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.TeacherName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Date)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Treatment)
+				</th>
 			</tr>
-		}
-	</table>
+			@foreach (var item in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.StudentName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Class)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.TeacherName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Date)
+						@Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Treatment)
+					</td>
+				</tr>
+			}
+		
+		</table>
+	}
+	else
+	{
+
+	}
 </div>
 
 <script>
