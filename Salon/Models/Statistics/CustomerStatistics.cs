@@ -23,13 +23,20 @@ namespace Salon.Models.Statistics
                            where v.PostalCode == postalCode && v.CountryId == countryId
                            select v.Title;
 
-            return cityname.First();
+            if (cityname.FirstOrDefault() == null)
+            {
+                return "";
+            }
+            else
+            {
+                return cityname.First();
+            }            
         }
-
-        public CustomerConnections GetConnections(int customerID)
+        
+        public List<CustomerConnections> GetConnections(int customerID)
         {
             var cust = Connections.Include(t => t.ConnectionTypes);
-            var customerConnections = from c in cust
+            var customerConnections = from c in cust where c.CustomerId == customerID
                                       select new CustomerConnections
                                       {
                                           ConnectionType = c.ConnectionTypes.Title,
@@ -37,13 +44,14 @@ namespace Salon.Models.Statistics
                                           ConnectionValue = c.Title
                                       };
 
-            //var customerConnections = from c in Connections
-            //                          join
-            //                          ct in ConnectionTypes on c.ConnectionTypeId equals ct.ConnectionTypeId
-            //                          where c.CustomerId == customerID
-            //                          select new CustomerConnections(ct.Title ?? "", c.Title ?? "", c.Description ?? "");
-
-            return customerConnections.First();
+            if (customerConnections != null)
+            {
+                return customerConnections.ToList();
+            }
+            else
+            {
+                return new List<CustomerConnections>();
+            }
         }
 
         public CustomerStatistics(DbSet<Models.Customers> customers, DbSet<Models.Visits> visits, DbSet<Models.Treatments> treatments,
