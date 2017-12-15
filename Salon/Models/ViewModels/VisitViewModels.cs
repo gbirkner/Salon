@@ -49,7 +49,7 @@ namespace Salon.Models {
         [Display(Name = "mögliche Behandlungen")]
         public List<Treatments> availableTreatments { get; set; }
         [Display(Name = "ausgewählte Behandlungen")]
-        public List<Treatments> selectedTreatments { get; set; }
+        public List<VisitTreatment> selectedTreatments { get; set; }
 
     }
 

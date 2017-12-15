@@ -36,7 +36,7 @@
     </dd>
 
     <!-- only display modified fields if entry was actually modified -->
-    @if (Model.modified != null) { 
+    @if (Model.modifiedBy != null) { 
         <dt>
             @Html.DisplayNameFor(x => x.modifiedBy)
         </dt>
@@ -54,8 +54,10 @@
 
 </dl>
 
-<button type="button" class="btn btn-primary" id="btn_modify">
-    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten</button>
+
+<a href="@Url.Action("VisitCreate", "Visits", new { id = Model.visitId })" class="btn btn-primary" id="btn_modify">
+    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
+</a>
 
 <div id="treatmentsContainer">
     <h3>Behandlungen:</h3>

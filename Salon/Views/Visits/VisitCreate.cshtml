@@ -12,13 +12,24 @@
     <div class="row">
 
         <div class="col-sm-4">
-            <div id="customerContainer" class="well">
-                <input type="hidden" id="slc_customerId" name="slc_customerId" />
-                <h4>Kunde:</h4>
-                <div id="slc_customer">
-                    <div class="alert alert-warning">Kein Kunde ausgew&auml;hlt!</div>
+            @if (Model.customer != null) {
+                <div id="customerContainer" class="well">
+                    <input type="hidden" id="slc_customerId" name="slc_customerId" value="@Model.customer.CustomerId" />
+                    <h4>Kunde:</h4>
+                    <div id="slc_customer">
+                        <h5>@Model.customer.FName @Model.customer.LName</h5>
+                    </div>
                 </div>
-            </div>
+            } else {
+                <div id="customerContainer" class="well">
+                    <input type="hidden" id="slc_customerId" name="slc_customerId" />
+                    <h4>Kunde:</h4>
+                    <div id="slc_customer">
+                        <div class="alert alert-warning">Kein Kunde ausgew&auml;hlt!</div>
+                    </div>
+                </div>
+            }
+            
         </div>
 
         <div class="col-sm-8">
@@ -39,9 +50,26 @@
                 Behandlung hinzuf&uuml;gen....
             </button>
             <hr />
+            @if (Model.selectedTreatments != null) {
+                <div class="list-group" id="selectedTreatmentsContainer" data-nextId="@Model.selectedTreatments.Count+1">
+                    @{int i = 0; }
+                    @foreach (var vt in Model.selectedTreatments) {
+                        <a class="list-group-item clearfix item_treatment" id="item_treatment_ID"
+                        onclick="switchTreatment('@i')"> @vt.name
+                        <div class='pull-right'>
+                            <button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' onclick="removeTreatment(@i)">
+                                <span class='glyphicon glyphicon-remove'></span>
+                            </button>
+                            </div>
+                        </a>
+                        i++;
+                    }
+                </div>
+            }
             <div class="list-group" id="selectedTreatmentsContainer" data-nextId="0">
-
+               
             </div>
+
 
             <button type="submit" class="btn btn-success" id="btn_saveVisit">
                 <span class="glyphicon glyphicon-floppy-disk"></span> 
@@ -51,6 +79,7 @@
 
         <div class="col-sm-8" id="addTreatmentsContainer">
             <!-- BUILD VISIT FORM -->
+
         </div>
     </div>
 </form>

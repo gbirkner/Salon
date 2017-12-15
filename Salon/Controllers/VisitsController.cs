@@ -23,13 +23,13 @@ namespace Salon.Controllers
             ViewBag.skip = skip;
             var visits = db.Visits.Include(v => v.AspNetUsers).Include(v => v.AspNetUsers1).Include(v => v.Customers);
             IEnumerable<VisitShortViewModel> shortVisitViewModels = (from v in visits
-                                                                     orderby v.Created
+                                                                     orderby v.Created descending 
                                                                      select new VisitShortViewModel {
                                                                          visitId = v.VisitId,
                                                                          created = v.Created,
                                                                          customer = v.Customers,
                                                                          stylist = v.AspNetUsers1
-                                                                     }).Skip((int)skip * 30).Take(30).ToList();
+                                                                     }).Skip((int)skip * 50).Take(50).ToList();
             return View(shortVisitViewModels);
         }
 
@@ -92,10 +92,13 @@ namespace Salon.Controllers
             Visits visit;
 
             DateTime created = DateTime.Now;
+            List<VisitTreatment> visitTreatments = new List<VisitTreatment>();
             if(id != null) {
                 visit = db.Visits.Find(id);
                 created = visit.Created;
                 stylist = visit.AspNetUsers1;
+                customer = visit.Customers;
+                visitTreatments = getVisitTreatments(visit); ;
             }
             
             VisitCreateViewModel model = new VisitCreateViewModel();
@@ -103,7 +106,7 @@ namespace Salon.Controllers
             model.customer = customer;
             model.stylist = stylist;
             model.availableTreatments = db.Treatments.ToList();
-            model.selectedTreatments = new List<Treatments>();
+            model.selectedTreatments = visitTreatments;
             return View(model);
         }
 
@@ -129,18 +132,35 @@ namespace Salon.Controllers
             }
 
             visit.AspNetUsers1 = db.AspNetUsers.Find(stylistId);
+            visit.AspNetUsers = db.AspNetUsers.Find(stylistId);
             visit.Customers = db.Customers.Find(cusId);
+            visit.Created = DateTime.Now;
+            visit.Modified = DateTime.Now;
+            db.Visits.Add(visit);
+            db.SaveChanges();
 
             int i = 0;
+            int treatmentId;
+            int stepId;
+            VisitTasks vt;
             foreach (string key in nvc.AllKeys) {
                 if(i < 2) {
                     i++;
                 }else {
+                    treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
+                    stepId = Int32.Parse(key.Split('_').GetValue(3).ToString());
+                    vt = new VisitTasks();
+                    vt.StepId = stepId;
+                    vt.TreatmentId = treatmentId;
+                    vt.Description = nvc[key];
+                    visit.VisitTasks.Add(vt);
+                    db.VisitTasks.Add(vt);
                     Console.WriteLine(nvc[key]);
                 }
             }
-
-            return View();
+            db.SaveChanges();
+            return Redirect("/Visits/VisitCreate/" + visit.VisitId);
+            //return VisitCreate(visit.VisitId);
         }
 
         public ActionResult _CustomerPicker() {
