@@ -120,6 +120,8 @@
           <Property Name="SettingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AnonymizeUserByDays" Type="smallint" Nullable="false" />
           <Property Name="AnonymizeCustomerByDays" Type="smallint" Nullable="false" />
+          <Property Name="DeleteUserByDays" Type="smallint" Nullable="false" />
+          <Property Name="DeleteCustomerByDays" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="StepOptions">
           <Key>
@@ -1003,6 +1005,8 @@
           <Property Name="SettingID" Type="Int32" Nullable="false" />
           <Property Name="AnonymizeUserByDays" Type="Int16" Nullable="false" />
           <Property Name="AnonymizeCustomerByDays" Type="Int16" Nullable="false" />
+          <Property Name="DeleteUserByDays" Type="Int16" Nullable="false" />
+          <Property Name="DeleteCustomerByDays" Type="Int16" Nullable="false" />
         </EntityType>
         <EntityType Name="Genders">
           <Key>
@@ -1210,6 +1214,8 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="SalonModel.Settings">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="DeleteCustomerByDays" ColumnName="DeleteCustomerByDays" />
+                <ScalarProperty Name="DeleteUserByDays" ColumnName="DeleteUserByDays" />
                 <ScalarProperty Name="AnonymizeCustomerByDays" ColumnName="AnonymizeCustomerByDays" />
                 <ScalarProperty Name="SettingID" ColumnName="SettingID" />
                 <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />

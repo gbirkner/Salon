@@ -28,7 +28,7 @@
                     <li>@Html.ActionLink("Conenctions", "Connections", "Home")</li>
                     @if (User.IsInRole("Admin"))
                     {
-                        <li>@Html.ActionLink("Settings", "Settings", "Home")</li>
+                        <li>@Html.ActionLink("Einstellungen", "Index", "Settings")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

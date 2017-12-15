@@ -39,9 +39,6 @@ namespace Salon.Controllers
 
         public ActionResult CustomerOverview(string searchstring = null)
         {
-            var i = db.AnonymizeCustomerByDays();
-
-
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
                 from c in cust

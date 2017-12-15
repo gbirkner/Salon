@@ -17,5 +17,7 @@ namespace Salon.Models
         public int SettingID { get; set; }
         public short AnonymizeUserByDays { get; set; }
         public short AnonymizeCustomerByDays { get; set; }
+        public short DeleteUserByDays { get; set; }
+        public short DeleteCustomerByDays { get; set; }
     }
 }
