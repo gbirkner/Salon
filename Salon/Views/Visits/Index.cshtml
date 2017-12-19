@@ -13,6 +13,20 @@
 }
 </style>
 
+@if(ViewBag.success == true) {
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-floppy-saved"></span> 
+        Der Besuch wurde erfolgreich gespeichert!
+    </div>
+} else if (ViewBag.success == false) {
+    <div class="alert alert-danger alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Der Besuch konnte nicht gespeichert werden!
+    </div>
+}
+
 <h2>Besuche</h2>
 
 <div class="row">

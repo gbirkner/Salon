@@ -24,6 +24,10 @@ public partial class Settings
 
     public short AnonymizeCustomerByDays { get; set; }
 
+    public short DeleteUserByDays { get; set; }
+
+    public short DeleteCustomerByDays { get; set; }
+
 }
 
 }

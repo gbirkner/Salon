@@ -72,6 +72,8 @@ public partial class SalonEntities : DbContext
 
     public virtual DbSet<Settings> Settings { get; set; }
 
+    public virtual DbSet<Rooms> Rooms { get; set; }
+
 }
 
 }

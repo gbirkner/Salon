@@ -16,10 +16,14 @@ namespace Salon.Controllers
         private SalonEntities db = new SalonEntities();
 
         // GET: Visits
-        public ActionResult Index(int? skip)
+        public ActionResult Index(int? skip, bool? success)
         {
             if (skip == null || skip < 0)
                 skip = 0;
+
+            if(success != null) {
+                ViewBag.success = success;
+            }
             ViewBag.skip = skip;
             var visits = db.Visits.Include(v => v.AspNetUsers).Include(v => v.AspNetUsers1).Include(v => v.Customers);
             IEnumerable<VisitShortViewModel> shortVisitViewModels = (from v in visits
@@ -88,7 +92,11 @@ namespace Salon.Controllers
 
         public ActionResult VisitCreate(int? id) {
             Customers customer = null;
+            //TEST VALUES TODO CHANGE
             AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
+            AspNetUsers teacher = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
+            Rooms room = db.Rooms.Find(1);
+
             Visits visit;
 
             DateTime created = DateTime.Now;
@@ -98,15 +106,21 @@ namespace Salon.Controllers
                 created = visit.Created;
                 stylist = visit.AspNetUsers1;
                 customer = visit.Customers;
-                visitTreatments = getVisitTreatments(visit); ;
+                visitTreatments = getVisitTreatments(visit);
             }
+
+            ViewBag.teachers = db.AspNetUsers.Where(x => x.AspNetRoles.Contains(db.AspNetRoles.Find(3))).ToList();
+            ViewBag.rooms = db.Rooms.ToList();
             
             VisitCreateViewModel model = new VisitCreateViewModel();
+            model.visitId = id;
             model.created = DateTime.Now;
             model.customer = customer;
             model.stylist = stylist;
             model.availableTreatments = db.Treatments.ToList();
             model.selectedTreatments = visitTreatments;
+            model.teacher = teacher.lastName;
+            model.room = room.Title;
             return View(model);
         }
 
@@ -121,14 +135,12 @@ namespace Salon.Controllers
                 cusId = Int32.Parse(nvc["slc_customerId"]);
                 
             } else {
-                //TODO ERROR
-                return View();
+                return Redirect("/Visits/Index?success=false");
             }
             if (!string.IsNullOrEmpty(nvc["inp_stylistId"])) {
                 stylistId = nvc["inp_stylistId"];
             }else {
-                //TODO ERROR
-                return View();
+                return Redirect("/Visits/Index?success=false");
             }
 
             visit.AspNetUsers1 = db.AspNetUsers.Find(stylistId);
@@ -159,8 +171,71 @@ namespace Salon.Controllers
                 }
             }
             db.SaveChanges();
-            return Redirect("/Visits/VisitCreate/" + visit.VisitId);
+            if (nvc["btn_save"] == "back") {
+                return Redirect("/Visits/Index?success=true");
+            }else {
+                return Redirect("/Visits/VisitCreate/" + visit.VisitId);
+            }
+            
+            //return Redirect("/Visits/VisitCreate/" + visit.VisitId);
             //return VisitCreate(visit.VisitId);
+        }
+
+        public ActionResult updateVisit(int id) {
+            Visits visit = db.Visits.Find(id);
+            NameValueCollection nvc = Request.Form;
+
+            int cusId;
+            string stylistId;
+
+            if (!string.IsNullOrEmpty(nvc["slc_customerId"]) && Int32.TryParse(nvc["slc_customerId"], out cusId)) {
+                cusId = Int32.Parse(nvc["slc_customerId"]);
+
+            } else {
+                return Redirect("/Visits/Index?success=false");
+            }
+            if (!string.IsNullOrEmpty(nvc["inp_stylistId"])) {
+                stylistId = nvc["inp_stylistId"];
+            } else {
+                return Redirect("/Visits/Index?success=false");
+            }
+
+            visit.AspNetUsers = db.AspNetUsers.Find(stylistId);
+            visit.Customers = db.Customers.Find(cusId);
+            visit.Modified = DateTime.Now;
+            db.SaveChanges();
+
+            var delete = db.VisitTasks.Where(x => x.VisitId == id);
+            foreach(var row in delete) {
+                db.VisitTasks.Remove(row);
+            }
+
+            int i = 0;
+            int treatmentId;
+            int stepId;
+            VisitTasks vt;
+            foreach (string key in nvc.AllKeys) {
+                if (i < 2) {
+                    i++;
+                } else {
+                    treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
+                    stepId = Int32.Parse(key.Split('_').GetValue(3).ToString());
+                    vt = new VisitTasks();
+                    vt.StepId = stepId;
+                    vt.TreatmentId = treatmentId;
+                    vt.Description = nvc[key];
+                    visit.VisitTasks.Add(vt);
+                    db.VisitTasks.Add(vt);
+                    Console.WriteLine(nvc[key]);
+                }
+            }
+            db.SaveChanges();
+
+            if (nvc["btn_save"] == "back") {
+                return Redirect("/Visits/Index?success=true");
+            } else {
+                return Redirect("/Visits/VisitCreate/" + id);
+            }
         }
 
         public ActionResult _CustomerPicker() {
@@ -174,11 +249,28 @@ namespace Salon.Controllers
                                                   }).ToList();
             return PartialView(picker);
         }
-
-        public ActionResult _TreatmentForm(int? id) {
-            Treatments model = db.Treatments.Find(id);
+        
+        public ActionResult _TreatmentForm(int id) {
+            Treatments treatment = db.Treatments.Find(id);
+            VisitTreatment model = new VisitTreatment();
+            model.name = treatment.Title;
+            model.treatmentID = treatment.TreatmentId;
+            VisitTasks vt;
+            foreach(TreatmentSteps s in treatment.TreatmentSteps) {
+                vt = new VisitTasks();
+                vt.StepId = s.StepId;
+                vt.TreatmentSteps = s;
+                vt.TreatmentId = treatment.TreatmentId;
+                model.tasks.Add(vt);
+            }
             return PartialView(model);
         }
+
+        /*public ActionResult _TreatmentForm(VisitTreatment vt) {
+            return PartialView(vt);
+        }*/
+
+
 
         // GET: Visits/Details/5
         public ActionResult Details(int? id)

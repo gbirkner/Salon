@@ -39,7 +39,7 @@ namespace Salon.Models {
 
     public class VisitCreateViewModel {
         [Key]
-        public int visitId { get; set; }
+        public int? visitId { get; set; }
         [Display(Name = "Datum")]
         public DateTime created { get; set; }
         [Display(Name = "Kunde")]
@@ -50,6 +50,19 @@ namespace Salon.Models {
         public List<Treatments> availableTreatments { get; set; }
         [Display(Name = "ausgewählte Behandlungen")]
         public List<VisitTreatment> selectedTreatments { get; set; }
+        public List<System.Web.Mvc.ActionResult> treatmentViews { get; set; }
+        public int teacherId { get; set; }
+        public int roomId { get; set; }
+        [Display(Name = "Lehrer")]
+        public string teacher { get; set; }
+        [Display(Name = "Raum")]
+        public string room { get; set; }
+
+        public VisitCreateViewModel() {
+            this.availableTreatments = new List<Treatments>();
+            this.selectedTreatments = new List<VisitTreatment>();
+            this.treatmentViews = new List<System.Web.Mvc.ActionResult>();
+        }
 
     }
 

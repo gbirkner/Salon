@@ -36,6 +36,8 @@ public partial class AspNetUsers
 
         this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
 
+        this.Visits2 = new HashSet<Visits>();
+
     }
 
 
@@ -102,6 +104,10 @@ public partial class AspNetUsers
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Visits> Visits2 { get; set; }
 
 }
 

@@ -6,8 +6,15 @@
 
 <h2>Besuch</h2>
 
-
-<form method="post" action="@Url.Action("SaveVisit", "Visits")" class="form-horizontal">
+@{ 
+    string action;
+    if(Model.visitId != null) {
+        action = Url.Action("updateVisit", "Visits", new {id = Model.visitId});
+    }else {
+        action = Url.Action("saveVisit", "Visits");
+    }
+}
+<form method="post" action="@action" class="form-horizontal">
     <input type="hidden" id="inp_stylistId" name="inp_stylistId" value="@Model.stylist.Id" />
     <div class="row">
 
@@ -29,7 +36,7 @@
                     </div>
                 </div>
             }
-            
+
         </div>
 
         <div class="col-sm-8">
@@ -54,35 +61,52 @@
                 <div class="list-group" id="selectedTreatmentsContainer" data-nextId="@Model.selectedTreatments.Count+1">
                     @{int i = 0; }
                     @foreach (var vt in Model.selectedTreatments) {
-                        <a class="list-group-item clearfix item_treatment" id="item_treatment_ID"
-                        onclick="switchTreatment('@i')"> @vt.name
-                        <div class='pull-right'>
-                            <button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' onclick="removeTreatment(@i)">
-                                <span class='glyphicon glyphicon-remove'></span>
-                            </button>
+                        <a class="list-group-item clearfix item_treatment" id="item_treatment_@i"
+                           onclick="switchTreatment('@i')">
+                            @vt.name
+                            <div class='pull-right'>
+                                <button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' onclick="removeTreatment(@i)">
+                                    <span class='glyphicon glyphicon-remove'></span>
+                                </button>
                             </div>
                         </a>
                         i++;
                     }
                 </div>
+            } else {
+                <div class="list-group" id="selectedTreatmentsContainer" data-nextId="0">
+
+                </div>
             }
-            <div class="list-group" id="selectedTreatmentsContainer" data-nextId="0">
-               
-            </div>
-
-
-            <button type="submit" class="btn btn-success" id="btn_saveVisit">
-                <span class="glyphicon glyphicon-floppy-disk"></span> 
+            
+            <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
                 Besuch abschließen
             </button>
+            <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                speichern
+            </button>
+
+
         </div>
 
         <div class="col-sm-8" id="addTreatmentsContainer">
             <!-- BUILD VISIT FORM -->
+            @{ int j = 0;}
+            @foreach (var vt in Model.selectedTreatments) {
+                <div class='form_treatment' id='form_treatment_@j'>
+                    @Html.Partial("_TreatmentForm", vt)
+
+                </div>
+                j++;
+            }
 
         </div>
     </div>
 </form>
+
+
 
 <div class="modal fade" role="dialog" id="addTreatmentModal">
     <div class="modal-dialog">
@@ -120,6 +144,7 @@
 
 @section scripts{  
         <script>
+            
             $("#customerContainer").on("click", function (e) {
                 $("#customerPicker").modal();
             });
@@ -177,6 +202,8 @@
             }
 
             $(function () {
+                switchTreatment(0);
+
 
                 $("#btn_addTreatment").on('click', function (e) {
                     $("#addTreatmentModal").modal();
