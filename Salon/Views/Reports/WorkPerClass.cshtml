@@ -16,7 +16,9 @@
 		}
 	</select>
 	<button style="margin-left: 10px; width: 150px; height: 40px; display: inline-block; clear: both" class="btn btn-primary" onclick="changeClass();">Anzeigen</button>
-	<button style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary"  onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new { export = "excel" })'">Download &#x21e9</button>
+	
+    @*<button style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary"  onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new { export = "excel" })'">Download &#x21e9</button>*@
+    <a style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary" id="export">Download &#x21e9</a>
 </div>
 
 @if (ViewBag.Message != null)
@@ -32,9 +34,9 @@
 	
 
 
-	@*@if (Model.FirstOrDefault().StudentName != "")
+	@if (Model.FirstOrDefault().StudentName != "")
 	{
-		<table class="table">
+		<table class="table" id="searchtable">
 			<tr>
 				<th>
 					@Html.DisplayNameFor(model => model.StudentName)
@@ -79,7 +81,7 @@
 	else
 	{
 
-	}*@
+	}
 </div>
 
 <script>
@@ -93,4 +95,87 @@
 			}
 		});
 	}
+</script>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+
+<script>
+    function exportTableToCSV($table, filename) {
+        var $headers = $table.find('tr:has(th)')
+            , $rows = $table.find('tr:has(td)')
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+            , tmpColDelim = String.fromCharCode(11) // vertical tab character
+            , tmpRowDelim = String.fromCharCode(0) // null character
+
+            // actual delimiter characters for CSV format
+            , colDelim = '";"'
+            , rowDelim = '"\r\n"';
+
+        // Grab text from table into CSV formatted string
+        var csv = '"';
+        csv += formatRows($headers.map(grabRow));
+        csv += rowDelim;
+        csv += formatRows($rows.map(grabRow)) + '"';
+
+        // Data URI
+        var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+        // For IE (tested 10+)
+        if (window.navigator.msSaveOrOpenBlob) {
+            var blob = new Blob([decodeURIComponent(encodeURI(csv))], {
+                type: "text/csv;charset=utf-8;"
+            });
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            $(this)
+                .attr({
+                    'download': filename
+                    , 'href': csvData
+                    //,'target' : '_blank' //if you want it to open in a new window
+                });
+        }
+
+        //------------------------------------------------------------
+        // Helper Functions
+        //------------------------------------------------------------
+        // Format the output so it has the appropriate delimiters
+        function formatRows(rows) {
+            return rows.get().join(tmpRowDelim)
+                .split(tmpRowDelim).join(rowDelim)
+                .split(tmpColDelim).join(colDelim);
+        }
+        // Grab and format a row from the table
+        function grabRow(i, row) {
+
+            var $row = $(row);
+            //for some reason $cols = $row.find('td') || $row.find('th') won't work...
+            var $cols = $row.find('td');
+            if (!$cols.length) $cols = $row.find('th');
+
+            return $cols.map(grabCol)
+                .get().join(tmpColDelim);
+        }
+        // Grab and format a column from the table
+        function grabCol(j, col) {
+            var $col = $(col),
+                $text = $col.text();
+
+            return $text.replace('"', '""'); // escape double quotes
+
+        }
+    }
+
+
+    // This must be a hyperlink
+    $("#export").click(function (event) {
+        var outputFile = 'Arbeit' + $('#classSelector').val();
+        outputFile = outputFile.replace('.csv', '') + '.csv'
+        // CSV
+        exportTableToCSV.apply(this, [$('#searchtable'), outputFile]);
+
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });
 </script>
