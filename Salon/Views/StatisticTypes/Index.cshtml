@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Statistics and Graphs</h2>
+<h2>Statistiken und Graphen</h2>
 <table class="table">
     <tr>
         <th>
@@ -32,8 +32,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.StatisticType)
         </td>
-        <td>
-            <a href="@item.StatisticUrl">Go to statistic</a>
+        <td>            
+            <a class="btn btn-primary" href="@item.StatisticUrl">Zur Statistik</a>
         </td>
     </tr>
 }
