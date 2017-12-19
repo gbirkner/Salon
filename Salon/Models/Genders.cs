@@ -15,27 +15,27 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Countries
+public partial class Genders
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Countries()
+    public Genders()
     {
 
-        this.Cities = new HashSet<Cities>();
+        this.Customers = new HashSet<Customers>();
 
     }
 
 
-    public string CountryId { get; set; }
+    public int GenderID { get; set; }
 
-    public string Title { get; set; }
+    public string GenderTitle { get; set; }
 
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<Cities> Cities { get; set; }
+    public virtual ICollection<Customers> Customers { get; set; }
 
 }
 
