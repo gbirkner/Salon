@@ -15,6 +15,7 @@ using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Salon.Models.Statistics;
+using System.Text.RegularExpressions;
 
 namespace Salon.Controllers.Reports
 {
@@ -23,7 +24,6 @@ namespace Salon.Controllers.Reports
         private SalonEntities db = new SalonEntities();
         private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
-        private string message = string.Empty;
 
         // GET: CustomerViewModel
         //public ActionResult Customers(string export = "")
@@ -52,7 +52,7 @@ namespace Salon.Controllers.Reports
         /// Exports list to a .csv file
         /// </summary>
         /// <returns></returns>
-        public bool Export(List<string> exportList, string fileName)
+        public void Export(List<string> exportList, string fileName)
         {
             try {
                 //Gets the directory of the logged in windows user
@@ -63,12 +63,9 @@ namespace Salon.Controllers.Reports
                     path = Directory.GetParent(path).ToString() + @"\downloads\";
                 }
                 System.IO.File.WriteAllLines(path + @"\" + fileName + ".csv", exportList, System.Text.Encoding.UTF8);
-
-                return true;
             }
             catch
             {
-                return false;
             }
         }
 
@@ -129,7 +126,7 @@ namespace Salon.Controllers.Reports
         /// </summary>
         /// <param name="cl">class</param>
         /// <returns></returns>
-        public ActionResult WorkPerClass(string cl = "")
+        public ActionResult WorkPerClass(string cl = "", string sort = "")
         {
             var visits = db.Visits;
 
@@ -147,8 +144,24 @@ namespace Salon.Controllers.Reports
                             StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId)
                         }).ToList();
 
-                workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
-                return View("~/Views/Reports/WorkPerClassResponse.cshtml", WorkPerClass.ToList());
+                switch(sort)
+                {
+                    case "Datum aufsteigend":
+                        workPerClassList = WorkPerClass.OrderBy(w => w.Date).ThenBy(w => w.StudentName).ToList();
+                        break;
+                    case "Datum absteigend":
+                        workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ThenBy(w => w.StudentName).ToList();
+                        break;
+                    case "Name aufsteigend":
+                        workPerClassList = WorkPerClass.OrderBy(w => w.StudentName).ThenBy(w => w.Date).ToList();
+                        break;
+                    case "Name absteigend":
+                        workPerClassList = WorkPerClass.OrderByDescending(w => w.StudentName).ThenBy(w => w.Date).ToList();
+                        break;
+                }
+
+                //workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
+                return View("~/Views/Reports/WorkPerClassResponse.cshtml", workPerClassList);
             }
             else
             {
@@ -166,10 +179,6 @@ namespace Salon.Controllers.Reports
                         //,StepsPerTreatment = this.GetStepsPerTreatment(1)
                     }
                  );
-
-                if (message != string.Empty)
-                    ViewBag.Message = message;
-
                 return View(empty.ToList());
             }   
         }
@@ -200,6 +209,7 @@ namespace Salon.Controllers.Reports
             string headers = string.Empty;
 
             var properties = typeof(WorkPerClassViewModel).GetProperties();
+            var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
             foreach (var property in properties) //headers
             {
                 var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
@@ -207,6 +217,14 @@ namespace Salon.Controllers.Reports
                 if (display != null)
                     headers += display.Name + ";";
             }
+            foreach (var property in propertiesStep) //headers
+            {
+                var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                if (display != null)
+                    headers += display.Name + ";";
+            }
+
             returnValue.Add(headers);
             foreach (var entry in workPerClassList)  //data
             {
@@ -221,12 +239,7 @@ namespace Salon.Controllers.Reports
             var cl = workPerClassList.FirstOrDefault();
             if (cl != null)
             {
-                var result = this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class);
-
-                if(result)
-                    message = "Datei wurde erfolgreich heruntergeladen!";
-                else
-                    message = "Datei konnte nicht heruntergeladen werden!";
+                this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
             }
             return RedirectToAction("WorkPerClass");
         }

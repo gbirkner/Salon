@@ -50,7 +50,10 @@ namespace Salon.Views.ViewModels
         
         public class Step
         {
+            [Display(Name = "Schritt")]
             public string StepTitle { get; set; }
+
+            [Display(Name = "Schrittbeschreibung")]
             public string StepDescription { get; set; }
         }
     }
