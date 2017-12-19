@@ -55,5 +55,14 @@ namespace Salon.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClasses>("GetClasses");
         }
+    
+        public virtual ObjectResult<GetStepsPerTreatment> GetStepsPerTreatment(Nullable<int> treatmentId)
+        {
+            var treatmentIdParameter = treatmentId.HasValue ?
+                new ObjectParameter("treatmentId", treatmentId) :
+                new ObjectParameter("treatmentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStepsPerTreatment>("GetStepsPerTreatment", treatmentIdParameter);
+        }
     }
 }

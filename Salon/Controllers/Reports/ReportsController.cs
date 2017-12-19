@@ -143,7 +143,8 @@ namespace Salon.Controllers.Reports
                             StudentName = c.StudentName,
                             TeacherName = c.TeacherName,
                             Treatment = c.Treatement,
-                            Date = c.Date ?? Convert.ToDateTime(c.Date)
+                            Date = c.Date ?? Convert.ToDateTime(c.Date),
+                            StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId)
                         }).ToList();
 
                 workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
@@ -162,6 +163,7 @@ namespace Salon.Controllers.Reports
                         TeacherName = "",
                         Treatment = "",
                         Date = DateTime.Now
+                        //,StepsPerTreatment = this.GetStepsPerTreatment(1)
                     }
                  );
 
@@ -170,6 +172,22 @@ namespace Salon.Controllers.Reports
 
                 return View(empty.ToList());
             }   
+        }
+
+        private List<WorkPerClassViewModel.Step> GetStepsPerTreatment(int treatmentId)
+        {
+            List<WorkPerClassViewModel.Step> returnValue = new List<WorkPerClassViewModel.Step>();
+
+            returnValue =
+                  db.GetStepsPerTreatment(treatmentId)
+                  .Select(s => new WorkPerClassViewModel.Step()
+                  {
+                      StepDescription = s.StepDescription,
+                      StepTitle = s.Step
+                  }).ToList();
+
+            return returnValue;
+
         }
 
         /// <summary>

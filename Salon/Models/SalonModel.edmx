@@ -389,6 +389,9 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetStepsPerTreatment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="treatmentId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetWorkPerClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="class" Type="nvarchar" Mode="In" />
         </Function>
@@ -981,6 +984,9 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
+          <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
+            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetClasses">
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
@@ -1004,6 +1010,10 @@
           <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetStepsPerTreatment">
+          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1206,6 +1216,14 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="SalonModel.GetClasses">
                 <ScalarProperty Name="Class" ColumnName="Class" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStepsPerTreatment" FunctionName="SalonModel.Store.GetStepsPerTreatment">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment">
+                <ScalarProperty Name="Step" ColumnName="Step" />
+                <ScalarProperty Name="StepDescription" ColumnName="StepDescription" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

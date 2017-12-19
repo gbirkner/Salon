@@ -30,6 +30,8 @@ namespace Salon.Views.ViewModels
         [Display(Name = "Datum")]
         public DateTime Date { get; set; }
 
+        public List<Step> StepsPerTreatment { get; set; }
+
         public List<string> GetClasses()
         {
             List<string> returnValue = new List<string>();
@@ -44,6 +46,12 @@ namespace Salon.Views.ViewModels
                 }
             }
             return returnValue;
+        }
+        
+        public class Step
+        {
+            public string StepTitle { get; set; }
+            public string StepDescription { get; set; }
         }
     }
 }
