@@ -43,7 +43,6 @@
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.AspNetUserRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="10.375" PointY="6" />
         <EntityTypeShape EntityType="SalonModel.Genders" Width="1.5" PointX="8.375" PointY="8.875" />
         <AssociationConnector Association="SalonModel.fk_CustomersGenders" />
       </Diagram>

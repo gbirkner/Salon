@@ -113,16 +113,6 @@
           <Property Name="VisitId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="Settings">
-          <Key>
-            <PropertyRef Name="SettingID" />
-          </Key>
-          <Property Name="SettingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AnonymizeUserByDays" Type="smallint" Nullable="false" />
-          <Property Name="AnonymizeCustomerByDays" Type="smallint" Nullable="false" />
-          <Property Name="DeleteUserByDays" Type="smallint" Nullable="false" />
-          <Property Name="DeleteCustomerByDays" Type="smallint" Nullable="false" />
-        </EntityType>
         <EntityType Name="StepOptions">
           <Key>
             <PropertyRef Name="StepOptionId" />
@@ -418,7 +408,6 @@
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Genders" EntityType="Self.Genders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StepOptions" EntityType="Self.StepOptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Steps" EntityType="Self.Steps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Treatments" EntityType="Self.Treatments" Schema="dbo" store:Type="Tables" />
@@ -987,7 +976,6 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <EntitySet Name="Settings" EntityType="SalonModel.Settings" />
           <FunctionImport Name="AnonymizeCustomerByID">
           <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
@@ -998,16 +986,6 @@
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Settings">
-          <Key>
-            <PropertyRef Name="SettingID" />
-          </Key>
-          <Property Name="SettingID" Type="Int32" Nullable="false" />
-          <Property Name="AnonymizeUserByDays" Type="Int16" Nullable="false" />
-          <Property Name="AnonymizeCustomerByDays" Type="Int16" Nullable="false" />
-          <Property Name="DeleteUserByDays" Type="Int16" Nullable="false" />
-          <Property Name="DeleteCustomerByDays" Type="Int16" Nullable="false" />
-        </EntityType>
         <EntityType Name="Genders">
           <Key>
             <PropertyRef Name="GenderID" />
@@ -1211,19 +1189,16 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Settings">
-            <EntityTypeMapping TypeName="SalonModel.Settings">
-              <MappingFragment StoreEntitySet="Settings">
-                <ScalarProperty Name="DeleteCustomerByDays" ColumnName="DeleteCustomerByDays" />
-                <ScalarProperty Name="DeleteUserByDays" ColumnName="DeleteUserByDays" />
-                <ScalarProperty Name="AnonymizeCustomerByDays" ColumnName="AnonymizeCustomerByDays" />
-                <ScalarProperty Name="SettingID" ColumnName="SettingID" />
-                <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="SalonModel.Genders">
+              <MappingFragment StoreEntitySet="Genders">
+                <ScalarProperty Name="GenderTitle" ColumnName="GenderTitle" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
           <EntitySetMapping Name="Genders">
             <EntityTypeMapping TypeName="SalonModel.Genders">
               <MappingFragment StoreEntitySet="Genders">

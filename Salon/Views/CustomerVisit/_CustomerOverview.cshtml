@@ -1,15 +1,10 @@
 ﻿@model IEnumerable<Salon.Models.CustomerViewModel>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
 <div id="CustomerMaster">
     <table class="table" id="tbl_cust">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Sex)
-
+                @Html.DisplayNameFor(model => model.GenderId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FName)
@@ -39,7 +34,9 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GenderId)
+                </td>
 
 
                 <td>
@@ -76,7 +73,6 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
 
-
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.CountryId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.CountryId }) |
@@ -86,8 +82,6 @@
                 </td>
             </tr>
         }
-
-
 
     </table>
 </div>
