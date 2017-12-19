@@ -42,8 +42,40 @@
                             <input type="submit" value="Speichern" class="btn btn-default" />
                         </div>
                     </div>
-                }
+            }
             </div>
         </div>
     }
+    <div class="panel">
+        <div class="panel-heading panel-default">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input data-val="true" data-val-number="Das Feld &quot;StepOptionId&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;StepOptionId&quot; ist erforderlich." id="StepOptionId" name="StepOptionId" type="hidden" value="">
+                <div class="inline-text">
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" data-val="true" data-val-number="Das Feld &quot;Position&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;Position&quot; ist erforderlich." id="Position" name="Position" type="number" value="">
+                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" id="Option" name="Option" type="text" value="">
+                        @Html.ValidationMessageFor(model => model.First().Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" id="Option" name="Option" type="text" value="">
+                        @Html.ValidationMessageFor(model => model.First().Option, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input checked="checked" class="form-control check-box" data-val="true" data-val-required="Das Feld &quot;isActive&quot; ist erforderlich." id="isActive" name="isActive" type="checkbox" value="true">
+                        <input name="isActive" type="hidden" value="false">
+                        @Html.ValidationMessageFor(model => model.First().isActive, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Speichern" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

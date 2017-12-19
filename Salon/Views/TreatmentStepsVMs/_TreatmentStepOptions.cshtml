@@ -1,13 +1,10 @@
 ﻿@model IEnumerable<Salon.Models.StepOptions>
 
-@if (Model.Any())
-{
-    <div class="inline-text title">
-        <p>@Html.DisplayNameFor(model => model.Position)</p>
-        <p>@Html.DisplayNameFor(model => model.Option)</p>
-        <p>@Html.DisplayNameFor(model => model.Description)</p>
-    </div>
-}
+<div class="inline-text title">
+    <p>@Html.DisplayNameFor(model => model.Position)</p>
+    <p>@Html.DisplayNameFor(model => model.Option)</p>
+    <p>@Html.DisplayNameFor(model => model.Description)</p>
+</div>
 
 @foreach (var item in Model)
 {

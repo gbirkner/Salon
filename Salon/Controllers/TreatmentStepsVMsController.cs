@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.Net;
 
 namespace Salon.Controllers
 {
@@ -39,7 +40,8 @@ namespace Salon.Controllers
         {
             return PartialView("_TreatmentStepOptions", db.StepOptions.Where( sid => sid.StepId == id).ToList());
         }
-        
+
+
         // Submit and add or update database
         public ActionResult CreatEditTreatments()
         {
@@ -70,51 +72,20 @@ namespace Salon.Controllers
             return PartialView("_CreatEditStepOptions", db.StepOptions.Where(sid => sid.StepId == id).ToList());
         }
 
-        // POST: Treatments/Create
+        // POST: Create / Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatEditStepOptions([Bind(Include = "TreatmentId,Title,Description,isActive")] Countries countries)
+        public ActionResult EditTreatments([Bind(Include = "TreatmentId,Title,Description,isActive")] Treatments treatments)
         {
             if (ModelState.IsValid)
             {
-                db.Countries.Add(countries);
+                db.Entry(treatments).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("CreatEditTreatments");
             }
 
-            return View(countries);
-        }
-
-        // GET: Countries/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Countries countries = db.Countries.Find(id);
-            if (countries == null)
-            {
-                return HttpNotFound();
-            }
-            return View(countries);
-        }
-
-        // POST: Countries/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CountryId,Title")] Countries countries)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(countries).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(countries);
-        }
+            return View(treatments);
+        }        
 
         protected override void Dispose(bool disposing)
         {
