@@ -8,13 +8,13 @@ namespace Salon.Models.Statistics
 {
     public sealed class StatisticTypes
     {
-        [Display(Name = "Statistic name")]
+        [Display(Name = "Name der Statistik")]
         public string StatisticName { get; set; }
-        [Display(Name = "Statistic description")]
+        [Display(Name = "Beschreibung")]
         public string StatisticDescription { get; set; }
-        [Display(Name = "Statistic type")]
+        [Display(Name = "Typ")]
         public string StatisticType { get; set; }
-        [Display(Name = "Link to statistic")]
+        [Display(Name = "Zur Statistik")]
         public string StatisticUrl { get; set; }
 
         public StatisticTypes(string statisticName, string  statisticDescription, string statisticType, string statisticUrl)
