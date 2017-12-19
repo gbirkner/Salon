@@ -157,6 +157,8 @@
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="RoomId" Type="int" />
+          <Property Name="TeacherId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="VisitTasks">
           <Key>
@@ -350,6 +352,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_VisitsLehrerId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fkVisitCreatedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
@@ -446,6 +460,10 @@
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
           </AssociationSet>
+          <AssociationSet Name="fk_VisitsLehrerId" Association="Self.fk_VisitsLehrerId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
           <AssociationSet Name="fkVisitCreatedBy" Association="Self.fkVisitCreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
@@ -493,6 +511,7 @@
           <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="entryDate" Type="DateTime" Precision="3" />
           <Property Name="resignationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Visits2" Relationship="SalonModel.fk_VisitsLehrerId" FromRole="AspNetUsers" ToRole="Visits" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -634,6 +653,9 @@
           <NavigationProperty Name="Customers" Relationship="Self.FK_dbo_Visits_dbo_Customers_CustomerId" FromRole="Visits" ToRole="Customers" />
           <NavigationProperty Name="Pictures" Relationship="Self.FK_dbo_Pictures_dbo_Visits_VisitId" FromRole="Visits" ToRole="Pictures" />
           <NavigationProperty Name="VisitTasks" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="Visits" ToRole="VisitTasks" />
+          <Property Name="RoomId" Type="Int32" />
+          <Property Name="TeacherId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="SalonModel.fk_VisitsLehrerId" FromRole="Visits" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="VisitTasks">
           <Key>
@@ -955,16 +977,33 @@
           <Parameter Name="class" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
+          <AssociationSet Name="fk_VisitsLehrerId" Association="SalonModel.fk_VisitsLehrerId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
         </EntityContainer>
+        <ComplexType Name="GetClasses">
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <Association Name="fk_VisitsLehrerId">
+          <End Type="SalonModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
+          <End Type="SalonModel.Visits" Role="Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <ComplexType Name="GetWorkPerClass">
           <Property Type="String" Name="StudentName" Nullable="true" MaxLength="201" />
           <Property Type="String" Name="TeacherName" Nullable="true" MaxLength="201" />
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
-        </ComplexType>
-        <ComplexType Name="GetClasses">
-          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1118,6 +1157,8 @@
           <EntitySetMapping Name="Visits">
             <EntityTypeMapping TypeName="SalonModel.Visits">
               <MappingFragment StoreEntitySet="Visits">
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="VisitId" ColumnName="VisitId" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -1157,6 +1198,7 @@
                 <ScalarProperty Name="Class" ColumnName="Class" />
                 <ScalarProperty Name="Treatement" ColumnName="Treatement" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -24,7 +24,7 @@ namespace Salon.Views.ViewModels
         [Display(Name = "Lehrer")]
         public string TeacherName { get; set; }
 
-        [Display(Name = "Arbeit")]
+        [Display(Name = "Behandlung")]
         public string Treatment { get; set; }
 
         [Display(Name = "Datum")]

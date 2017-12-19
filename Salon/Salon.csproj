@@ -19,8 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -421,7 +421,6 @@
     <Content Include="Views\Reports\CustomerConnections.cshtml" />
     <Content Include="Views\Reports\WorkPerClass.cshtml" />
     <Content Include="Views\Reports\WorkPerClassResponse.cshtml" />
-    <Content Include="Views\Reports\WorkPerClass - Kopieren.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

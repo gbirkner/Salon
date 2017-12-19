@@ -17,6 +17,7 @@ namespace Salon.Models
         public string TeacherName { get; set; }
         public string Class { get; set; }
         public string Treatement { get; set; }
-        public System.DateTime Date { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public int TreatmentId { get; set; }
     }
 }

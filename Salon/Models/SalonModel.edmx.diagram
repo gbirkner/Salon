@@ -5,6 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="830b72f4158948638d9763bd28e29f98" Name="Diagram1" ZoomLevel="108">
+      <Diagram DiagramId="830b72f4158948638d9763bd28e29f98" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="SalonModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.AspNetUsers" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Cities" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
@@ -36,6 +37,7 @@
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="SalonModel.fk_VisitsLehrerId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
