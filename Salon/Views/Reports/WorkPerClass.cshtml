@@ -32,56 +32,6 @@
 
 <div id="workTable" style="display: none;">
 	
-
-
-	@if (Model.FirstOrDefault().StudentName != "")
-	{
-		<table class="table">
-			<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.StudentName)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Class)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.TeacherName)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Date)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.Treatment)
-				</th>
-			</tr>
-			@foreach (var item in Model)
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.StudentName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Class)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.TeacherName)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Date)
-						@Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Treatment)
-					</td>
-				</tr>
-			}
-		
-		</table>
-	}
-	else
-	{
-
-	}
 </div>
 
 <script>

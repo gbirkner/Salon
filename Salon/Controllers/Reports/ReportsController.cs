@@ -26,27 +26,27 @@ namespace Salon.Controllers.Reports
         private string message = string.Empty;
 
         // GET: CustomerViewModel
-        public ActionResult Customers(string export = "")
-        {
-            var customer = db.Customers.Include(c => c.Cities);
-            IEnumerable<CustomersViewModel> CustomersViewModel =
-                (from cu in customer
-                 orderby cu.LName
-                 select new CustomersViewModel
-                 {
-                     Country = cu.Cities.CountryId,
-                     CustomerId = cu.CustomerId,
-                     Description = cu.Description,
-                     Name = cu.FName + " " + cu.LName,
-                     PostalCode = cu.Cities.PostalCode,
-                     Street = cu.Street,
-                     City = cu.Cities.Title
-                 }
-                 );
-            customerList = CustomersViewModel.ToList();
+        //public ActionResult Customers(string export = "")
+        //{
+        //    var customer = db.Customers.Include(c => c.Cities);
+        //    IEnumerable<CustomersViewModel> CustomersViewModel =
+        //        (from cu in customer
+        //         orderby cu.LName
+        //         select new CustomersViewModel
+        //         {
+        //             Country = cu.Cities.CountryId,
+        //             CustomerId = cu.CustomerId,
+        //             Description = cu.Description,
+        //             Name = cu.FName + " " + cu.LName,
+        //             PostalCode = cu.Cities.PostalCode,
+        //             Street = cu.Street,
+        //             City = cu.Cities.Title
+        //         }
+        //         );
+        //    customerList = CustomersViewModel.ToList();
 
-            return View(customerList);
-        }
+        //    return View(customerList);
+        //}
 
         /// <summary>
         /// Exports list to a .csv file
@@ -203,15 +203,19 @@ namespace Salon.Controllers.Reports
             foreach (var property in properties) //headers
             {
                 var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
-
+                
                 if (display != null)
                     headers += display.Name + ";";
             }
-
             returnValue.Add(headers);
             foreach (var entry in workPerClassList)  //data
             {
                 returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
+
+                foreach(var step in entry.StepsPerTreatment)
+                {
+                    returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
+                }
             }
 
             var cl = workPerClassList.FirstOrDefault();
