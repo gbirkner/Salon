@@ -176,6 +176,9 @@
     <Compile Include="Models\GetClasses.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetStepsPerTreatment.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetWorkPerClass.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
