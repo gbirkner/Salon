@@ -29,6 +29,7 @@ textarea {
 
 #treatments .panel-heading{
     background-color: #eee;
+    padding: 10px 20px;
 }
 
 #treatments .inline-text{
@@ -57,11 +58,18 @@ textarea {
 }
 
 #treatments .form-group{
-    margin: 0;
     width: 25%;
 }
 
 #treatments .form-group input[type="radio"], #treatments .form-group input[type="checkbox"]{
     margin: 0;
     box-shadow: none;
+}
+
+#treatments.edit .inline-text.title p{
+    text-align: center;
+}
+
+#treatments.edit .form-group{
+    margin: 0 10px;
 }

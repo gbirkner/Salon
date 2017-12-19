@@ -69,5 +69,64 @@ namespace Salon.Controllers
 
             return PartialView("_CreatEditStepOptions", db.StepOptions.Where(sid => sid.StepId == id).ToList());
         }
+
+        // POST: Treatments/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatEditStepOptions([Bind(Include = "TreatmentId,Title,Description,isActive")] Countries countries)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Countries.Add(countries);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(countries);
+        }
+
+        // GET: Countries/Edit/5
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Countries countries = db.Countries.Find(id);
+            if (countries == null)
+            {
+                return HttpNotFound();
+            }
+            return View(countries);
+        }
+
+        // POST: Countries/Edit/5
+        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
+        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "CountryId,Title")] Countries countries)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(countries).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(countries);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            {
+                if (disposing)
+                {
+                    db.Dispose();
+                }
+                base.Dispose(disposing);
+            }
+        }
+
     }
 }

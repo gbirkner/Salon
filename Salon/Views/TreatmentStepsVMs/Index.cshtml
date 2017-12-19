@@ -21,7 +21,7 @@
                             <div class="inline-text">
                                 <p>@Html.DisplayFor(modelItem => item.Title)</p>
                                 <p>@Html.DisplayFor(modelItem => item.Description)</p>
-                                <p>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId })</p>
+                                <p>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId, data_parent = "#accordion" })</p>
                             </div>
                     </div>
                     <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">
@@ -51,7 +51,6 @@
 
             $('body').on('click', '.options-viewdetail', function (e) {
                 e.preventDefault();
-                console.log('test')
                 $that = $(this);
 
                 $.get($that.prop('href'), function (response) {
