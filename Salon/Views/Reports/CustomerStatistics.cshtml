@@ -13,29 +13,53 @@
     <div class="dropdown">
         <button onclick="dropCities();" class="dropbtn btn btn-primary">Ort &#x21e3;</button>
         <div id="cityDrop" class="dropdown-content">
+            <a style="cursor: pointer;" class="locationReset">Alle Orte</a>
             @foreach (var item in Model.Cities.OrderBy(c=> c.Title).ToList())
             {
-                <a href="#">@item.Title</a>
+                <a style="cursor: pointer;" class="locationClick">@item.Title</a>
             }            
         </div>
     </div>
 
     <!-- treatment dropdown -->
     <div class="dropdown" style="margin-left: 3px;">
-        <button onclick="" class="dropbtn btn btn-primary">Behandlung &#x21e3;</button>
-        <div id="myDropdown" class="dropdown-content">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+        <button onclick="dropTreatments();" class="dropbtn btn btn-primary">Behandlung &#x21e3;</button>
+        <div id="treatmentDrop" class="dropdown-content">
+            <a style="cursor: pointer;" class="locationReset">Alle Behandlungen</a>
+            @foreach (var item in Model.Treatments.OrderBy(c => c.Title).ToList())
+            {
+                <a style="cursor: pointer;" class="treatmentClick">@item.Title</a>
+            }
         </div>
     </div>
 
     <!-- export button -->
-    <button style="float: right;" class="btn btn-primary">Export <span style="font-size: 14pt;">&#x21e9;</span></button>
+    <a id="export" style="float: right;" class="btn btn-primary">Export <span style="font-size: 14pt;">&#x21e9;</span></a>
 </div>
 
 <div style="width: 100%;">
     <input type="text" id="searchbar" onkeyup="searchTable()" placeholder="Beginne zu tippen...">
+    
+    <!-- hidden source table -->
+    <table id="sourcetable" class="table" style="display: none;">
+        <tr>
+            <th>Name</th>
+            <th>Ort</th>
+            <th>Letzte Behandlung</th>
+            <th>Kontakt</th>
+        </tr>
+
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>@item.LName @item.FName</td>
+                <td>@Model.GetCity(item.PostalCode, item.CountryId)</td>
+                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
+            </tr>
+        }
+    </table>
+
     <table class="table" id="searchtable">
         <tr>
             <th>Name</th>
@@ -49,8 +73,8 @@
             <tr>
                 <td>@item.LName @item.FName</td>
                 <td>@Model.GetCity(item.PostalCode, item.CountryId)</td>
-                <td>empty</td>
-                <td><button id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>                
+                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
     </table>
@@ -65,45 +89,18 @@
             <h2>Kontakt-Informationen</h2>
         </div>
         <div class="modal-body">
-            <p>Telefon: 12344567</p>
-            <p>Email: example@example.com</p>
+           
         </div>        
     </div>
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
-<script>
-    function searchTable() {
-        // Declare variables
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("searchbar");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("searchtable");
-        tr = table.getElementsByTagName("tr");
-
-        // Loop through all table rows, and hide those who don't match the search query
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1 = tr[i].getElementsByTagName("td")[1];
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                }
-                if (td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                }
-                else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-
+<script>    
     var modal = document.getElementById("modalBox");
 
     /* customer contact button click */
-    $(".contact-btn").click(function () {
-        var custID = $(this).attr("id");
+    function contactClick (custid) {
+        var custID = custid.id;
         $.ajax({
             type: 'get',
             url: '/Reports/CustomerStatistics?cust=' + custID,
@@ -115,7 +112,7 @@
                 alert("die Kontaktinformationen konnten nicht geladen werden");
             }
         });        
-    });
+    };
     
     /* MODAL functions */
     /* close modal onclick */
@@ -134,6 +131,10 @@
         document.getElementById("cityDrop").classList.toggle("show");
     }
 
+    function dropTreatments() {
+        document.getElementById("treatmentDrop").classList.toggle("show");
+    }
+
     // Close the dropdown if the user clicks outside of it
     window.onclick = function (event) {
         if (!event.target.matches('.dropbtn')) {
@@ -148,4 +149,166 @@
             }
         }
     }
+
+    function searchTable() {
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("searchbar");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("searchtable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td1 = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else if (td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+
+    /* click events for dropdowns */
+    $(".locationClick").click(function () {
+
+        // reset table
+        $("#searchtable").html($("#sourcetable").html());
+
+        var input = $(this).html();
+        filter = input.toUpperCase();
+        table = document.getElementById("searchtable");
+        tr = table.getElementsByTagName("tr");
+
+        // loop through all rows and delete those who didn't match the searched location
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];            
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }                
+                else {
+                    tr[i].remove();
+                    i = i-1;
+                }
+            }
+        }
+    });
+
+    $(".treatmentClick").click(function () {
+        // reset table
+        $("#searchtable").html($("#sourcetable").html());
+
+        var input = $(this).html();
+        filter = input.toUpperCase();
+        table = document.getElementById("searchtable");
+        tr = table.getElementsByTagName("tr");
+
+        // loop through all rows and delete those who didn't match the searched location
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[2];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                }
+                else {
+                    tr[i].remove();
+                    i = i - 1;
+                }
+            }
+        }
+    });
+
+    $(".locationReset").click(function () {
+        $("#searchtable").html($("#sourcetable").html());
+    });
+</script>
+
+<!-- csv export -->
+<script>
+    function exportTableToCSV($table, filename) {
+        var $headers = $table.find('tr:has(th)')
+            , $rows = $table.find('tr:has(td)')
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+            , tmpColDelim = String.fromCharCode(11) // vertical tab character
+            , tmpRowDelim = String.fromCharCode(0) // null character
+
+            // actual delimiter characters for CSV format
+            , colDelim = '";"'
+            , rowDelim = '"\r\n"';
+
+        // Grab text from table into CSV formatted string
+        var csv = '"';
+        csv += formatRows($headers.map(grabRow));
+        csv += rowDelim;
+        csv += formatRows($rows.map(grabRow)) + '"';
+
+        // Data URI
+        var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
+        // For IE (tested 10+)
+        if (window.navigator.msSaveOrOpenBlob) {
+            var blob = new Blob([decodeURIComponent(encodeURI(csv))], {
+                type: "text/csv;charset=utf-8;"
+            });
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            $(this)
+                .attr({
+                    'download': filename
+                    , 'href': csvData
+                    //,'target' : '_blank' //if you want it to open in a new window
+                });
+        }
+
+        //------------------------------------------------------------
+        // Helper Functions 
+        //------------------------------------------------------------
+        // Format the output so it has the appropriate delimiters
+        function formatRows(rows) {
+            return rows.get().join(tmpRowDelim)
+                .split(tmpRowDelim).join(rowDelim)
+                .split(tmpColDelim).join(colDelim);
+        }
+        // Grab and format a row from the table
+        function grabRow(i, row) {
+
+            var $row = $(row);
+            //for some reason $cols = $row.find('td') || $row.find('th') won't work...
+            var $cols = $row.find('td');
+            if (!$cols.length) $cols = $row.find('th');
+
+            return $cols.map(grabCol)
+                .get().join(tmpColDelim);
+        }
+        // Grab and format a column from the table 
+        function grabCol(j, col) {
+            var $col = $(col),
+                $text = $col.text();
+
+            return $text.replace('"', '""'); // escape double quotes
+
+        }
+    }
+
+
+    // This must be a hyperlink
+    $("#export").click(function (event) {
+        var outputFile = 'customer-export'        
+        outputFile = outputFile.replace('.csv', '') + '.csv'
+        // CSV
+        exportTableToCSV.apply(this, [$('#searchtable'), outputFile]);
+
+        // IF CSV, don't do event.preventDefault() or return false
+        // We actually need this to be a typical hyperlink
+    });        
 </script>

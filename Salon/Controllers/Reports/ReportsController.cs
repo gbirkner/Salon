@@ -101,7 +101,7 @@ namespace Salon.Controllers.Reports
 
         public ActionResult CustomerStatistics(string cust = null)
         {
-            var customerStats = new CustomerStatistics(db.Customers, db.Visits, db.Treatments, db.Cities, db.Countries, db.Connections, db.ConnectionTypes);
+            var customerStats = new CustomerStatistics(db);
 
             if (cust != null)
             {

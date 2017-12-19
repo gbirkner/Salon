@@ -9,6 +9,8 @@ namespace Salon.Models.Statistics
 {
     public sealed partial class CustomerStatistics
     {
+        private SalonEntities dbref;
+
         public DbSet<Models.Customers> Customers { get; set; }
         public DbSet<Models.Visits> Visits { get; set; }
         public DbSet<Models.Treatments> Treatments { get; set; }
@@ -16,6 +18,7 @@ namespace Salon.Models.Statistics
         public DbSet<Models.Countries> Countries { get; set; }
         public DbSet<Models.Connections> Connections { get; set; }
         public DbSet<Models.ConnectionTypes> ConnectionTypes { get; set; }
+        public DbSet<Models.VisitTasks>VisitTasks { get; set; }
 
         public string GetCity(string postalCode, string countryId)
         {
@@ -31,6 +34,26 @@ namespace Salon.Models.Statistics
             {
                 return cityname.First();
             }            
+        }
+
+        public string LastTreatment(int customerID)
+        {
+            var result = from vt in VisitTasks
+                         join v in Visits on vt.VisitId equals v.VisitId
+                         join t in Treatments on vt.TreatmentId equals t.TreatmentId
+                         where v.CustomerId == customerID
+                         orderby v.Created descending
+                         select t.Title;
+            
+            if(result.FirstOrDefault() != null)
+            {
+                return result.FirstOrDefault();
+            }
+            else
+            {
+                return "keine Behandlung vorhanden";
+            }
+            
         }
         
         public List<CustomerConnections> GetConnections(int customerID)
@@ -54,16 +77,17 @@ namespace Salon.Models.Statistics
             }
         }
 
-        public CustomerStatistics(DbSet<Models.Customers> customers, DbSet<Models.Visits> visits, DbSet<Models.Treatments> treatments,
-            DbSet<Models.Cities> cities, DbSet<Models.Countries> countries, DbSet<Connections> connections, DbSet<ConnectionTypes> connectionTypes)
+        public CustomerStatistics(SalonEntities conn)
         {
-            Customers = customers;
-            Visits = visits;
-            Treatments = treatments;
-            Cities = cities;
-            Countries = countries;
-            Connections = connections;
-
+            dbref = conn;
+            Customers = dbref.Customers;
+            Visits = dbref.Visits;
+            Treatments = dbref.Treatments;
+            Cities = dbref.Cities;
+            Countries = dbref.Countries;
+            Connections = dbref.Connections;
+            ConnectionTypes = dbref.ConnectionTypes;
+            VisitTasks = dbref.VisitTasks;
         }
     }
 
@@ -71,13 +95,6 @@ namespace Salon.Models.Statistics
     {
         public string ConnectionType { get; set; }
         public string ConnectionValue { get; set; }
-        public string ConnectionDescription { get; set; }
-
-        /*public CustomerConnections(string connectionType, string connectionValue, string connectionDescription)
-        {
-            ConnectionType = connectionType;
-            ConnectionValue = connectionValue;
-            ConnectionDescription = connectionDescription;
-        }*/
+        public string ConnectionDescription { get; set; }        
     }
 }
