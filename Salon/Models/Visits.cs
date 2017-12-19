@@ -28,6 +28,8 @@ namespace Salon.Models
         public System.DateTime Modified { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime Created { get; set; }
+        public Nullable<int> RoomId { get; set; }
+        public string TeacherId { get; set; }
     
         public virtual AspNetUsers AspNetUsers { get; set; }
         public virtual AspNetUsers AspNetUsers1 { get; set; }
@@ -36,5 +38,6 @@ namespace Salon.Models
         public virtual ICollection<Pictures> Pictures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitTasks> VisitTasks { get; set; }
+        public virtual AspNetUsers AspNetUsers2 { get; set; }
     }
 }

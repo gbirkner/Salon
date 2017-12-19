@@ -18,8 +18,8 @@
                         <th class="sortable">
                             @Html.DisplayNameFor(model => model.StudentName) &#x21c5
                         </th>
-                        <th class="sortable">
-                            @Html.DisplayNameFor(model => model.Class) &#x21c5
+                        <th>
+                            @Html.DisplayNameFor(model => model.Class)
                         </th>
                         <th class="sortable">
                             @Html.DisplayNameFor(model => model.TeacherName) &#x21c5
@@ -30,32 +30,35 @@
                         <th class="sortable">
                             @Html.DisplayNameFor(model => model.Treatment) &#x21c5
                         </th>
+                        <th>
+                            Schritt
+                        </th>
+                        <th>
+                            Schrittbeschreibung
+                        </th>
                     </tr>
                 </thead>
                 <tbody style="overflow: auto; max-height: 80%">
-                    @for (int i = 0; i < 10; i++)
+                    @foreach (var item in Model)
                     {
-                        foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.StudentName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Class)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.TeacherName)
-                                </td>
-                                <td>
-                                    @*@Html.DisplayFor(modelItem => item.Date)*@
-                                    @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Treatment)
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Class)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeacherName)
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.Date)*@
+                                @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Treatment)
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
