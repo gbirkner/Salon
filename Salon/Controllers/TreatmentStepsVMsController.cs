@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using System.Net;
+using System.Collections.Specialized;
 
 namespace Salon.Controllers
 {
@@ -75,13 +76,11 @@ namespace Salon.Controllers
         // POST: Create / Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditTreatments([Bind(Include = "TreatmentId,Title,Description,isActive")] Treatments treatments)
+        public ActionResult EditTreatments(List<Salon.Models.Treatments> treatments)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(treatments).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("CreatEditTreatments");
+                
             }
 
             return View(treatments);
