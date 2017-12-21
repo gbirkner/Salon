@@ -20,31 +20,31 @@
     <div class="form-group">
         @Html.LabelFor(m => m.firstName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.firstName, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.firstName, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.lastName, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.lastName, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.lastName, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Class, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.Class, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Class, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.entryDate, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.entryDate, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.entryDate, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.resignationDate, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.resignationDate, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.resignationDate, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
@@ -66,16 +66,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-md-2 control-label">
-            Select User Role
-        </label>
+        @Html.Label("Role", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @foreach (var item in (SelectList)ViewBag.RoleId)
-            {
-                <input type="checkbox" name="SelectedRoles"
-                       value="@item.Value" class="checkbox-inline" />
-                    @Html.Label(item.Text, new { @class = "control-label" })
-            }
+            @Html.DropDownList("RoleId", (SelectList)ViewBag.RoleId, "No Roles", new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
