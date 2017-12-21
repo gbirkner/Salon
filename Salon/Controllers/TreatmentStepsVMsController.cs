@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using System.Net;
 using System.Collections.Specialized;
+using System.Data.Entity.Infrastructure;
 
 namespace Salon.Controllers
 {
@@ -78,12 +79,34 @@ namespace Salon.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditTreatments(List<Salon.Models.Treatments> treatments)
         {
+            foreach (Treatments tr in treatments)
+            {
+                if (tr.TreatmentId != 0)
+                    db.Entry(tr).State = EntityState.Modified;
+                else
+                    db.Entry(tr).State = EntityState.Added;
+            }
             if (ModelState.IsValid)
             {
-                
-            }
+                bool SaveFailed = false;
+                do
+                {
+                    SaveFailed = false;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        SaveFailed = true;
 
-            return View(treatments);
+                        // Update original values from the database 
+                        var entry = ex.Entries.Single();
+                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                    }
+                } while (SaveFailed == true);
+            }
+            return RedirectToAction("CreatEditTreatments", treatments);
         }        
 
         protected override void Dispose(bool disposing)
