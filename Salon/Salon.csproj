@@ -192,7 +192,7 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-<!--     <Compile Include="Controllers\AccountController.cs" />
+    <!--     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" /> -->
     <Compile Include="Models\Countries.cs">
@@ -203,6 +203,12 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Settings.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\*.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -352,11 +358,9 @@
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\*.cshtml" />
-
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
-
     <Content Include="Views\Settings\Create.cshtml" />
     <Content Include="Views\Settings\Delete.cshtml" />
     <Content Include="Views\Settings\Details.cshtml" />

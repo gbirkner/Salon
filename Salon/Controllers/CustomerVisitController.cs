@@ -26,7 +26,7 @@ namespace Salon.Controllers
                     FName = c.FName,
                     LName = c.LName,
                     GenderID = c.GenderID,
-                    PostalCode = c.PostalCode,
+                    //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
                     Street = c.Street,
@@ -43,7 +43,7 @@ namespace Salon.Controllers
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
                 from c in cust
-                where c.FName.Contains(searchstring) || c.LName.Contains(searchstring) || c.PostalCode.Contains(searchstring) || c.Cities.Title.Contains(searchstring) || c.Cities.Countries.Title.Contains(searchstring) || c.Street.Contains(searchstring) || c.Description.Contains(searchstring)
+                //where c.FName.Contains(searchstring) || c.LName.Contains(searchstring) || c.PostalCode.Contains(searchstring) || c.Cities.Title.Contains(searchstring) || c.Cities.Countries.Title.Contains(searchstring) || c.Street.Contains(searchstring) || c.Description.Contains(searchstring)
                 orderby c.LName
                 select new CustomerViewModel
                 {
@@ -51,7 +51,7 @@ namespace Salon.Controllers
                     FName = c.FName,
                     LName = c.LName,
                     GenderID = c.GenderID,
-                    PostalCode = c.PostalCode,
+                    //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
                     Street = c.Street,

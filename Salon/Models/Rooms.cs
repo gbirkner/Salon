@@ -12,24 +12,19 @@ namespace Salon.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Steps
+    public partial class Rooms
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Steps()
+        public Rooms()
         {
-            this.StepOptions = new HashSet<StepOptions>();
-            this.TreatmentSteps = new HashSet<TreatmentSteps>();
+            this.Visits = new HashSet<Visits>();
         }
     
-        public int StepId { get; set; }
+        public int RoomId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public bool isSensitive { get; set; }
-        public bool isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StepOptions> StepOptions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TreatmentSteps> TreatmentSteps { get; set; }
+        public virtual ICollection<Visits> Visits { get; set; }
     }
 }
