@@ -169,6 +169,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\PicturesController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -265,6 +266,8 @@
       <DependentUpon>SalonModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\drawing.js" />
+    <Content Include="Scripts\graphicsbuttons.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -310,6 +313,14 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Pictures\Create.cshtml" />
+    <Content Include="Views\Pictures\Delete.cshtml" />
+    <Content Include="Views\Pictures\Details.cshtml" />
+    <Content Include="Views\Pictures\Edit.cshtml" />
+    <Content Include="Views\Pictures\Index.cshtml" />
+    <Content Include="Views\Shared\DrawSketch.cshtml" />
+    <Content Include="Views\Shared\GraphicsView.cshtml" />
+    <Content Include="Views\Shared\AddPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

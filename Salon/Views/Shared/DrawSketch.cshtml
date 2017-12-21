@@ -1,0 +1,37 @@
+﻿@model List<Salon.Models.Pictures>
+
+<button id="modeButton">Freihand</button>
+<button id="resetButton">Löschen</button>
+<button id="undoButton">Schritt zurück</button>
+<br />
+<button id="frontViewButton">Vorne</button>
+<button id="backViewButton">Hinten</button>
+<button id="sideViewButton">Seite</button>
+<br />
+
+<img id="sketchBgFront" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[0].Photo)" />
+<img id="sketchBgBack" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[1].Photo)" />
+<img id="sketchBgSide" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[2].Photo)" />
+
+@using (Html.BeginForm("AddSketches", "Pictures", FormMethod.Post))
+{
+    <input type="hidden" id="sketchDataFront" name="sketchDataFront" />
+    <input type="hidden" id="sketchDataBack" name="sketchDataBack" />
+    <input type="hidden" id="sketchDataSide" name="sketchDataSide" />
+
+    <input type="text" id="descriptionFront" name="descriptionFront" style="position: absolute;" />
+    <input type="text" id="descriptionBack" name="descriptionBack" style="position: absolute; visibility:hidden" />
+    <input type="text" id="descriptionSide" name="descriptionSide" style="position: absolute; visibility:hidden" />
+    <br />
+
+    <input type="submit" id="submitButton" value="AddSketches" />
+}
+
+<div style="position: relative;">
+    <canvas id="sketchCanvasFront" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+    <canvas id="sketchCanvasBack" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0; visibility: hidden"></canvas>
+    <canvas id="sketchCanvasSide" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0; visibility: hidden"></canvas>
+    <canvas id="tempCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+</div>
+
+@Scripts.Render("~/Scripts/drawing.js")

@@ -26,5 +26,12 @@ namespace Salon.Controllers
 
             return View();
         }
+
+        public ActionResult Pictures()
+        {
+            ViewBag.Message = "Your random page.";
+
+            return View();
+        }
     }
 }
