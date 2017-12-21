@@ -72,10 +72,12 @@ namespace Salon.Models {
         [Display(Name = "Schritte")]
         public List<VisitTasks> tasks { get; set; }
         public List<TreatmentSteps> possibleTasks { get; set; }
+        public int ran { get; set; }
 
         public VisitTreatment() {
             this.tasks = new List<VisitTasks>();
             this.possibleTasks = new List<TreatmentSteps>();
+            this.ran = new Random().Next();
         }
     }
 

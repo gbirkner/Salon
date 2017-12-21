@@ -45,7 +45,7 @@
                 @Model.created
             </h3>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="slc_teacher">Lehrer:</label>
                     <select name="slc_teacher" id="slc_teacher" class="form-control">
                         @foreach (var t in ViewBag.teachers) {
@@ -57,7 +57,7 @@
                         }
                     </select>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="slc_room">Raum:</label>
                     <select name="slc_room" id="slc_room" class="form-control">
                         @foreach (var r in ViewBag.rooms) {
@@ -68,6 +68,10 @@
                             }
                         }
                     </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>Dauer Approx [min]:</label>
+                    <input type="number" min="1" id="inp_approx_duration" name="inp_approx_duration" class="form-control" /> 
                 </div>
                
             </div>
@@ -88,7 +92,7 @@
                 <div class="list-group" id="selectedTreatmentsContainer" data-nextId="@Model.selectedTreatments.Count+1">
                     @{int i = 0; }
                     @foreach (var vt in Model.selectedTreatments) {
-                        <a class="list-group-item clearfix item_treatment" id="item_treatment_@i"
+                        <a class="list-group-item clearfix item_treatment" href="javascript:void(0)" id="item_treatment_@i"
                            onclick="switchTreatment('@i')">
                             @vt.name
                             <div class='pull-right'>
@@ -105,17 +109,7 @@
 
                 </div>
             }
-            
-            <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                Besuch abschließen
-            </button>
-            <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                speichern
-            </button>
-
-
+        
         </div>
 
         <div class="col-sm-8" id="addTreatmentsContainer">
@@ -131,6 +125,14 @@
 
         </div>
     </div>
+    <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        Besuch abschließen
+    </button>
+    <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        speichern
+    </button>
 </form>
 
 
@@ -145,7 +147,7 @@
             <div class="modal-body">
                 <div class="list-group">
                     @foreach (var t in Model.availableTreatments) {
-                        <a class="list-group-item addTreatmentEntry">
+                        <a class="list-group-item addTreatmentEntry" href="javascript:void(0)">
                             <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
                             <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
                             @t.Title
@@ -183,7 +185,7 @@
                     var name = $(this).find(".inp_addTreatmentName").val();
                     var con = $("#selectedTreatmentsContainer");
                     var entryId = parseInt(con.data("nextid"));
-                    con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' "+
+                    con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' href='javascript:void(0)' "+
                         "onclick=\"switchTreatment('"+entryId+"')\">" + name +
                         "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
                         "onclick=\"removeTreatment('" + entryId + "')\">" +
@@ -210,7 +212,18 @@
                 form.remove();
             }
 
+            function calculateDuration() {
+                var duration = 0;
+                $(".grp_treatmentStep").each(function () {
+                    if (!$(this).hasClass("hidden")) {
+                        duration += Number($(this).data("duration"));
+                    }
+                });
+                $("#inp_approx_duration").val(duration);
+            }
+
             function switchTreatment(id) {
+                calculateDuration();
                 var item = $("#item_treatment_" + id);
                 var form = $("#form_treatment_" + id);
 
@@ -297,24 +310,27 @@
 
 
                 /****************************************** TREATMENT FORM ***************************************/
-
-                $(function () {
-                    $(".item_allTasks").each(function () {
-                        $(this).on('click', function (e) {
-                            var stepId = $(this).data("stepid");
-                            var treatmentId = $(this).data("treatmentid");
-                            if ($(this).hasClass('active')) {
-                                $(this).removeClass('active');
-                                $('#grp_step_' + treatmentId + "_" + stepId).addClass("hidden");
-                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', true);
-                            } else {
-                                $(this).addClass('active');
-                                $('#grp_step_' + treatmentId + "_" + stepId).removeClass("hidden");
-                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', false);
-                            }
-                        });
+                $(".item_allTasks").each(function () {
+                    $(this).on('click', function (e) {
+                        var stepId = $(this).data("stepid");
+                        var treatmentId = $(this).data("treatmentid");
+                        if ($(this).hasClass('active')) {
+                            $(this).removeClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId).addClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', true);
+                        } else {
+                            $(this).addClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId).removeClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', false);
+                        }
+                        calculateDuration();
                     });
                 });
+
+
+                calculateDuration();
+                
+                
 
                 
             });

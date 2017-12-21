@@ -13,13 +13,20 @@
     <dd>
         @Model.customer.FName @Model.customer.LName
     </dd>
-
     <dt>
         @Html.DisplayNameFor(x => x.stylist)
     </dt>
-    <dd>
-        @Model.stylist.UserName
-    </dd>
+    @if (Model.stylist != null && Model.stylist.UserName != null) {
+        
+        <dd>
+            @Model.stylist.UserName
+        </dd>
+    } else {
+        <dd>
+            n/A
+        </dd>
+    }
+    
 
     <dt>
         @Html.DisplayNameFor(x => x.created)

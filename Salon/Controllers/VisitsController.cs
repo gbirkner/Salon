@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
 using System.Collections.Specialized;
+using Microsoft.AspNet.Identity;
 
 namespace Salon.Controllers
 {
@@ -95,7 +96,8 @@ namespace Salon.Controllers
         public ActionResult VisitCreate(int? id) {
             Customers customer = null;
             //TEST VALUES TODO CHANGE
-            AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
+            //AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
+            AspNetUsers stylist = db.AspNetUsers.Find(User.Identity.GetUserId());
             AspNetUsers teacher = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             Rooms room = db.Rooms.Find(2);
 
@@ -135,7 +137,7 @@ namespace Salon.Controllers
 
             int cusId;
             string stylistId;
-
+            int duration;
             if (!string.IsNullOrEmpty(nvc["slc_customerId"]) && Int32.TryParse(nvc["slc_customerId"], out cusId)) {
                 cusId = Int32.Parse(nvc["slc_customerId"]);
                 
@@ -146,6 +148,9 @@ namespace Salon.Controllers
                 stylistId = nvc["inp_stylistId"];
             }else {
                 return Redirect("/Visits/Index?success=false");
+            }
+            if (!string.IsNullOrEmpty(nvc["inp_approx_duration"]) && Int32.TryParse(nvc["inp_approx_duration"], out duration)) {
+                visit.Duration = duration;
             }
 
             visit.AspNetUsers2 = db.AspNetUsers.Find(nvc["slc_teacher"]);
@@ -165,7 +170,7 @@ namespace Salon.Controllers
             string inType;
             VisitTasks vt;
             foreach (string key in nvc.AllKeys) {
-                if(i < 5) {
+                if(i < 6) {
                     i++;
                 }else {
                     treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
@@ -201,6 +206,7 @@ namespace Salon.Controllers
             NameValueCollection nvc = Request.Form;
 
             int cusId;
+            int duration;
             string stylistId;
 
             if (!string.IsNullOrEmpty(nvc["slc_customerId"]) && Int32.TryParse(nvc["slc_customerId"], out cusId)) {
@@ -214,9 +220,11 @@ namespace Salon.Controllers
             } else {
                 return Redirect("/Visits/Index?success=false");
             }
+            if (!string.IsNullOrEmpty(nvc["inp_approx_duration"]) && Int32.TryParse(nvc["inp_approx_duration"], out duration)) {
+                visit.Duration = duration;
+            }
 
-
-
+            
             visit.AspNetUsers2 = db.AspNetUsers.Find(nvc["slc_teacher"]);
             visit.RoomId = Int32.Parse(nvc["slc_room"]);
             visit.AspNetUsers = db.AspNetUsers.Find(stylistId);
@@ -235,7 +243,7 @@ namespace Salon.Controllers
             string inType;
             VisitTasks vt;
             foreach (string key in nvc.AllKeys) {
-                if (i < 5) {
+                if (i < 6) {
                     i++;
                 } else {
                     treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
