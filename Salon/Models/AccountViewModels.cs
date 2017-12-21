@@ -60,6 +60,18 @@ namespace Salon.Models
 
         [Display(Name = "Speichern?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Raum")]
+        public string Room { get; set; }
+
+        [Display(Name = "Lehrer")]
+        public string Teacher { get; set; }
+
+        // This property will hold all available states for selection
+        public IEnumerable<System.Web.Mvc.SelectListItem> Rooms { get; set; }
+
+        // This property will hold all available teachers for selection
+        public IEnumerable<System.Web.Mvc.SelectListItem> Teachers { get; set; }
     }
 
     public class RegisterViewModel

@@ -17,6 +17,7 @@ namespace Salon.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private SalonEntities db = new SalonEntities();
 
         public AccountController()
         {
@@ -58,7 +59,25 @@ namespace Salon.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+
+            var model = new LoginViewModel();
+
+            model.Rooms = db.Rooms.ToList().Select(c => new SelectListItem {
+                Text = c.Title,
+                Value = c.RoomId.ToString(),
+            }).ToList();
+
+            var users = from u in db.AspNetUsers
+                        where u.AspNetRoles.Any(r => r.Name == "Lehrer")
+                        select u;
+
+            model.Teachers = users.ToList().Select(c => new SelectListItem
+            {
+                Text = c.UserName,
+                Value = c.Id.ToString(),
+            }).ToList();
+
+            return View(model);
         }
 
         //
@@ -76,9 +95,12 @@ namespace Salon.Controllers
             // Anmeldefehler werden bezüglich einer Kontosperre nicht gezählt.
             // Wenn Sie aktivieren möchten, dass Kennwortfehler eine Sperre auslösen, ändern Sie in "shouldLockout: true".
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["Room"] = model.Room;
+                    Session["Teacher"] = model.Teacher;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
