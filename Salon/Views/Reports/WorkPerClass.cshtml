@@ -24,21 +24,32 @@
         <option>Name aufsteigend</option>
         <option>Name absteigend</option>
     </select>
+
+    @Html.DropDownListFor(n => Model.First().SelectedTeacher, Model.First().GetTeachers(), "--Select a teacher--") 
+    @*https://forums.asp.net/t/2106150.aspx?HTML+DropDownList+Key+and+Value+for+options*@
+
     
     <button style="margin-left: 10px; width: 150px; height: 40px; display: inline-block; clear: both" class="btn btn-primary" onclick="changeClass();">Anzeigen</button>
-    <button style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new { export = "excel" })'">Download &#x21e9</button>
+    <button style="float: right; display: inline-block; width: 150px; height: 40px" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new {})'">Download &#x21e9</button>
 </div>
 
-@if (ViewBag.Message != null)
+@if (ViewBag.Downloaded == true)
 {
-	<script type="text/javascript">
-			window.onload = function () {
-				alert("@ViewBag.Message");
-			};
-	</script>
+    if (ViewBag.Success == true)
+    {
+	    <script type="text/javascript">
+	    		window.onload = function () {
+	    		    alert("Die Datei wurde erfolgreich heruntergeladen!");
+	    		};
+	    </script>
+    }
+    else
+    {
+        string message = "Die Datei konnte nicht heruntergeladen werden!\r\n" + ViewBag.Message;
+    }
 }
 
-<div id="workTable" style="display: none;">
+<div id="workTable" style="display: none; overflow: auto; height: 40%">
 	
 </div>
 
@@ -52,9 +63,5 @@
 				$("#workTable").show();
 			}
 		});
-	}
-
-	function showResult() {
-	    alert("TEST");
 	}
 </script>

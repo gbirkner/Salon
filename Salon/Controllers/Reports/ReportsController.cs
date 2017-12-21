@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
 using Salon.Views.ViewModels;
-using System.Data.Entity;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using System.Xml;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 using Salon.Models.Statistics;
-using System.Text.RegularExpressions;
 
 namespace Salon.Controllers.Reports
 {
     public class ReportsController : Controller
     {
-        private SalonEntities db = new SalonEntities();
+        public static bool Download = false;
+        public static bool SuccessfullDownload = false;
+        public static string ErrorMessage = string.Empty;
         private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
+        private SalonEntities db = new SalonEntities();
 
         // GET: CustomerViewModel
         //public ActionResult Customers(string export = "")
@@ -54,6 +49,8 @@ namespace Salon.Controllers.Reports
         /// <returns></returns>
         public void Export(List<string> exportList, string fileName)
         {
+            int count = 1;
+            Download = true;
             try {
                 //Gets the directory of the logged in windows user
                 string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
@@ -62,10 +59,21 @@ namespace Salon.Controllers.Reports
                 {
                     path = Directory.GetParent(path).ToString() + @"\downloads\";
                 }
-                System.IO.File.WriteAllLines(path + @"\" + fileName + ".csv", exportList, System.Text.Encoding.UTF8);
+
+                string fullPath = path + @"\" + fileName + ".csv";
+                while (System.IO.File.Exists(fullPath))
+                {
+                    fullPath = path + @"\" + fileName + "_" + count + ".csv";
+                    count++;
+                }
+
+                System.IO.File.WriteAllLines(fullPath, exportList, System.Text.Encoding.UTF8);
+                SuccessfullDownload = true;
             }
-            catch
+            catch (Exception ex)
             {
+                ErrorMessage = ex.Message;
+                SuccessfullDownload = false;
             }
         }
 
@@ -129,6 +137,10 @@ namespace Salon.Controllers.Reports
         public ActionResult WorkPerClass(string cl = "", string sort = "")
         {
             var visits = db.Visits;
+            ViewBag.Downloaded = Download;
+            ViewBag.Success = SuccessfullDownload;
+            ViewBag.ErrorMessage = ErrorMessage;
+            workPerClassList.Clear();
 
             if (cl != "")
             {
@@ -141,7 +153,8 @@ namespace Salon.Controllers.Reports
                             TeacherName = c.TeacherName,
                             Treatment = c.Treatement,
                             Date = c.Date ?? Convert.ToDateTime(c.Date),
-                            StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId)
+                            StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId),
+                            Room = c.Room
                         }).ToList();
 
                 switch(sort)
@@ -175,7 +188,8 @@ namespace Salon.Controllers.Reports
                         StudentName = "",
                         TeacherName = "",
                         Treatment = "",
-                        Date = DateTime.Now
+                        Date = DateTime.Now,
+                        Room = ""
                         //,StepsPerTreatment = this.GetStepsPerTreatment(1)
                     }
                  );
@@ -206,7 +220,7 @@ namespace Salon.Controllers.Reports
         public ActionResult WorkPerClassExport()
         {
             List<String> returnValue = new List<string>();
-            string headers = string.Empty;
+            string headers = "Nr;";
 
             var properties = typeof(WorkPerClassViewModel).GetProperties();
             var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
@@ -226,14 +240,18 @@ namespace Salon.Controllers.Reports
             }
 
             returnValue.Add(headers);
+
+            int number = 1;
             foreach (var entry in workPerClassList)  //data
             {
-                returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
+                //returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
 
                 foreach(var step in entry.StepsPerTreatment)
                 {
-                    returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
+                    returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + step.StepTitle + ";" + step.StepDescription);
+                    //returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
                 }
+                number++;
             }
 
             var cl = workPerClassList.FirstOrDefault();

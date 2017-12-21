@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
@@ -389,9 +389,11 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRooms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetStepsPerTreatment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="treatmentId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetTeachers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetWorkPerClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="class" Type="nvarchar" Mode="In" />
         </Function>
@@ -479,8 +481,7 @@
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -986,11 +987,13 @@
           </AssociationSet>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
           <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
-            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
-            <Parameter Name="class" Mode="In" Type="String" />
+          <Parameter Name="class" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
+          <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
         </EntityContainer>
         <ComplexType Name="GetClasses">
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
@@ -1000,12 +1003,21 @@
           <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
         </ComplexType>
         <ComplexType Name="GetWorkPerClass">
-          <Property Type="String" Name="StudentName" Nullable="true" MaxLength="201" />
-          <Property Type="String" Name="TeacherName" Nullable="true" MaxLength="201" />
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="Date" Nullable="true" />
-          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetRooms">
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetTeachers">
+          <Property Type="String" Name="TeacherId" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1205,12 +1217,29 @@
           <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
+                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
                 <ScalarProperty Name="StudentName" ColumnName="StudentName" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
                 <ScalarProperty Name="Class" ColumnName="Class" />
                 <ScalarProperty Name="Treatement" ColumnName="Treatement" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
+                <ScalarProperty Name="Room" ColumnName="Room" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetRooms" FunctionName="SalonModel.Store.GetRooms">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetRooms">
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetTeachers">
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

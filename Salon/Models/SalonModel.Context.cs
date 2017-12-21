@@ -64,5 +64,15 @@ namespace Salon.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass>("GetWorkPerClass", classParameter);
         }
+    
+        public virtual ObjectResult<GetRooms> GetRooms()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRooms>("GetRooms");
+        }
+    
+        public virtual ObjectResult<GetTeachers> GetTeachers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTeachers>("GetTeachers");
+        }
     }
 }

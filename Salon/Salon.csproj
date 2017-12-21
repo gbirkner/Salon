@@ -194,7 +194,13 @@
     <Compile Include="Models\GetClasses.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetRooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetStepsPerTreatment.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetTeachers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetWorkPerClass.cs">
