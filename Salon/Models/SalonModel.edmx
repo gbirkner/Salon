@@ -4,22 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="AspNetRoles">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
-        </EntityType>
-        <EntityType Name="AspNetUserRoles">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
-        </EntityType>
+      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
@@ -44,9 +29,9 @@
         </EntityType>
         <EntityType Name="Cities">
           <Key>
-            <PropertyRef Name="CountryId" />
-            <PropertyRef Name="PostalCode" />
+            <PropertyRef Name="CityId" />
           </Key>
+          <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CountryId" Type="nvarchar" MaxLength="2" Nullable="false" />
           <Property Name="PostalCode" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -80,8 +65,6 @@
           <Key>
             <PropertyRef Name="CustomerId" />
           </Key>
-          <Property Name="CountryId" Type="nvarchar" MaxLength="2" />
-          <Property Name="PostalCode" Type="nvarchar" MaxLength="10" />
           <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FName" Type="nvarchar" MaxLength="255" />
           <Property Name="LName" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -95,6 +78,7 @@
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" />
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="GenderID" Type="int" Nullable="false" />
+          <Property Name="CityId" Type="int" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -105,6 +89,16 @@
           <Property Name="isSketch" Type="bit" Nullable="false" />
           <Property Name="VisitId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="SettingID" />
+          </Key>
+          <Property Name="SettingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnonymizeUserByDays" Type="smallint" Nullable="false" />
+          <Property Name="AnonymizeCustomerByDays" Type="smallint" Nullable="false" />
+          <Property Name="DeleteUserByDays" Type="smallint" Nullable="false" />
+          <Property Name="DeleteCustomerByDays" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="StepOptions">
           <Key>
@@ -172,38 +166,8 @@
           <Property Name="StepOptionId" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetRoles">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserRoles">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_Cities_dbo_Countries_CountryId">
-          <End Role="Countries" Type="Self.Countries" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="fk_cities_countries">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
           <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Countries">
@@ -211,6 +175,42 @@
             </Principal>
             <Dependent Role="Cities">
               <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_customers_cities">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="CityId" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CustomersCreatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CustomersModifiedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="ModifiedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -298,18 +298,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Visits_dbo_Customers_CustomerId">
-          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
-          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customers">
-              <PropertyRef Name="CustomerId" />
-            </Principal>
-            <Dependent Role="Visits">
-              <PropertyRef Name="CustomerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId">
           <End Role="StepOptions" Type="Self.StepOptions" Multiplicity="0..1" />
           <End Role="VisitTasks" Type="Self.VisitTasks" Multiplicity="*" />
@@ -352,31 +340,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_VisitsLehrerId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits">
-              <PropertyRef Name="TeacherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fkVisitCreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fkVisitModifiedBy">
+        <Association Name="fk_VisitModifiedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
           <ReferentialConstraint>
@@ -388,6 +352,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_VisitsCreatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_VisitsCustomerID">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_VisitsTeacherID">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetStepsPerTreatment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="treatmentId" Type="int" Mode="In" />
@@ -396,8 +396,6 @@
           <Parameter Name="class" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="SalonModelStoreContainer">
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Connections" EntityType="Self.Connections" Schema="dbo" store:Type="Tables" />
@@ -405,23 +403,28 @@
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StepOptions" EntityType="Self.StepOptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Steps" EntityType="Self.Steps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Treatments" EntityType="Self.Treatments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visits" EntityType="Self.Visits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Cities_dbo_Countries_CountryId" Association="Self.FK_dbo_Cities_dbo_Countries_CountryId">
+          <AssociationSet Name="fk_cities_countries" Association="Self.fk_cities_countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Cities" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="fk_customers_cities" Association="Self.fk_customers_cities">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CustomersCreatedBy" Association="Self.fk_CustomersCreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CustomersModifiedBy" Association="Self.fk_CustomersModifiedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId" Association="Self.FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId">
             <End Role="ConnectionTypes" EntitySet="ConnectionTypes" />
@@ -447,10 +450,6 @@
             <End Role="Treatments" EntitySet="Treatments" />
             <End Role="TreatmentSteps" EntitySet="TreatmentSteps" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Visits_dbo_Customers_CustomerId" Association="Self.FK_dbo_Visits_dbo_Customers_CustomerId">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId" Association="Self.FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId">
             <End Role="StepOptions" EntitySet="StepOptions" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
@@ -463,31 +462,28 @@
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
           </AssociationSet>
-          <AssociationSet Name="fk_VisitsLehrerId" Association="Self.fk_VisitsLehrerId">
+          <AssociationSet Name="fk_VisitModifiedBy" Association="Self.fk_VisitModifiedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
-          <AssociationSet Name="fkVisitCreatedBy" Association="Self.fkVisitCreatedBy">
+          <AssociationSet Name="fk_VisitsCreatedBy" Association="Self.fk_VisitsCreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
-          <AssociationSet Name="fkVisitModifiedBy" Association="Self.fkVisitModifiedBy">
+          <AssociationSet Name="fk_VisitsCustomerID" Association="Self.fk_VisitsCustomerID">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="fk_VisitsTeacherID" Association="Self.fk_VisitsTeacherID">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="AspNetRoles">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
-        </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
@@ -504,28 +500,27 @@
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Customers" Relationship="Self.fkCustomerCreatedBy" FromRole="AspNetUsers" ToRole="Customers" />
-          <NavigationProperty Name="Customers1" Relationship="Self.fkCustomerModifiedBy" FromRole="AspNetUsers" ToRole="Customers" />
-          <NavigationProperty Name="Visits" Relationship="Self.fkVisitCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
-          <NavigationProperty Name="Visits1" Relationship="Self.fkVisitModifiedBy" FromRole="AspNetUsers" ToRole="Visits" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
           <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="entryDate" Type="DateTime" Precision="3" />
           <Property Name="resignationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Visits2" Relationship="SalonModel.fk_VisitsLehrerId" FromRole="AspNetUsers" ToRole="Visits" />
+          <NavigationProperty Name="Customers" Relationship="Self.fk_CustomersCreatedBy" FromRole="AspNetUsers" ToRole="Customers" />
+          <NavigationProperty Name="Customers1" Relationship="Self.fk_CustomersModifiedBy" FromRole="AspNetUsers" ToRole="Customers" />
+          <NavigationProperty Name="Visits" Relationship="Self.fk_VisitModifiedBy" FromRole="AspNetUsers" ToRole="Visits" />
+          <NavigationProperty Name="Visits1" Relationship="Self.fk_VisitsCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
+          <NavigationProperty Name="Visits2" Relationship="Self.fk_VisitsTeacherID" FromRole="AspNetUsers" ToRole="Visits" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
-            <PropertyRef Name="CountryId" />
-            <PropertyRef Name="PostalCode" />
+            <PropertyRef Name="CityId" />
           </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CountryId" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Countries" Relationship="Self.FK_dbo_Cities_dbo_Countries_CountryId" FromRole="Cities" ToRole="Countries" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" FromRole="Cities" ToRole="Customers" />
+          <NavigationProperty Name="Countries" Relationship="Self.fk_cities_countries" FromRole="Cities" ToRole="Countries" />
+          <NavigationProperty Name="Customers" Relationship="Self.fk_customers_cities" FromRole="Cities" ToRole="Customers" />
         </EntityType>
         <EntityType Name="Connections">
           <Key>
@@ -554,14 +549,12 @@
           </Key>
           <Property Name="CountryId" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Cities" Relationship="Self.FK_dbo_Cities_dbo_Countries_CountryId" FromRole="Countries" ToRole="Cities" />
+          <NavigationProperty Name="Cities" Relationship="Self.fk_cities_countries" FromRole="Countries" ToRole="Cities" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
             <PropertyRef Name="CustomerId" />
           </Key>
-          <Property Name="CountryId" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
@@ -574,12 +567,13 @@
           <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.fkCustomerCreatedBy" FromRole="Customers" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.fkCustomerModifiedBy" FromRole="Customers" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Cities" Relationship="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" FromRole="Customers" ToRole="Cities" />
-          <NavigationProperty Name="Connections" Relationship="Self.FK_dbo_Connections_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Connections" />
-          <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_Visits_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Visits" />
           <Property Name="GenderID" Type="Int32" Nullable="false" />
+          <Property Name="CityId" Type="Int32" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.fk_CustomersCreatedBy" FromRole="Customers" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.fk_CustomersModifiedBy" FromRole="Customers" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Cities" Relationship="Self.fk_customers_cities" FromRole="Customers" ToRole="Cities" />
+          <NavigationProperty Name="Connections" Relationship="Self.FK_dbo_Connections_dbo_Customers_CustomerId" FromRole="Customers" ToRole="Connections" />
+          <NavigationProperty Name="Visits" Relationship="Self.fk_VisitsCustomerID" FromRole="Customers" ToRole="Visits" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -591,6 +585,16 @@
           <Property Name="VisitId" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_Pictures_dbo_Visits_VisitId" FromRole="Pictures" ToRole="Visits" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="SettingID" />
+          </Key>
+          <Property Name="SettingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnonymizeUserByDays" Type="Int16" Nullable="false" />
+          <Property Name="AnonymizeCustomerByDays" Type="Int16" Nullable="false" />
+          <Property Name="DeleteUserByDays" Type="Int16" Nullable="false" />
+          <Property Name="DeleteCustomerByDays" Type="Int16" Nullable="false" />
         </EntityType>
         <EntityType Name="StepOptions">
           <Key>
@@ -651,14 +655,14 @@
           <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.fkVisitCreatedBy" FromRole="Visits" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.fkVisitModifiedBy" FromRole="Visits" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Customers" Relationship="Self.FK_dbo_Visits_dbo_Customers_CustomerId" FromRole="Visits" ToRole="Customers" />
-          <NavigationProperty Name="Pictures" Relationship="Self.FK_dbo_Pictures_dbo_Visits_VisitId" FromRole="Visits" ToRole="Pictures" />
-          <NavigationProperty Name="VisitTasks" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="Visits" ToRole="VisitTasks" />
           <Property Name="RoomId" Type="Int32" />
           <Property Name="TeacherId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="SalonModel.fk_VisitsLehrerId" FromRole="Visits" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.fk_VisitModifiedBy" FromRole="Visits" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="Self.fk_VisitsCreatedBy" FromRole="Visits" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="Self.fk_VisitsTeacherID" FromRole="Visits" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Customers" Relationship="Self.fk_VisitsCustomerID" FromRole="Visits" ToRole="Customers" />
+          <NavigationProperty Name="Pictures" Relationship="Self.FK_dbo_Pictures_dbo_Visits_VisitId" FromRole="Visits" ToRole="Pictures" />
+          <NavigationProperty Name="VisitTasks" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="Visits" ToRole="VisitTasks" />
         </EntityType>
         <EntityType Name="VisitTasks">
           <Key>
@@ -675,7 +679,7 @@
           <NavigationProperty Name="TreatmentSteps" Relationship="Self.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" FromRole="VisitTasks" ToRole="TreatmentSteps" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="VisitTasks" ToRole="Visits" />
         </EntityType>
-        <Association Name="fkCustomerCreatedBy">
+        <Association Name="fk_CustomersCreatedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -687,7 +691,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fkCustomerModifiedBy">
+        <Association Name="fk_CustomersModifiedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
           <ReferentialConstraint>
@@ -699,19 +703,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fkVisitCreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
-          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fkVisitModifiedBy">
+        <Association Name="fk_VisitModifiedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
           <ReferentialConstraint>
@@ -723,10 +715,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Cities_dbo_Countries_CountryId">
-          <End Role="Countries" Type="Self.Countries" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+        <Association Name="fk_VisitsCreatedBy">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_VisitsTeacherID">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_cities_countries">
+          <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
           <End Role="Cities" Type="Self.Cities" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Countries">
@@ -737,17 +751,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Customers_dbo_Cities_CountryId_PostalCode">
+        <Association Name="fk_customers_cities">
           <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
           <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Cities">
-              <PropertyRef Name="CountryId" />
-              <PropertyRef Name="PostalCode" />
+              <PropertyRef Name="CityId" />
             </Principal>
             <Dependent Role="Customers">
-              <PropertyRef Name="CountryId" />
-              <PropertyRef Name="PostalCode" />
+              <PropertyRef Name="CityId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -779,7 +791,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Visits_dbo_Customers_CustomerId">
+        <Association Name="fk_VisitsCustomerID">
           <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
           <ReferentialConstraint>
@@ -889,12 +901,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="SalonEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
           <EntitySet Name="Cities" EntityType="Self.Cities" />
           <EntitySet Name="Connections" EntityType="Self.Connections" />
@@ -902,33 +909,38 @@
           <EntitySet Name="Countries" EntityType="Self.Countries" />
           <EntitySet Name="Customers" EntityType="Self.Customers" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" />
           <EntitySet Name="StepOptions" EntityType="Self.StepOptions" />
           <EntitySet Name="Steps" EntityType="Self.Steps" />
           <EntitySet Name="Treatments" EntityType="Self.Treatments" />
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" />
           <EntitySet Name="Visits" EntityType="Self.Visits" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" />
-          <AssociationSet Name="fkCustomerCreatedBy" Association="Self.fkCustomerCreatedBy">
+          <AssociationSet Name="fk_CustomersCreatedBy" Association="Self.fk_CustomersCreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
-          <AssociationSet Name="fkCustomerModifiedBy" Association="Self.fkCustomerModifiedBy">
+          <AssociationSet Name="fk_CustomersModifiedBy" Association="Self.fk_CustomersModifiedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
-          <AssociationSet Name="fkVisitCreatedBy" Association="Self.fkVisitCreatedBy">
+          <AssociationSet Name="fk_VisitModifiedBy" Association="Self.fk_VisitModifiedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
-          <AssociationSet Name="fkVisitModifiedBy" Association="Self.fkVisitModifiedBy">
+          <AssociationSet Name="fk_VisitsCreatedBy" Association="Self.fk_VisitsCreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Cities_dbo_Countries_CountryId" Association="Self.FK_dbo_Cities_dbo_Countries_CountryId">
+          <AssociationSet Name="fk_VisitsTeacherID" Association="Self.fk_VisitsTeacherID">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="fk_cities_countries" Association="Self.fk_cities_countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Cities" EntitySet="Cities" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Customers_dbo_Cities_CountryId_PostalCode" Association="Self.FK_dbo_Customers_dbo_Cities_CountryId_PostalCode">
+          <AssociationSet Name="fk_customers_cities" Association="Self.fk_customers_cities">
             <End Role="Cities" EntitySet="Cities" />
             <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
@@ -940,7 +952,7 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Connections" EntitySet="Connections" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Visits_dbo_Customers_CustomerId" Association="Self.FK_dbo_Visits_dbo_Customers_CustomerId">
+          <AssociationSet Name="fk_VisitsCustomerID" Association="Self.fk_VisitsCustomerID">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
@@ -972,37 +984,21 @@
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
           </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
-          <Parameter Name="class" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
-          <AssociationSet Name="fk_VisitsLehrerId" Association="SalonModel.fk_VisitsLehrerId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
           <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
             <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
+            <Parameter Name="class" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetClasses">
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
         </ComplexType>
-        <Association Name="fk_VisitsLehrerId">
-          <End Type="SalonModel.AspNetUsers" Role="AspNetUsers" Multiplicity="0..1" />
-          <End Type="SalonModel.Visits" Role="Visits" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Visits">
-              <PropertyRef Name="TeacherId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <ComplexType Name="GetStepsPerTreatment">
+          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
+        </ComplexType>
         <ComplexType Name="GetWorkPerClass">
           <Property Type="String" Name="StudentName" Nullable="true" MaxLength="201" />
           <Property Type="String" Name="TeacherName" Nullable="true" MaxLength="201" />
@@ -1011,32 +1007,15 @@
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="Int32" Name="TreatmentId" Nullable="false" />
         </ComplexType>
-        <ComplexType Name="GetStepsPerTreatment">
-          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SalonModelStoreContainer" CdmEntityContainer="SalonEntities">
-          <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="SalonModel.AspNetRoles">
-              <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SalonModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
-                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="lastName" ColumnName="lastName" />
-                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -1049,12 +1028,18 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
+                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="SalonModel.Cities">
               <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
                 <ScalarProperty Name="CountryId" ColumnName="CountryId" />
                 <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -1092,9 +1077,6 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="SalonModel.Customers">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
-                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="FName" ColumnName="FName" />
                 <ScalarProperty Name="LName" ColumnName="LName" />
@@ -1107,6 +1089,8 @@
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="GenderID" ColumnName="GenderID" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1118,6 +1102,17 @@
                 <ScalarProperty Name="isSketch" ColumnName="isSketch" />
                 <ScalarProperty Name="VisitId" ColumnName="VisitId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="SalonModel.Settings">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="SettingID" ColumnName="SettingID" />
+                <ScalarProperty Name="AnonymizeUserByDays" ColumnName="AnonymizeUserByDays" />
+                <ScalarProperty Name="AnonymizeCustomerByDays" ColumnName="AnonymizeCustomerByDays" />
+                <ScalarProperty Name="DeleteUserByDays" ColumnName="DeleteUserByDays" />
+                <ScalarProperty Name="DeleteCustomerByDays" ColumnName="DeleteCustomerByDays" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1167,8 +1162,6 @@
           <EntitySetMapping Name="Visits">
             <EntityTypeMapping TypeName="SalonModel.Visits">
               <MappingFragment StoreEntitySet="Visits">
-                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="VisitId" ColumnName="VisitId" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -1176,6 +1169,8 @@
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1192,26 +1187,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="SalonModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
-                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
-                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="Treatement" ColumnName="Treatement" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" >
             <ResultMapping>
               <ComplexTypeMapping TypeName="SalonModel.GetClasses">
@@ -1224,6 +1199,18 @@
               <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment">
                 <ScalarProperty Name="Step" ColumnName="Step" />
                 <ScalarProperty Name="StepDescription" ColumnName="StepDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Treatement" ColumnName="Treatement" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

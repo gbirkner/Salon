@@ -173,9 +173,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\Statistics\ChartController.cs" />
-    <Compile Include="Models\AspNetRoles.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -216,6 +213,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SalonModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Settings.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Statistics\BarChart.cs" />
     <Compile Include="Models\Statistics\ChartData.cs" />
     <Compile Include="Models\Statistics\CustomerStatistics.cs" />
@@ -250,11 +255,6 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SalonModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
     <Compile Include="Views\ViewModels\WorkPerClass.cs" />
@@ -281,13 +281,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\SalonModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SalonModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\SalonModel.edmx.diagram">
-      <DependentUpon>SalonModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -363,6 +356,13 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <EntityDeploy Include="Models\SalonModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SalonModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SalonModel.edmx.diagram">
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
