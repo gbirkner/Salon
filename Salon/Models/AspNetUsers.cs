@@ -22,6 +22,10 @@ public partial class AspNetUsers
     public AspNetUsers()
     {
 
+        this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
+
+        this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
+
         this.Customers = new HashSet<Customers>();
 
         this.Customers1 = new HashSet<Customers>();
@@ -30,13 +34,9 @@ public partial class AspNetUsers
 
         this.Visits1 = new HashSet<Visits>();
 
-        this.AspNetRoles = new HashSet<AspNetRoles>();
-
-        this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
-
-        this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
-
         this.Visits2 = new HashSet<Visits>();
+
+        this.AspNetRoles = new HashSet<AspNetRoles>();
 
     }
 
@@ -79,6 +79,14 @@ public partial class AspNetUsers
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
+    public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
     public virtual ICollection<Customers> Customers { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -95,19 +103,11 @@ public partial class AspNetUsers
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
-    public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
     public virtual ICollection<Visits> Visits2 { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
 
 }
 

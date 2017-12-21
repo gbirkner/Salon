@@ -25,7 +25,7 @@ namespace Salon.Controllers
                     FName = c.FName,
                     LName = c.LName,
                     Sex = c.GenderID,
-                    PostalCode = c.PostalCode,
+                    //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
                     Street = c.Street,
@@ -37,7 +37,7 @@ namespace Salon.Controllers
         }
 
 
-        public ActionResult CustomerOverview(string searchstring = null)
+       /* public ActionResult CustomerOverview(string searchstring = null)
         {
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
@@ -59,7 +59,7 @@ namespace Salon.Controllers
                 ).ToList();
 
             return PartialView("_CustomerOverview",CustomerViewModels);
-        }
+        }*/
 
 
 

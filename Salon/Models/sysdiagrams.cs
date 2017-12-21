@@ -15,18 +15,18 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class AspNetUserLogin
+public partial class sysdiagrams
 {
 
-    public string LoginProvider { get; set; }
+    public string name { get; set; }
 
-    public string ProviderKey { get; set; }
+    public int principal_id { get; set; }
 
-    public string UserId { get; set; }
+    public int diagram_id { get; set; }
 
+    public Nullable<int> version { get; set; }
 
-
-    public virtual AspNetUsers AspNetUser { get; set; }
+    public byte[] definition { get; set; }
 
 }
 

@@ -69,6 +69,7 @@ namespace Salon.Controllers
             List<VisitTreatment> treatments = new List<VisitTreatment>();
 
             bool ok;
+            Treatments treatmentTemplate;
             foreach(VisitTasks vt in v.VisitTasks) {
                 ok = false;
                 foreach(VisitTreatment t in treatments) {
@@ -79,14 +80,15 @@ namespace Salon.Controllers
                     }
                 }
                 if (!ok) {
+                    treatmentTemplate = vt.getTreatment();
                     VisitTreatment visitTreatment = new VisitTreatment();
                     visitTreatment.treatmentID = vt.TreatmentId;
-                    visitTreatment.name = vt.getTreatment().Title;
+                    visitTreatment.name = treatmentTemplate.Title;
                     visitTreatment.tasks.Add(vt);
+                    visitTreatment.possibleTasks = treatmentTemplate.TreatmentSteps.ToList();
                     treatments.Add(visitTreatment);
                 }
             }
-
             return treatments;
         }
 
@@ -95,7 +97,7 @@ namespace Salon.Controllers
             //TEST VALUES TODO CHANGE
             AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             AspNetUsers teacher = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
-            Rooms room = db.Rooms.Find(1);
+            Rooms room = db.Rooms.Find(2);
 
             Visits visit;
 
@@ -107,9 +109,12 @@ namespace Salon.Controllers
                 stylist = visit.AspNetUsers1;
                 customer = visit.Customers;
                 visitTreatments = getVisitTreatments(visit);
+                teacher = visit.AspNetUsers2;
+                room = visit.Rooms;
             }
 
-            ViewBag.teachers = db.AspNetUsers.Where(x => x.AspNetRoles.Contains(db.AspNetRoles.Find(3))).ToList();
+            ViewBag.teachers = (from t in db.AspNetUsers
+                                where t.AspNetRoles.Any(r => r.Id == "3") select t).ToList();
             ViewBag.rooms = db.Rooms.ToList();
             
             VisitCreateViewModel model = new VisitCreateViewModel();
@@ -119,8 +124,8 @@ namespace Salon.Controllers
             model.stylist = stylist;
             model.availableTreatments = db.Treatments.ToList();
             model.selectedTreatments = visitTreatments;
-            model.teacher = teacher.lastName;
-            model.room = room.Title;
+            model.teacher = new KeyValuePair<string, string>(teacher.Id, teacher.lastName);
+            model.room = new KeyValuePair<int, string>(room.RoomId, room.Title);
             return View(model);
         }
 
@@ -143,6 +148,9 @@ namespace Salon.Controllers
                 return Redirect("/Visits/Index?success=false");
             }
 
+            visit.AspNetUsers2 = db.AspNetUsers.Find(nvc["slc_teacher"]);
+            visit.RoomId = Int32.Parse(nvc["slc_room"]);
+
             visit.AspNetUsers1 = db.AspNetUsers.Find(stylistId);
             visit.AspNetUsers = db.AspNetUsers.Find(stylistId);
             visit.Customers = db.Customers.Find(cusId);
@@ -154,17 +162,24 @@ namespace Salon.Controllers
             int i = 0;
             int treatmentId;
             int stepId;
+            string inType;
             VisitTasks vt;
             foreach (string key in nvc.AllKeys) {
-                if(i < 2) {
+                if(i < 5) {
                     i++;
                 }else {
                     treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
                     stepId = Int32.Parse(key.Split('_').GetValue(3).ToString());
+                    inType = key.Split('_').GetValue(0).ToString();
                     vt = new VisitTasks();
                     vt.StepId = stepId;
                     vt.TreatmentId = treatmentId;
-                    vt.Description = nvc[key];
+
+                    if(inType == "slc") {
+                        vt.StepOptionId = Int32.Parse(nvc[key]);
+                    }else {
+                        vt.Description = nvc[key];
+                    }
                     visit.VisitTasks.Add(vt);
                     db.VisitTasks.Add(vt);
                     Console.WriteLine(nvc[key]);
@@ -200,6 +215,10 @@ namespace Salon.Controllers
                 return Redirect("/Visits/Index?success=false");
             }
 
+
+
+            visit.AspNetUsers2 = db.AspNetUsers.Find(nvc["slc_teacher"]);
+            visit.RoomId = Int32.Parse(nvc["slc_room"]);
             visit.AspNetUsers = db.AspNetUsers.Find(stylistId);
             visit.Customers = db.Customers.Find(cusId);
             visit.Modified = DateTime.Now;
@@ -213,17 +232,23 @@ namespace Salon.Controllers
             int i = 0;
             int treatmentId;
             int stepId;
+            string inType;
             VisitTasks vt;
             foreach (string key in nvc.AllKeys) {
-                if (i < 2) {
+                if (i < 5) {
                     i++;
                 } else {
                     treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
                     stepId = Int32.Parse(key.Split('_').GetValue(3).ToString());
+                    inType = key.Split('_').GetValue(0).ToString();
                     vt = new VisitTasks();
                     vt.StepId = stepId;
                     vt.TreatmentId = treatmentId;
-                    vt.Description = nvc[key];
+                    if (inType == "slc") {
+                        vt.StepOptionId = Int32.Parse(nvc[key]);
+                    } else {
+                        vt.Description = nvc[key];
+                    }
                     visit.VisitTasks.Add(vt);
                     db.VisitTasks.Add(vt);
                     Console.WriteLine(nvc[key]);
@@ -262,6 +287,7 @@ namespace Salon.Controllers
                 vt.TreatmentSteps = s;
                 vt.TreatmentId = treatment.TreatmentId;
                 model.tasks.Add(vt);
+                model.possibleTasks.Add(vt.TreatmentSteps);
             }
             return PartialView(model);
         }

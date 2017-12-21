@@ -27,6 +27,8 @@ public partial class Cities
     }
 
 
+    public int CityId { get; set; }
+
     public string CountryId { get; set; }
 
     public string PostalCode { get; set; }

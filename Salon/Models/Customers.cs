@@ -29,10 +29,6 @@ public partial class Customers
     }
 
 
-    public string CountryId { get; set; }
-
-    public string PostalCode { get; set; }
-
     public int CustomerId { get; set; }
 
     public string FName { get; set; }
@@ -59,6 +55,8 @@ public partial class Customers
 
     public int GenderID { get; set; }
 
+    public Nullable<int> CityId { get; set; }
+
 
 
     public virtual AspNetUsers AspNetUsers { get; set; }
@@ -71,11 +69,11 @@ public partial class Customers
 
     public virtual ICollection<Connections> Connections { get; set; }
 
+    public virtual Genders Genders { get; set; }
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Visits> Visits { get; set; }
-
-    public virtual Gender Gender { get; set; }
 
 }
 

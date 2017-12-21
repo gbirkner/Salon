@@ -53,19 +53,19 @@ public partial class Visits
 
     public virtual AspNetUsers AspNetUsers1 { get; set; }
 
+    public virtual AspNetUsers AspNetUsers2 { get; set; }
+
     public virtual Customers Customers { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Pictures> Pictures { get; set; }
 
+    public virtual Rooms Rooms { get; set; }
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<VisitTasks> VisitTasks { get; set; }
-
-    public virtual AspNetUsers AspNetUsers2 { get; set; }
-
-    public virtual Rooms Rooms { get; set; }
 
 }
 

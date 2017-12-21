@@ -32,7 +32,13 @@ public partial class SalonEntities : DbContext
     }
 
 
+    public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+
     public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
 
     public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
 
@@ -46,11 +52,19 @@ public partial class SalonEntities : DbContext
 
     public virtual DbSet<Customers> Customers { get; set; }
 
+    public virtual DbSet<Genders> Genders { get; set; }
+
     public virtual DbSet<Pictures> Pictures { get; set; }
+
+    public virtual DbSet<Rooms> Rooms { get; set; }
+
+    public virtual DbSet<Settings> Settings { get; set; }
 
     public virtual DbSet<StepOptions> StepOptions { get; set; }
 
     public virtual DbSet<Steps> Steps { get; set; }
+
+    public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
 
     public virtual DbSet<Treatments> Treatments { get; set; }
 
@@ -59,20 +73,6 @@ public partial class SalonEntities : DbContext
     public virtual DbSet<Visits> Visits { get; set; }
 
     public virtual DbSet<VisitTasks> VisitTasks { get; set; }
-
-    public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-
-    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-
-    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-
-    public virtual DbSet<Gender> Genders { get; set; }
-
-    public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-
-    public virtual DbSet<Settings> Settings { get; set; }
-
-    public virtual DbSet<Rooms> Rooms { get; set; }
 
 }
 

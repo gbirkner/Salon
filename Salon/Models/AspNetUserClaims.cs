@@ -15,7 +15,7 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class AspNetUserClaim
+public partial class AspNetUserClaims
 {
 
     public int Id { get; set; }
@@ -28,7 +28,7 @@ public partial class AspNetUserClaim
 
 
 
-    public virtual AspNetUsers AspNetUser { get; set; }
+    public virtual AspNetUsers AspNetUsers { get; set; }
 
 }
 

@@ -40,10 +40,37 @@
         </div>
 
         <div class="col-sm-8">
-            <h2>
+            <h3>
                 Datum:
                 @Model.created
-            </h2>
+            </h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="slc_teacher">Lehrer:</label>
+                    <select name="slc_teacher" id="slc_teacher" class="form-control">
+                        @foreach (var t in ViewBag.teachers) {
+                            if (t.Id == Model.teacher.Key) {
+                                <option value="@t.Id" selected>@t.lastName</option>
+                            } else {
+                                <option value="@t.Id">@t.lastName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="slc_room">Raum:</label>
+                    <select name="slc_room" id="slc_room" class="form-control">
+                        @foreach (var r in ViewBag.rooms) {
+                            if (r.RoomId == Model.room.Key) {
+                                <option value="@r.RoomId" selected>@r.Title</option>
+                            } else {
+                                <option value="@r.RoomId">@r.Title</option>
+                            }
+                        }
+                    </select>
+                </div>
+               
+            </div>
         </div>
     </div>
 
@@ -144,7 +171,7 @@
 
 @section scripts{  
         <script>
-            
+
             $("#customerContainer").on("click", function (e) {
                 $("#customerPicker").modal();
             });
@@ -161,7 +188,7 @@
                         "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
                         "onclick=\"removeTreatment('" + entryId + "')\">" +
                         "<span class='glyphicon glyphicon-remove'></span></button></div></a>");
-                    
+
 
                     $.ajax({
                         url: '@Url.Action("_TreatmentForm", "Visits")/' + id
@@ -268,8 +295,29 @@
                     });
                 });
 
+
+                /****************************************** TREATMENT FORM ***************************************/
+
+                $(function () {
+                    $(".item_allTasks").each(function () {
+                        $(this).on('click', function (e) {
+                            var stepId = $(this).data("stepid");
+                            var treatmentId = $(this).data("treatmentid");
+                            if ($(this).hasClass('active')) {
+                                $(this).removeClass('active');
+                                $('#grp_step_' + treatmentId + "_" + stepId).addClass("hidden");
+                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', true);
+                            } else {
+                                $(this).addClass('active');
+                                $('#grp_step_' + treatmentId + "_" + stepId).removeClass("hidden");
+                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', false);
+                            }
+                        });
+                    });
+                });
+
                 
-        });
+            });
            /* $(window).bind('beforeunload', function () {
                 return 'Are you sure you want to leave?';
             });*/

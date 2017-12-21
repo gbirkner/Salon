@@ -51,12 +51,10 @@ namespace Salon.Models {
         [Display(Name = "ausgewählte Behandlungen")]
         public List<VisitTreatment> selectedTreatments { get; set; }
         public List<System.Web.Mvc.ActionResult> treatmentViews { get; set; }
-        public int teacherId { get; set; }
-        public int roomId { get; set; }
         [Display(Name = "Lehrer")]
-        public string teacher { get; set; }
+        public KeyValuePair<string, string> teacher { get; set; }
         [Display(Name = "Raum")]
-        public string room { get; set; }
+        public KeyValuePair<int, string> room { get; set; }
 
         public VisitCreateViewModel() {
             this.availableTreatments = new List<Treatments>();
@@ -73,9 +71,11 @@ namespace Salon.Models {
         public string name { get; set; }
         [Display(Name = "Schritte")]
         public List<VisitTasks> tasks { get; set; }
+        public List<TreatmentSteps> possibleTasks { get; set; }
 
         public VisitTreatment() {
             this.tasks = new List<VisitTasks>();
+            this.possibleTasks = new List<TreatmentSteps>();
         }
     }
 
