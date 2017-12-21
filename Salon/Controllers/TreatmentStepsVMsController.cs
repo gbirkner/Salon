@@ -53,7 +53,7 @@ namespace Salon.Controllers
         public ActionResult CreatEditSteps(int? id = null)
         {
             var tsteps = db.TreatmentSteps.Include(y => y.Steps);
-            IEnumerable<StepsVM> TreatmentSteps = (from t in tsteps
+            List<StepsVM> TreatmentSteps = (from t in tsteps
                                                    where t.TreatmentId == id
                                                    select new StepsVM
                                                    {

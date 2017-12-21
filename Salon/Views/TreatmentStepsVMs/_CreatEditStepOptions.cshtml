@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Salon.Models.StepOptions>
+﻿@model List<Salon.Models.StepOptions>
 
 @if (Model.Any())
 {
@@ -12,70 +12,38 @@
 
 }
 <div class="panel-group" id="accordion3">
-    @foreach (var item in Model)
+    @using (Html.BeginForm())
     {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        for (int i = 0; i < Model.Count() - 1; i++)
+        {
         <div class="panel">
             <div class="panel-heading panel-default">
-                @using (Html.BeginForm())
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    @Html.HiddenFor(modelItem => item.StepOptionId)
-                    <div class="inline-text">
-                        <div class="form-group">
-                            @Html.EditorFor(modelItem => item.Position, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(modelItem => item.Position, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            @Html.EditorFor(modelItem => item.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(modelItem => item.Description, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            @Html.EditorFor(modelItem => item.Option, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(modelItem => item.Option, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            @Html.EditorFor(modelItem => item.isActive, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(modelItem => item.isActive, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Speichern" class="btn btn-default" />
-                        </div>
-                    </div>
-            }
-            </div>
-        </div>
-    }
-    <div class="panel">
-        <div class="panel-heading panel-default">
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <input data-val="true" data-val-number="Das Feld &quot;StepOptionId&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;StepOptionId&quot; ist erforderlich." id="StepOptionId" name="StepOptionId" type="hidden" value="">
+                @Html.HiddenFor(modelItem => modelItem[i].StepOptionId)
                 <div class="inline-text">
                     <div class="form-group">
-                        <input class="form-control text-box single-line" data-val="true" data-val-number="Das Feld &quot;Position&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;Position&quot; ist erforderlich." id="Position" name="Position" type="number" value="">
-                        @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                        @Html.EditorFor(modelItem => modelItem[i].Position, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Position, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        <input class="form-control text-box single-line" id="Option" name="Option" type="text" value="">
-                        @Html.ValidationMessageFor(model => model.First().Description, "", new { @class = "text-danger" })
+                        @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Description, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        <input class="form-control text-box single-line" id="Option" name="Option" type="text" value="">
-                        @Html.ValidationMessageFor(model => model.First().Option, "", new { @class = "text-danger" })
+                        @Html.EditorFor(modelItem => modelItem[i].Option, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Option, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        <input checked="checked" class="form-control check-box" data-val="true" data-val-required="Das Feld &quot;isActive&quot; ist erforderlich." id="isActive" name="isActive" type="checkbox" value="true">
-                        <input name="isActive" type="hidden" value="false">
-                        @Html.ValidationMessageFor(model => model.First().isActive, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Speichern" class="btn btn-default" />
+                        @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    </div>
+        }
+        <div class="special">
+            <input type="submit" value="Speichern" class="btn btn-default" />
+        </div>
+    }
 </div>
