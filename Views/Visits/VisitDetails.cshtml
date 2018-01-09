@@ -1,0 +1,80 @@
+﻿@model Salon.Models.VisitDetailViewModel
+
+@{
+    ViewBag.Title = "VisitDetails";
+}
+
+<h2>Details</h2>
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(x => x.customer)
+    </dt>
+    <dd>
+        @Model.customer.FName @Model.customer.LName
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(x => x.stylist)
+    </dt>
+    @if (Model.stylist != null && Model.stylist.UserName != null) {
+        
+        <dd>
+            @Model.stylist.UserName
+        </dd>
+    } else {
+        <dd>
+            n/A
+        </dd>
+    }
+    
+
+    <dt>
+        @Html.DisplayNameFor(x => x.created)
+    </dt>
+    <dd>
+        @Model.created
+    </dd>
+    
+    <dt>
+        @Html.DisplayNameFor(x => x.duration)
+    </dt>
+    <dd>
+        @Model.duration min
+    </dd>
+
+    <!-- only display modified fields if entry was actually modified -->
+    @if (Model.modifiedBy != null) { 
+        <dt>
+            @Html.DisplayNameFor(x => x.modifiedBy)
+        </dt>
+        <dd>
+            @Model.modifiedBy.UserName
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.modified)
+        </dt>
+        <dd>
+            @Model.modified
+        </dd>
+    }
+
+</dl>
+
+
+<a href="@Url.Action("VisitCreate", "Visits", new { id = Model.visitId })" class="btn btn-primary" id="btn_modify">
+    <span class="glyphicon glyphicon-pencil"></span> Bearbeiten
+</a>
+
+<div id="treatmentsContainer">
+    <h3>Behandlungen:</h3>
+    <ul class="list-group" id="lst_visitTreatments">
+        @foreach (var t in Model.treatments) {
+            <li class="list-group-item">
+                @t.name
+            </li>
+        }
+    </ul>
+    
+</div>
+

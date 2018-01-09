@@ -1,0 +1,13 @@
+﻿body {
+    background-color: #ff0000;
+}
+
+#visitTableContainer{
+    height: 80vh;
+    background-color: #ff0000;
+}
+
+.div{
+    background-color: #00ff00;
+    font-size: 5vh;
+}
