@@ -13,7 +13,6 @@ namespace Salon.Models
     
     public partial class GetTeachers
     {
-        public string TeacherId { get; set; }
         public string Teacher { get; set; }
     }
 }

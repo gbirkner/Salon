@@ -36,6 +36,8 @@
         <AssociationConnector Association="SalonModel.FK_dbo_TreatmentSteps_dbo_Treatments_TreatmentId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" ManuallyRouted="false" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SalonModel.Rooms" Width="1.5" PointX="5.375" PointY="9.875" />
+        <AssociationConnector Association="SalonModel.fk_VisitsRoomID" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -90,6 +90,14 @@
           <Property Name="VisitId" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Settings">
           <Key>
             <PropertyRef Name="SettingID" />
@@ -376,6 +384,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_VisitsRoomID">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="0..1" />
+          <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="RoomId" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_VisitsTeacherID">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
@@ -396,6 +416,9 @@
         <Function Name="GetTeachers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetWorkPerClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="class" Type="nvarchar" Mode="In" />
+          <Parameter Name="teacherFirst" Type="nvarchar" Mode="In" />
+          <Parameter Name="teacherLast" Type="nvarchar" Mode="In" />
+          <Parameter Name="room" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
@@ -405,6 +428,7 @@
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StepOptions" EntityType="Self.StepOptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Steps" EntityType="Self.Steps" Schema="dbo" store:Type="Tables" />
@@ -474,6 +498,10 @@
           </AssociationSet>
           <AssociationSet Name="fk_VisitsCustomerID" Association="Self.fk_VisitsCustomerID">
             <End Role="Customers" EntitySet="Customers" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
+          <AssociationSet Name="fk_VisitsRoomID" Association="Self.fk_VisitsRoomID">
+            <End Role="Rooms" EntitySet="Rooms" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
           <AssociationSet Name="fk_VisitsTeacherID" Association="Self.fk_VisitsTeacherID">
@@ -664,6 +692,7 @@
           <NavigationProperty Name="Customers" Relationship="Self.fk_VisitsCustomerID" FromRole="Visits" ToRole="Customers" />
           <NavigationProperty Name="Pictures" Relationship="Self.FK_dbo_Pictures_dbo_Visits_VisitId" FromRole="Visits" ToRole="Pictures" />
           <NavigationProperty Name="VisitTasks" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="Visits" ToRole="VisitTasks" />
+          <NavigationProperty Name="Rooms" Relationship="SalonModel.fk_VisitsRoomID" FromRole="Visits" ToRole="Rooms" />
         </EntityType>
         <EntityType Name="VisitTasks">
           <Key>
@@ -990,10 +1019,17 @@
           <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
-          <Parameter Name="class" Mode="In" Type="String" />
+            <Parameter Name="class" Mode="In" Type="String" />
+            <Parameter Name="teacherFirst" Mode="In" Type="String" />
+            <Parameter Name="teacherLast" Mode="In" Type="String" />
+            <Parameter Name="room" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
           <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
+          <EntitySet Name="Rooms" EntityType="SalonModel.Rooms" />
+          <AssociationSet Name="fk_VisitsRoomID" Association="SalonModel.fk_VisitsRoomID">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="Visits" EntitySet="Visits" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="GetClasses">
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
@@ -1001,6 +1037,9 @@
         <ComplexType Name="GetStepsPerTreatment">
           <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="GetTeachers">
+          <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
         </ComplexType>
         <ComplexType Name="GetWorkPerClass">
           <Property Type="Int32" Name="TreatmentId" Nullable="false" />
@@ -1011,14 +1050,27 @@
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
         </ComplexType>
-        <ComplexType Name="GetRooms">
-          <Property Type="Int32" Name="RoomId" Nullable="false" />
-          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetTeachers">
-          <Property Type="String" Name="TeacherId" Nullable="false" MaxLength="128" />
-          <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
-        </ComplexType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Visits" Relationship="SalonModel.fk_VisitsRoomID" FromRole="Rooms" ToRole="Visits" />
+        </EntityType>
+        <Association Name="fk_VisitsRoomID">
+          <End Type="SalonModel.Rooms" Role="Rooms" Multiplicity="0..1" />
+          <End Type="SalonModel.Visits" Role="Visits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="RoomId" />
+            </Principal>
+            <Dependent Role="Visits">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1227,22 +1279,22 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetRooms" FunctionName="SalonModel.Store.GetRooms">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetRooms">
-                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers">
             <ResultMapping>
               <ComplexTypeMapping TypeName="SalonModel.GetTeachers">
-                <ScalarProperty Name="TeacherId" ColumnName="TeacherId" />
                 <ScalarProperty Name="Teacher" ColumnName="Teacher" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="SalonModel.Rooms">
+              <MappingFragment StoreEntitySet="Rooms">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
