@@ -41,6 +41,7 @@ namespace Salon.Models
         public virtual DbSet<TreatmentSteps> TreatmentSteps { get; set; }
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
+        public virtual DbSet<Rooms> Rooms { get; set; }
     
         public virtual ObjectResult<GetClasses> GetClasses()
         {
@@ -56,18 +57,25 @@ namespace Salon.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStepsPerTreatment>("GetStepsPerTreatment", treatmentIdParameter);
         }
     
-        public virtual ObjectResult<GetWorkPerClass> GetWorkPerClass(string @class)
+        public virtual ObjectResult<GetWorkPerClass> GetWorkPerClass(string @class, string teacherFirst, string teacherLast, string room)
         {
             var classParameter = @class != null ?
                 new ObjectParameter("class", @class) :
                 new ObjectParameter("class", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass>("GetWorkPerClass", classParameter);
-        }
+            var teacherFirstParameter = teacherFirst != null ?
+                new ObjectParameter("teacherFirst", teacherFirst) :
+                new ObjectParameter("teacherFirst", typeof(string));
     
-        public virtual ObjectResult<GetRooms> GetRooms()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRooms>("GetRooms");
+            var teacherLastParameter = teacherLast != null ?
+                new ObjectParameter("teacherLast", teacherLast) :
+                new ObjectParameter("teacherLast", typeof(string));
+    
+            var roomParameter = room != null ?
+                new ObjectParameter("room", room) :
+                new ObjectParameter("room", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass>("GetWorkPerClass", classParameter, teacherFirstParameter, teacherLastParameter, roomParameter);
         }
     
         public virtual ObjectResult<GetTeachers> GetTeachers()

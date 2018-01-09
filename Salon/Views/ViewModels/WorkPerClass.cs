@@ -39,9 +39,14 @@ namespace Salon.Views.ViewModels
 
         public List<Step> StepsPerTreatment { get; set; }
 
+        /// <summary>
+        /// Get all classes
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetClasses()
         {
             List<string> returnValue = new List<string>();
+            returnValue.Add("Alle");
 
             using (var context = new Models.SalonEntities())
             {
@@ -55,9 +60,14 @@ namespace Salon.Views.ViewModels
             return returnValue;
         }
 
+        /// <summary>
+        /// Get all teachers
+        /// </summary>
+        /// <returns></returns>
         public SelectList GetTeachers()
         {
-            Dictionary<string, string> teachersDict = new Dictionary<string, string>();
+            List<string> teacherList = new List<string>();
+            teacherList.Add("Alle");
 
             using (var context = new Models.SalonEntities())
             {
@@ -65,27 +75,29 @@ namespace Salon.Views.ViewModels
 
                 foreach (var t in teachers)
                 {
-                    teachersDict.Add(t.TeacherId, t.Teacher);
+                    teacherList.Add(t.Teacher);
                 }
             }
-            return new SelectList(teachersDict.Select(x => new { Value = x.Key, Text = x.Value }), "Value", "Text");
+            return new SelectList(teacherList);
         }
 
-        //public List<Teacher> GetTeachers()
-        //{
-        //    List<Teacher> returnValue = new List<Teacher>();
+        /// <summary>
+        /// Get all rooms
+        /// </summary>
+        /// <returns></returns>
+        public SelectList GetRooms()
+        {
+            List<string> roomList = new List<string>();
+            roomList.Add("Alle");
 
-        //    using (var context = new Models.SalonEntities())
-        //    {
-        //        var teachers = context.GetTeachers();
+            using (var context = new Models.SalonEntities())
+            {
+                var rooms = context.Rooms.Select(r => r.Title);
 
-        //        foreach (var t in teachers)
-        //        {
-        //            returnValue.Add(new Teacher() { TeacherId = t.TeacherId, TeacherName = t.Teacher });
-        //        }
-        //    }
-        //    return returnValue;
-        //}
+                roomList.AddRange(rooms.ToList());
+            }
+            return new SelectList(roomList);
+        }
 
         public class Step
         {

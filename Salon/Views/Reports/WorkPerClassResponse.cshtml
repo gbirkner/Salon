@@ -16,6 +16,9 @@
                 <thead>
                     <tr style="font-size: 16px; cursor: pointer">
                         <th>
+                            Nr
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.StudentName) 
                         </th>
                         <th>
@@ -45,6 +48,8 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.StudentName)
                             </td>
@@ -92,7 +97,7 @@
         }
         else
         {
-            <h3>Für diese Klasse ist kein Datensatz vorhanden!</h3>
+            <h3>Kein Datensatz vorhanden!</h3>
         }
     </div>
 </body>

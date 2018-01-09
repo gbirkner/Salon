@@ -20,29 +20,6 @@ namespace Salon.Controllers.Reports
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
         private SalonEntities db = new SalonEntities();
 
-        // GET: CustomerViewModel
-        //public ActionResult Customers(string export = "")
-        //{
-        //    var customer = db.Customers.Include(c => c.Cities);
-        //    IEnumerable<CustomersViewModel> CustomersViewModel =
-        //        (from cu in customer
-        //         orderby cu.LName
-        //         select new CustomersViewModel
-        //         {
-        //             Country = cu.Cities.CountryId,
-        //             CustomerId = cu.CustomerId,
-        //             Description = cu.Description,
-        //             Name = cu.FName + " " + cu.LName,
-        //             PostalCode = cu.Cities.PostalCode,
-        //             Street = cu.Street,
-        //             City = cu.Cities.Title
-        //         }
-        //         );
-        //    customerList = CustomersViewModel.ToList();
-
-        //    return View(customerList);
-        //}
-
         /// <summary>
         /// Exports list to a .csv file
         /// </summary>
@@ -75,32 +52,6 @@ namespace Salon.Controllers.Reports
                 ErrorMessage = ex.Message;
                 SuccessfullDownload = false;
             }
-        }
-
-        /// <summary>
-        /// Convert list<object> to list<string> with ';' as seperator for .csv
-        /// </summary>
-        /// <returns></returns>
-        private List<String> ListToStrings()
-        {
-            List<String> returnValue = new List<string>();
-            string headers = string.Empty;
-
-            var properties = typeof(CustomersViewModel).GetProperties();
-            foreach(var property in properties) //headers
-            {
-                var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
-
-                if (display != null)
-                    headers += display.Name + ";";
-            }
-
-            returnValue.Add(headers);
-            foreach(var entry in customerList)  //data
-            {
-                returnValue.Add(entry.Name + ";" + entry.Description + ";" + entry.Street + ";" + entry.PostalCode + ";" + entry.City + ";" + entry.Country);
-            }
-            return returnValue;
         }
 
         /// <summary>
@@ -241,7 +192,7 @@ namespace Salon.Controllers.Reports
         /// </summary>
         /// <param name="cl">class</param>
         /// <returns></returns>
-        public ActionResult WorkPerClass(string cl = "", string sort = "")
+        public ActionResult WorkPerClass(string cl = "", string sort = "", string teacher = "", string room = "")
         {
             var visits = db.Visits;
             ViewBag.Downloaded = Download;
@@ -249,10 +200,34 @@ namespace Salon.Controllers.Reports
             ViewBag.ErrorMessage = ErrorMessage;
             workPerClassList.Clear();
 
-            if (cl != "")
+            if (Download == true)
+                Download = false;
+            if (SuccessfullDownload == true)
+                SuccessfullDownload = false;
+
+            string teacherLast = "";
+            string teacherFirst = "";
+
+            if (cl != "" || teacher != "" || room != "")
             {
+                if (cl == "Alle")
+                    cl = null;
+                if (room == "Alle")
+                    room = null;
+                if (teacher != "Alle")
+                {
+                    var splitted = teacher.Split(null);
+                    teacherLast = splitted[0];
+                    teacherFirst = splitted[1];
+                }
+                else
+                {
+                    teacherFirst = null;
+                    teacherLast = null;
+                }
+
                 IEnumerable<WorkPerClassViewModel> WorkPerClass =
-                    db.GetWorkPerClass(cl)
+                    db.GetWorkPerClass(cl, teacherFirst, teacherLast, room)
                         .Select(c => new WorkPerClassViewModel()
                         {
                             Class = c.Class,
@@ -272,15 +247,13 @@ namespace Salon.Controllers.Reports
                     case "Datum absteigend":
                         workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ThenBy(w => w.StudentName).ToList();
                         break;
-                    case "Name aufsteigend":
+                    case "Schüler aufsteigend":
                         workPerClassList = WorkPerClass.OrderBy(w => w.StudentName).ThenBy(w => w.Date).ToList();
                         break;
-                    case "Name absteigend":
+                    case "Schüler absteigend":
                         workPerClassList = WorkPerClass.OrderByDescending(w => w.StudentName).ThenBy(w => w.Date).ToList();
                         break;
                 }
-
-                //workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
                 return View("~/Views/Reports/WorkPerClassResponse.cshtml", workPerClassList);
             }
             else
@@ -297,13 +270,17 @@ namespace Salon.Controllers.Reports
                         Treatment = "",
                         Date = DateTime.Now,
                         Room = ""
-                        //,StepsPerTreatment = this.GetStepsPerTreatment(1)
                     }
                  );
                 return View(empty.ToList());
             }   
         }
 
+        /// <summary>
+        /// Gets all treatments, assigned to a step
+        /// </summary>
+        /// <param name="treatmentId"></param>
+        /// <returns></returns>
         private List<WorkPerClassViewModel.Step> GetStepsPerTreatment(int treatmentId)
         {
             List<WorkPerClassViewModel.Step> returnValue = new List<WorkPerClassViewModel.Step>();
@@ -351,12 +328,9 @@ namespace Salon.Controllers.Reports
             int number = 1;
             foreach (var entry in workPerClassList)  //data
             {
-                //returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
-
                 foreach(var step in entry.StepsPerTreatment)
                 {
-                    returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + step.StepTitle + ";" + step.StepDescription);
-                    //returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
+                    returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
                 }
                 number++;
             }

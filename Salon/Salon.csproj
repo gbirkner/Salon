@@ -196,9 +196,6 @@
     <Compile Include="Models\GetClasses.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetRooms.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\GetStepsPerTreatment.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -209,6 +206,9 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Pictures.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rooms.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SalonModel.Context.cs">
