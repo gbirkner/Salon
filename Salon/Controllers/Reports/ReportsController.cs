@@ -114,15 +114,116 @@ namespace Salon.Controllers.Reports
             base.Dispose(disposing);
         }
 
-        public ActionResult CustomerStatistics(string cust = null)
+        public ActionResult CustomerStatistics(string cust = null, bool download = false, string cities = null, string treatments = null)
         {
             var customerStats = new CustomerStatistics(db);
 
+            // get connections of a customer
             if (cust != null)
             {
                 var connectionData = customerStats.GetConnections(Convert.ToInt32(cust));
                 return View("~/Views/Reports/CustomerConnections.cshtml", connectionData);
             }
+            // download a exported csv with filters
+            else if (download)
+            {                                
+                if(cities != "all")
+                {
+                    var selectedCustomers = from v in customerStats.Customers
+                                            join c in customerStats.Cities on v.CityId equals c.CityId
+                                            where c.Title == cities
+                                            select new
+                                            {
+                                                name = $"{v.FName} {v.LName}",
+                                                city = c.Title,
+                                                lastTreatment = customerStats.LastTreatment(v.CustomerId),
+                                                contact = customerStats.GetConnections(v.CustomerId)
+                                            };
+
+                    List<String> returnValue = new List<string>();
+                    string headers = "Name;" + "Ort;" + "Letzte Behandlung;" + "Kontaktinformation";
+
+                    returnValue.Add(headers);
+
+                    foreach (var item in selectedCustomers)
+                    {
+                        string contactData = null;
+
+                        foreach (var currentContact in item.contact)
+                        {
+                            if(currentContact.ConnectionType == "Telefon" && currentContact.ConnectionValue != null)
+                            {
+                                contactData = currentContact.ConnectionValue;
+                                break;
+                            }
+                            else if(currentContact.ConnectionType == "E-Mail" && currentContact.ConnectionValue != null)
+                            {
+                                contactData = currentContact.ConnectionValue;
+                            }
+                        }
+
+                        if(contactData is null)
+                        {
+                            contactData = "keine Kontaktinformationen vorhanden";
+                        }
+
+                        string newLine = $"{item.name};{item.city};{item.lastTreatment};{contactData};";
+                        returnValue.Add(newLine);
+                    }
+
+                    this.Export(returnValue, "Kunden-Auswertung_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+
+                }
+                else if (treatments != "all")
+                {
+                    var selectedCustomers = from v in customerStats.Customers
+                                            join c in customerStats.Cities on v.CityId equals c.CityId
+                                            where customerStats.LastTreatment(v.CustomerId) == treatments
+                                            select new
+                                            {
+                                                name = $"{v.FName} {v.LName}",
+                                                city = c.Title,
+                                                lastTreatment = customerStats.LastTreatment(v.CustomerId),
+                                                contact = customerStats.GetConnections(v.CustomerId)
+                                            };
+
+                    List<String> returnValue = new List<string>();
+                    string headers = "Name;" + "Ort;" + "Letzte Behandlung;" + "Kontaktinformation";
+
+                    returnValue.Add(headers);
+
+                    foreach (var item in selectedCustomers)
+                    {
+                        string contactData = null;
+
+                        foreach (var currentContact in item.contact)
+                        {
+                            if (currentContact.ConnectionType == "Telefon" && currentContact.ConnectionValue != null)
+                            {
+                                contactData = currentContact.ConnectionValue;
+                                break;
+                            }
+                            else if (currentContact.ConnectionType == "E-Mail" && currentContact.ConnectionValue != null)
+                            {
+                                contactData = currentContact.ConnectionValue;
+                            }
+                        }
+
+                        if (contactData is null)
+                        {
+                            contactData = "keine Kontaktinformationen vorhanden";
+                        }
+
+                        string newLine = $"{item.name};{item.city};{item.lastTreatment};{contactData};";
+                        returnValue.Add(newLine);
+                    }
+
+                    this.Export(returnValue, "Kunden-Auswertung_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                }
+
+                return RedirectToAction("CustomerStatistics");
+            }
+            // return the standard view
             else
             {                
                 return View(customerStats);
