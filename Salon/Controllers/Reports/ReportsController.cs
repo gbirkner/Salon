@@ -134,10 +134,10 @@ namespace Salon.Controllers.Reports
                                             where c.Title == cities
                                             select new
                                             {
-                                                name = $"{v.FName} {v.LName}",
-                                                city = c.Title,
-                                                lastTreatment = customerStats.LastTreatment(v.CustomerId),
-                                                contact = customerStats.GetConnections(v.CustomerId)
+                                                custID = v.CustomerId,
+                                                FName =  v.FName,
+                                                LName = v.LName,
+                                                city = c.Title,                                                
                                             };
 
                     List<String> returnValue = new List<string>();
@@ -148,8 +148,9 @@ namespace Salon.Controllers.Reports
                     foreach (var item in selectedCustomers)
                     {
                         string contactData = null;
+                        List<CustomerConnections> currConnections = customerStats.GetConnections(item.custID);
 
-                        foreach (var currentContact in item.contact)
+                        foreach (var currentContact in currConnections)
                         {
                             if(currentContact.ConnectionType == "Telefon" && currentContact.ConnectionValue != null)
                             {
@@ -162,12 +163,12 @@ namespace Salon.Controllers.Reports
                             }
                         }
 
-                        if(contactData is null)
+                        if(contactData == null)
                         {
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
 
-                        string newLine = $"{item.name};{item.city};{item.lastTreatment};{contactData};";
+                        string newLine = $"{item.FName} {item.LName};{item.city};{customerStats.LastTreatment(item.custID)};{contactData};";
                         returnValue.Add(newLine);
                     }
 
@@ -209,7 +210,7 @@ namespace Salon.Controllers.Reports
                             }
                         }
 
-                        if (contactData is null)
+                        if (contactData == null)
                         {
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
