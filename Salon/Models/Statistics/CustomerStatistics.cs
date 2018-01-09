@@ -20,10 +20,10 @@ namespace Salon.Models.Statistics
         public DbSet<Models.ConnectionTypes> ConnectionTypes { get; set; }
         public DbSet<Models.VisitTasks>VisitTasks { get; set; }
 
-        public string GetCity(string postalCode, string countryId)
+        public string GetCity(string cityID, string countryId)
         {
             var cityname = from v in Cities
-                           where v.PostalCode == postalCode && v.CountryId == countryId
+                           where v.CityID == postalCode && v.CountryId == countryId
                            select v.Title;
 
             if (cityname.FirstOrDefault() == null)

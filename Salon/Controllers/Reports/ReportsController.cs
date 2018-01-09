@@ -124,6 +124,11 @@ namespace Salon.Controllers.Reports
             }            
         }
 
+        public ActionResult CustomerStatisticsExport()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Get: WorkPerClassViewModel
         /// </summary>

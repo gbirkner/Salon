@@ -20,27 +20,15 @@ namespace Salon.Controllers.Statistics
         public ActionResult Index()
         {
             definedStatistics.Add(new StatisticTypes(
-                "Besuche pro Monat", "Zeigt die Anzahl der Kundenbesuche pro Monat", "Graph", "/Graph/LineChart?chartName=VisitsMonth"
+                "Besuche pro Monat", "Zeigt die Anzahl der Kundenbesuche pro Monat", "Graphik", "/Chart/LineChart?chartName=VisitsMonth"
+                ));
+            
+            definedStatistics.Add(new StatisticTypes(
+                "Kundenauswertung", "Zeigt eine Liste aller Kunden mit vielen Filteroptionen", "Auswertung", "/Reports/CustomerStatistics"
                 ));
 
             definedStatistics.Add(new StatisticTypes(
-                "Visits per TIME", "Shows the visits for a specific time span", "Report", "/"
-                ));
-
-            definedStatistics.Add(new StatisticTypes(
-                "Customerlist", "Shows all customers", "Report", "/"
-                ));
-
-            definedStatistics.Add(new StatisticTypes(
-                "Customers last month", "Shows all customers that visited last month", "Report", "/"
-                ));
-
-            definedStatistics.Add(new StatisticTypes(
-                "Top treatmentes", "Shows the top treatments", "Report", "/"
-                ));
-
-            definedStatistics.Add(new StatisticTypes(
-                "Percentage visits per gender", "Shows the percentage visits per gender for a specific time span", "Report", "/"
+                "Schülerauswertung", "Zeigt eine Liste aller Schüler mit deren Arbeitsschritten an", "Auswertung", "/Reports/WorkPerClass"
                 ));
 
             return View(definedStatistics);
