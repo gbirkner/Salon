@@ -45,7 +45,7 @@ namespace Salon.Controllers
 
 
         // Submit and add or update database
-        public ActionResult CreatEditTreatments()
+        public ActionResult CreatEditTreatments()   
         {
             return View(db.Treatments.ToList());
         }
@@ -65,6 +65,7 @@ namespace Salon.Controllers
                                                        Duration = t.Duration,
                                                        Order = t.StepOrder
                                                    }).ToList();
+            ViewBag.AcID = id;
             return PartialView("_CreatEditSteps", TreatmentSteps);
         }
 

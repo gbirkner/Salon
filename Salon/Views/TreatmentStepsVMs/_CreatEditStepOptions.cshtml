@@ -3,21 +3,16 @@
 @if (Model.Any())
 {
     <div class="inline-text title">
-        <p>@Html.DisplayNameFor(model => model.Position)</p>
-        <p>@Html.DisplayNameFor(model => model.Option)</p>
-        <p>@Html.DisplayNameFor(model => model.Description)</p>
-        <p>@Html.DisplayNameFor(model => model.isActive)</p>
+        <p>@Html.DisplayNameFor(model => model[0].Position)</p>
+        <p>@Html.DisplayNameFor(model => model[0].Description)</p>
+        <p>@Html.DisplayNameFor(model => model[0].isActive)</p>
         <p></p>
     </div>
 
 }
-<div class="panel-group" id="accordion3">
-    @using (Html.BeginForm())
+<div class="panel-group" id="accordions-3">
+    @for (int i = 0; i < Model.Count(); i++)
     {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        for (int i = 0; i < Model.Count() - 1; i++)
-        {
         <div class="panel">
             <div class="panel-heading panel-default">
                 @Html.HiddenFor(modelItem => modelItem[i].StepOptionId)
@@ -31,19 +26,11 @@
                         @Html.ValidationMessageFor(modelItem => modelItem[i].Description, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.EditorFor(modelItem => modelItem[i].Option, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(modelItem => modelItem[i].Option, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
                         @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-        </div>
-        }
-        <div class="special">
-            <input type="submit" value="Speichern" class="btn btn-default" />
         </div>
     }
 </div>

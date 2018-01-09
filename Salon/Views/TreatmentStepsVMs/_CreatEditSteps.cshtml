@@ -14,56 +14,48 @@
 
     </div>
 }
-
-    <div class="panel-group" id="accordion2">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            for (int i = 0; i < Model.Count() - 1; i++)
-            {
-            <div class="panel">
-                <div class="panel-heading panel-default">
-                        <div class="inline-text">
-                            @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
-                            @Html.HiddenFor(modelItem => modelItem[i].StepsId)
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].Title, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].Description, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].isSensitive, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].isSensitive, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Duration, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].Duration, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Order, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(modelItem => modelItem[i].Order, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                @Html.ActionLink("Optionnen", "CreatEditStepOptions", new { id = Model[i].StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + i, data_parent = "#accordion2" })
-                            </div>
-                        </div>
-                </div>
-                <div id="collapse-step-@i" class="panel-collapse collapse">
-                    <div class="panel-body">
+    <div class="panel-group" id="accordion-@ViewBag.AcID">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        <div class="panel">
+            <div class="panel-heading panel-default">
+                <div class="inline-text">
+                    @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
+                    @Html.HiddenFor(modelItem => modelItem[i].StepsId)
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Title, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].isSensitive, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].isSensitive, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].Duration, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Duration, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(modelItem => modelItem[i].Order, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(modelItem => modelItem[i].Order, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-default" data-toggle="collapse" data-target="#collapse-option-@ViewBag.AcID-@i" data-parent="#accordion-@ViewBag.AcID">Optionen</a>
                     </div>
                 </div>
             </div>
-            }
-            <div class="special">
-                <input type="submit" value="Speichern" class="btn btn-default" />
+            <div id="collapse-option-@ViewBag.AcID-@i" class="panel-collapse collapse">
+                <div class="panel-body">
+                    @{Html.RenderAction("CreatEditStepOptions", "TreatmentStepsVMs", new { id = Model[i].StepsId });}
+                </div>
             </div>
-        }
-    </div>
+        </div>
+       }
+</div>

@@ -21,7 +21,7 @@
             <div class="panel">
                 <div class="panel-heading panel-default">
                     <div class="inline-text">
-                        @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
+                            @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
                         <div class="form-group">
                             @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(modelItem => modelItem[i].Title, "", new { @class = "text-danger" })
@@ -34,13 +34,12 @@
                             @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group">
-                            @Html.ActionLink("Arbeitsschritte", "CreatEditSteps", new { id = Model[i].TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + i, data_parent = "#accordion" })
-                        </div>
+                        <a class="btn btn-default" data-toggle="collapse" data-target="#collapse-step-@i" data_parent="#accordion">Arbeitsschritte</a>
                     </div>
                 </div>
-                <div id="collapse-@i" class="panel-collapse collapse">
+                <div id="collapse-step-@i" class="panel-collapse collapse">
                     <div class="panel-body">
+                        @{Html.RenderAction("CreatEditSteps", "TreatmentStepsVMs", new { id = Model[i].TreatmentId });}
                     </div>
                 </div>
             </div>
@@ -59,27 +58,19 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-    $(function () {
+        for (var i = 0; i < @Model.Count(); i++) {
+            $.get("/TreatmentStepsVMs/TreatmentSteps/" + i, function(response){
+                $("#collapse-step-" + i)
+            });
+        }
         $('.steps-viewdetail').on('click', function (e) {
-            $that = $(this);
-
-            $.get($that.prop('href'), function (response) {
-                $that.closest('.panel').find('.panel-body').html(response)
-            });
-            e.preventDefault();
-        });
-
-
-        $('body').on('click', '.options-viewdetail', function (e) {
-            $that = $(this);
-
-            $.get($that.prop('href'), function (response) {
-                $that.closest('.panel').find('.panel-body').html(response)
-            });
-            e.preventDefault();
-        });
-
-    });
+                        $that = $(this);
+            
+                        $.get($that.prop('href'), function (response) {
+                               $that.closest('.panel').find('.panel-body').html(response)
+                           });
+                        e.preventDefault();
+                    });
     function addRow() {
 
         @{
