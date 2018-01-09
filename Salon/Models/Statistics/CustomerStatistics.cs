@@ -20,10 +20,10 @@ namespace Salon.Models.Statistics
         public DbSet<Models.ConnectionTypes> ConnectionTypes { get; set; }
         public DbSet<Models.VisitTasks>VisitTasks { get; set; }
 
-        public string GetCity(string postalCode, string countryId)
+        public string GetCity(int? cityId)
         {
             var cityname = from v in Cities
-                           where v.PostalCode == postalCode && v.CountryId == countryId
+                           where v.CityId == cityId
                            select v.Title;
 
             if (cityname.FirstOrDefault() == null)
@@ -34,6 +34,20 @@ namespace Salon.Models.Statistics
             {
                 return cityname.First();
             }            
+        }
+
+        public List<string> GetAllCities()
+        {
+            var allCities = from c in Customers
+                            join v in Cities on c.CityId equals v.CityId
+                            select v.Title;
+
+
+            allCities = allCities.Distinct();
+            List<String> cityList = allCities.ToList();
+            cityList.Sort();
+
+            return cityList;
         }
 
         public string LastTreatment(int customerID)
