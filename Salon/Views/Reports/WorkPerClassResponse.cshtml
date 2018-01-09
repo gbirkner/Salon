@@ -16,6 +16,9 @@
                 <thead>
                     <tr style="font-size: 16px; cursor: pointer">
                         <th>
+                            Nr
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.StudentName) 
                         </th>
                         <th>
@@ -45,6 +48,8 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.StudentName)
                             </td>

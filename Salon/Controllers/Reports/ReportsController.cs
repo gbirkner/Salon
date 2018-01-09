@@ -20,29 +20,6 @@ namespace Salon.Controllers.Reports
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
         private SalonEntities db = new SalonEntities();
 
-        // GET: CustomerViewModel
-        //public ActionResult Customers(string export = "")
-        //{
-        //    var customer = db.Customers.Include(c => c.Cities);
-        //    IEnumerable<CustomersViewModel> CustomersViewModel =
-        //        (from cu in customer
-        //         orderby cu.LName
-        //         select new CustomersViewModel
-        //         {
-        //             Country = cu.Cities.CountryId,
-        //             CustomerId = cu.CustomerId,
-        //             Description = cu.Description,
-        //             Name = cu.FName + " " + cu.LName,
-        //             PostalCode = cu.Cities.PostalCode,
-        //             Street = cu.Street,
-        //             City = cu.Cities.Title
-        //         }
-        //         );
-        //    customerList = CustomersViewModel.ToList();
-
-        //    return View(customerList);
-        //}
-
         /// <summary>
         /// Exports list to a .csv file
         /// </summary>
@@ -136,7 +113,7 @@ namespace Salon.Controllers.Reports
                             }
                         }
 
-                        if(contactData is null)
+                        if(contactData == null)
                         {
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
@@ -183,7 +160,7 @@ namespace Salon.Controllers.Reports
                             }
                         }
 
-                        if (contactData is null)
+                        if (contactData == null)
                         {
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
@@ -221,6 +198,11 @@ namespace Salon.Controllers.Reports
             ViewBag.Success = SuccessfullDownload;
             ViewBag.ErrorMessage = ErrorMessage;
             workPerClassList.Clear();
+
+            if (Download == true)
+                Download = false;
+            if (SuccessfullDownload == true)
+                SuccessfullDownload = false;
 
             string teacherLast = "";
             string teacherFirst = "";
@@ -264,10 +246,10 @@ namespace Salon.Controllers.Reports
                     case "Datum absteigend":
                         workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ThenBy(w => w.StudentName).ToList();
                         break;
-                    case "Name aufsteigend":
+                    case "Schüler aufsteigend":
                         workPerClassList = WorkPerClass.OrderBy(w => w.StudentName).ThenBy(w => w.Date).ToList();
                         break;
-                    case "Name absteigend":
+                    case "Schüler absteigend":
                         workPerClassList = WorkPerClass.OrderByDescending(w => w.StudentName).ThenBy(w => w.Date).ToList();
                         break;
                 }
@@ -293,6 +275,11 @@ namespace Salon.Controllers.Reports
             }   
         }
 
+        /// <summary>
+        /// Gets all treatments, assigned to a step
+        /// </summary>
+        /// <param name="treatmentId"></param>
+        /// <returns></returns>
         private List<WorkPerClassViewModel.Step> GetStepsPerTreatment(int treatmentId)
         {
             List<WorkPerClassViewModel.Step> returnValue = new List<WorkPerClassViewModel.Step>();

@@ -39,6 +39,10 @@ namespace Salon.Views.ViewModels
 
         public List<Step> StepsPerTreatment { get; set; }
 
+        /// <summary>
+        /// Get all classes
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetClasses()
         {
             List<string> returnValue = new List<string>();
@@ -56,6 +60,10 @@ namespace Salon.Views.ViewModels
             return returnValue;
         }
 
+        /// <summary>
+        /// Get all teachers
+        /// </summary>
+        /// <returns></returns>
         public SelectList GetTeachers()
         {
             List<string> teacherList = new List<string>();
@@ -73,6 +81,10 @@ namespace Salon.Views.ViewModels
             return new SelectList(teacherList);
         }
 
+        /// <summary>
+        /// Get all rooms
+        /// </summary>
+        /// <returns></returns>
         public SelectList GetRooms()
         {
             List<string> roomList = new List<string>();
