@@ -9,7 +9,7 @@
 
 <html>
 <body>
-    <div id="ajaxContent"> 
+    <div id="ajaxContent" style="overflow: auto"> 
         @if (Model.FirstOrDefault() != null)
         {
             <table class="table">
@@ -25,6 +25,9 @@
                             @Html.DisplayNameFor(model => model.TeacherName) 
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.Room)
+                        </th>                        
+                        <th>
                             @Html.DisplayNameFor(model => model.Date) 
                         </th>
                         <th>
@@ -38,7 +41,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody style="overflow: auto; max-height: 80%">
+                <tbody style="overflow: auto; height: 50%">
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -52,7 +55,9 @@
                                 @Html.DisplayFor(modelItem => item.TeacherName)
                             </td>
                             <td>
-                                @*@Html.DisplayFor(modelItem => item.Date)*@
+                                @Html.DisplayFor(modelItem => item.Room)
+                            </td>
+                            <td>
                                 @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
                             </td>
                             <td>
@@ -66,21 +71,12 @@
                             foreach (var step in item.StepsPerTreatment)
                             {
                             <tr>
-                                <td style="border: none; color: black">
-                                    @Html.DisplayFor(modelItem => item.StudentName)
-                                </td>
-                                <td style="border: none; color: transparent">
-                                    @Html.DisplayFor(modelItem => item.Class)
-                                </td>
-                                <td style="border: none; color: transparent">
-                                    @Html.DisplayFor(modelItem => item.TeacherName)
-                                </td>
-                                <td style="border: none; color: transparent">
-                                    @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
-                                </td>
-                                <td style="border: none; color: transparent">
-                                    @Html.DisplayFor(modelItem => item.Treatment)
-                                </td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
                                 <td style="border: none">
                                     @Html.DisplayFor(x => step.StepTitle)
                                 </td>

@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
 using Salon.Views.ViewModels;
-using System.Data.Entity;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using System.Xml;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
-using System.Linq.Expressions;
 using Salon.Models.Statistics;
 
 namespace Salon.Controllers.Reports
 {
     public class ReportsController : Controller
     {
-        private SalonEntities db = new SalonEntities();
+        public static bool Download = false;
+        public static bool SuccessfullDownload = false;
+        public static string ErrorMessage = string.Empty;
         private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
-        private string message = string.Empty;
+        private SalonEntities db = new SalonEntities();
 
         // GET: CustomerViewModel
         //public ActionResult Customers(string export = "")
@@ -52,8 +47,10 @@ namespace Salon.Controllers.Reports
         /// Exports list to a .csv file
         /// </summary>
         /// <returns></returns>
-        public bool Export(List<string> exportList, string fileName)
+        public void Export(List<string> exportList, string fileName)
         {
+            int count = 1;
+            Download = true;
             try {
                 //Gets the directory of the logged in windows user
                 string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
@@ -62,13 +59,21 @@ namespace Salon.Controllers.Reports
                 {
                     path = Directory.GetParent(path).ToString() + @"\downloads\";
                 }
-                System.IO.File.WriteAllLines(path + @"\" + fileName + ".csv", exportList, System.Text.Encoding.UTF8);
 
-                return true;
+                string fullPath = path + @"\" + fileName + ".csv";
+                while (System.IO.File.Exists(fullPath))
+                {
+                    fullPath = path + @"\" + fileName + "_" + count + ".csv";
+                    count++;
+                }
+
+                System.IO.File.WriteAllLines(fullPath, exportList, System.Text.Encoding.UTF8);
+                SuccessfullDownload = true;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                ErrorMessage = ex.Message;
+                SuccessfullDownload = false;
             }
         }
 
@@ -134,9 +139,13 @@ namespace Salon.Controllers.Reports
         /// </summary>
         /// <param name="cl">class</param>
         /// <returns></returns>
-        public ActionResult WorkPerClass(string cl = "")
+        public ActionResult WorkPerClass(string cl = "", string sort = "")
         {
             var visits = db.Visits;
+            ViewBag.Downloaded = Download;
+            ViewBag.Success = SuccessfullDownload;
+            ViewBag.ErrorMessage = ErrorMessage;
+            workPerClassList.Clear();
 
             if (cl != "")
             {
@@ -149,11 +158,28 @@ namespace Salon.Controllers.Reports
                             TeacherName = c.TeacherName,
                             Treatment = c.Treatement,
                             Date = c.Date ?? Convert.ToDateTime(c.Date),
-                            StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId)
+                            StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId),
+                            Room = c.Room
                         }).ToList();
 
-                workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
-                return View("~/Views/Reports/WorkPerClassResponse.cshtml", WorkPerClass.ToList());
+                switch(sort)
+                {
+                    case "Datum aufsteigend":
+                        workPerClassList = WorkPerClass.OrderBy(w => w.Date).ThenBy(w => w.StudentName).ToList();
+                        break;
+                    case "Datum absteigend":
+                        workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ThenBy(w => w.StudentName).ToList();
+                        break;
+                    case "Name aufsteigend":
+                        workPerClassList = WorkPerClass.OrderBy(w => w.StudentName).ThenBy(w => w.Date).ToList();
+                        break;
+                    case "Name absteigend":
+                        workPerClassList = WorkPerClass.OrderByDescending(w => w.StudentName).ThenBy(w => w.Date).ToList();
+                        break;
+                }
+
+                //workPerClassList = WorkPerClass.OrderByDescending(w => w.Date).ToList();
+                return View("~/Views/Reports/WorkPerClassResponse.cshtml", workPerClassList);
             }
             else
             {
@@ -167,14 +193,11 @@ namespace Salon.Controllers.Reports
                         StudentName = "",
                         TeacherName = "",
                         Treatment = "",
-                        Date = DateTime.Now
+                        Date = DateTime.Now,
+                        Room = ""
                         //,StepsPerTreatment = this.GetStepsPerTreatment(1)
                     }
                  );
-
-                if (message != string.Empty)
-                    ViewBag.Message = message;
-
                 return View(empty.ToList());
             }   
         }
@@ -202,9 +225,10 @@ namespace Salon.Controllers.Reports
         public ActionResult WorkPerClassExport()
         {
             List<String> returnValue = new List<string>();
-            string headers = string.Empty;
+            string headers = "Nr;";
 
             var properties = typeof(WorkPerClassViewModel).GetProperties();
+            var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
             foreach (var property in properties) //headers
             {
                 var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
@@ -212,26 +236,33 @@ namespace Salon.Controllers.Reports
                 if (display != null)
                     headers += display.Name + ";";
             }
+            foreach (var property in propertiesStep) //headers
+            {
+                var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                if (display != null)
+                    headers += display.Name + ";";
+            }
+
             returnValue.Add(headers);
+
+            int number = 1;
             foreach (var entry in workPerClassList)  //data
             {
-                returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
+                //returnValue.Add(entry.StudentName + ";" + entry.Class+ ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString());
 
                 foreach(var step in entry.StepsPerTreatment)
                 {
-                    returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
+                    returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + step.StepTitle + ";" + step.StepDescription);
+                    //returnValue.Add(";;;;;" + step.StepTitle + ";" + step.StepDescription);
                 }
+                number++;
             }
 
             var cl = workPerClassList.FirstOrDefault();
             if (cl != null)
             {
-                var result = this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class);
-
-                if(result)
-                    message = "Datei wurde erfolgreich heruntergeladen!";
-                else
-                    message = "Datei konnte nicht heruntergeladen werden!";
+                this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
             }
             return RedirectToAction("WorkPerClass");
         }
