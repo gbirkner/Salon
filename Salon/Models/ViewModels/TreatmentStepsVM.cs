@@ -19,4 +19,21 @@ namespace Salon.Models
         public int Order { get; set; }
 
     }
+
+    public class TreatmentsStepsOptions
+    {
+        public int TreatmentId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool isActive { get; set; }
+        public int TreatmentStepTreatmentId {get; set;}
+        public int TreatmentStepStepId { get; set; }
+
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool isSensitive { get; set; }
+        public bool isActive { get; set; }
+        public int Duration { get; set; }
+        public int Order { get; set; }
+    }
 }
