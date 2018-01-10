@@ -15,18 +15,18 @@
     {
         <div class="panel">
             <div class="panel-heading panel-default">
-                @Html.HiddenFor(modelItem => modelItem[i].StepOptionId)
+                @Html.HiddenFor(modelItem => modelItem[i].StepOptionId, new { htmlAttributes = new { @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].StepOptionId" } })
                 <div class="inline-text">
                     <div class="form-group">
-                        @Html.EditorFor(modelItem => modelItem[i].Position, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(modelItem => modelItem[i].Position, new { htmlAttributes = new { @class = "form-control", @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].Position" } })
                         @Html.ValidationMessageFor(modelItem => modelItem[i].Position, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control", @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].Description" } })
                         @Html.ValidationMessageFor(modelItem => modelItem[i].Description, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control", @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].isActive" } })
                         @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                     </div>
                 </div>

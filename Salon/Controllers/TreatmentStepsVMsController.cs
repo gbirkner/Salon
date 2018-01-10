@@ -65,21 +65,26 @@ namespace Salon.Controllers
                                                        Duration = t.Duration,
                                                        Order = t.StepOrder
                                                    }).ToList();
-            ViewBag.AcID = id;
+            ViewBag.TreatmentLoopId = id;
             return PartialView("_CreatEditSteps", TreatmentSteps);
         }
 
-        public ActionResult CreatEditStepOptions(int? id = null)
+        public ActionResult CreatEditStepOptions(int? id = null, int? tId = null)
         {
-
+            ViewBag.TreatmentLoopId = tId;
+            ViewBag.StepLoopId = id;
             return PartialView("_CreatEditStepOptions", db.StepOptions.Where(sid => sid.StepId == id).ToList());
         }
 
         // POST: Create / Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditTreatments(List<Salon.Models.Treatments> treatments)
+        public ActionResult EditTreatments(List<Treatments> treatments, List<StepsVM> steps, List<StepOptions> options)
         {
+            NameValueCollection nvc = Request.Form;
+            var o = options;
+            var s = steps;
+            var t = treatments;
             foreach (Treatments tr in treatments)
             {
                 if (tr.TreatmentId != 0)
