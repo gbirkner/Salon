@@ -6,10 +6,48 @@
     ViewBag.Title = "Work per student";
 }
 
+<link rel="stylesheet" href="~/Content/customerstat.css" />
+<style>
+    /* The ALERT message box */
+    .alert {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #57ab26; /* Green */
+        color: white;
+        margin-bottom: 15px;
+        opacity: 1;
+        transition: opacity 0.6s; /* 600ms to fade out */
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
+</style>
+
+<!-- div to show alerts for ajax responses -->
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    Die Auswertung wurde erfolgreich unter "Downloads" heruntergeladen.
+</div>
+
 <h2>Meine Arbeit</h2>
 
 <div id="header" style="margin-top: 20px;">
-    <button style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new {})'">Download &#x21e9</button> @*Download button*@
+    <button id="export" style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new { name = "MyWork" })'">Download &#x21e9</button> @*Download button*@
 </div>
 <br />
 <div id="ajaxContent" style="overflow: auto; margin-top: 30px">
@@ -108,7 +146,8 @@
     {
         <script type="text/javascript">
 	    		window.onload = function () {
-	    		    alert("Die Datei wurde erfolgreich heruntergeladen!");
+	    		    $(".alert").css('opacity', '1.0');
+	    		    $(".alert").show();
 	    		};
         </script>
     }
@@ -117,3 +156,26 @@
         string message = "Die Datei konnte nicht heruntergeladen werden!\r\n" + ViewBag.Message;
     }
 }
+
+<!-- script to fade out alert -->
+<script>
+    // Get all elements with class="closebtn"
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    // Loop through all close buttons
+    for (i = 0; i < close.length; i++) {
+        // When someone clicks on a close button
+        close[i].onclick = function () {
+
+            // Get the parent of <span class="closebtn"> (<div class="alert">)
+            var div = this.parentElement;
+
+            // Set the opacity of div to 0 (transparent)
+            div.style.opacity = "0";
+
+            // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+            setTimeout(function () { div.style.display = "none"; }, 600);
+        }
+    }
+</script>

@@ -18,6 +18,7 @@ namespace Salon.Controllers.Reports
         public static string ErrorMessage = string.Empty;
         private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
+        private static List<WorkPerClassViewModel> myWorkList = new List<WorkPerClassViewModel>();
         private SalonEntities db = new SalonEntities();
 
         /// <summary>
@@ -350,44 +351,90 @@ namespace Salon.Controllers.Reports
         /// Table to stringlist for .csv export
         /// </summary>
         /// <returns>Action</returns>
-        public ActionResult WorkPerClassExport()
+        public ActionResult WorkPerClassExport(string name)
         {
             List<String> returnValue = new List<string>();
             string headers = "Nr;";
 
             var properties = typeof(WorkPerClassViewModel).GetProperties();
             var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
-            foreach (var property in properties) //headers
-            {
-                var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
-                
-                if (display != null)
-                    headers += display.Name + ";";
-            }
-            foreach (var property in propertiesStep) //headers
-            {
-                var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
-
-                if (display != null)
-                    headers += display.Name + ";";
-            }
-
-            returnValue.Add(headers);
-
             int number = 1;
-            foreach (var entry in workPerClassList)  //data
-            {
-                foreach(var step in entry.StepsPerTreatment)
-                {
-                    returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
-                }
-                number++;
-            }
 
-            var cl = workPerClassList.FirstOrDefault();
-            if (cl != null)
+            if (name == "WorkPerClass")
             {
-                this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                //returnValue.Add("Arbeit pro Klasse");
+                //returnValue.Add("Klasse: " + workPerClassList.First().Class);
+                //returnValue.Add("");
+
+                foreach (var property in properties) //headers
+                {
+                    var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                    if (display != null)
+                        headers += display.Name + ";";
+                }
+                foreach (var property in propertiesStep) //headers
+                {
+                    var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                    if (display != null)
+                        headers += display.Name + ";";
+                }
+                returnValue.Add(headers);
+
+                foreach (var entry in workPerClassList)  //data
+                {
+                    foreach (var step in entry.StepsPerTreatment)
+                    {
+                        returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
+                    }
+                    number++;
+                }
+
+                var cl = workPerClassList.FirstOrDefault();
+                if (cl != null)
+                {
+                    this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                }
+                return RedirectToAction("WorkPerClass");
+            }
+            else if (name == "MyWork")
+            {
+                //returnValue.Add("Meine Arbeit");
+                //returnValue.Add("Name: " + myWorkList.First().StudentName);
+                //returnValue.Add("");
+
+                foreach (var property in properties) //headers
+                {
+                    var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                    if (display != null)
+                        headers += display.Name + ";";
+                }
+                foreach (var property in propertiesStep) //headers
+                {
+                    var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
+
+                    if (display != null)
+                        headers += display.Name + ";";
+                }
+                returnValue.Add(headers);
+
+                foreach (var entry in myWorkList)  //data
+                {
+                    foreach (var step in entry.StepsPerTreatment)
+                    {
+                        returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
+                    }
+                    number++;
+                }
+
+                var cl = myWorkList.FirstOrDefault();
+                if (cl != null)
+                {
+                    this.Export(returnValue, "MeineArbeit_" + User.Identity.Name + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                }
+                return RedirectToAction("MyWork");
             }
             return RedirectToAction("WorkPerClass");
         }
@@ -423,6 +470,7 @@ namespace Salon.Controllers.Reports
                         Room = c.Room
                     }).ToList();
 
+            myWorkList = MyWork.ToList();
             return View(MyWork.ToList());
         }
     }
