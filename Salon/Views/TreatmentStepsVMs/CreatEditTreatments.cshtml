@@ -39,7 +39,7 @@
                 </div>
                 <div id="collapse-step-@i" class="panel-collapse collapse">
                     <div class="panel-body">
-                        @{Html.RenderAction("CreatEditSteps", "TreatmentStepsVMs", new { id = Model[i].TreatmentId });}
+                        @{Html.RenderAction("CreatEditSteps", "TreatmentStepsVMs", new { id = Model[i].TreatmentId, tId = i });}
                     </div>
                 </div>
             </div>

@@ -50,29 +50,30 @@ namespace Salon.Controllers
             return View(db.Treatments.ToList());
         }
 
-        public ActionResult CreatEditSteps(int? id = null)
+        public ActionResult CreatEditSteps(int? id = null, int? tId = null)
         {
             var tsteps = db.TreatmentSteps.Include(y => y.Steps);
             List<StepsVM> TreatmentSteps = (from t in tsteps
-                                                   where t.TreatmentId == id
-                                                   select new StepsVM
-                                                   {
-                                                       StepsId = t.StepId,
-                                                       Title = t.Steps.Title,
-                                                       Description = t.Steps.Description,
-                                                       isSensitive = t.Steps.isSensitive,
-                                                       isActive = t.Steps.isActive,
-                                                       Duration = t.Duration,
-                                                       Order = t.StepOrder
+                                            where t.TreatmentId == id
+                                            select new StepsVM
+                                            {
+                                                StepsId = t.StepId,
+                                                Title = t.Steps.Title,
+                                                Description = t.Steps.Description,
+                                                isSensitive = t.Steps.isSensitive,
+                                                isActive = t.Steps.isActive,
+                                                Duration = t.Duration,
+                                                Order = t.StepOrder,
+                                                StepOptions = t.Steps.StepOptions.ToList()
                                                    }).ToList();
-            ViewBag.TreatmentLoopId = id;
+            ViewBag.TreatmentLoopId = tId;
             return PartialView("_CreatEditSteps", TreatmentSteps);
         }
 
-        public ActionResult CreatEditStepOptions(int? id = null, int? tId = null)
+        public ActionResult CreatEditStepOptions(int? id = null, int? tId = null, int? sId = null)
         {
             ViewBag.TreatmentLoopId = tId;
-            ViewBag.StepLoopId = id;
+            ViewBag.StepLoopId = sId;
             return PartialView("_CreatEditStepOptions", db.StepOptions.Where(sid => sid.StepId == id).ToList());
         }
 
@@ -82,9 +83,26 @@ namespace Salon.Controllers
         public ActionResult EditTreatments(List<Treatments> treatments, List<StepsVM> steps, List<StepOptions> options)
         {
             NameValueCollection nvc = Request.Form;
-            var o = options;
-            var s = steps;
-            var t = treatments;
+            string[] array;
+            string t, st, o;
+            foreach (string key in nvc.AllKeys)
+            {
+                array = key.Split('[');
+                switch (array.Length)
+                {
+                    case 2:
+                        t = nvc[key]; //treatment
+                        break;
+                    case 3: 
+                        st = nvc[key]; //step
+                        break;
+                    case 4:
+                        o = nvc[key]; //options
+                        break;
+                    default:
+                        break;
+                }
+            }
             foreach (Treatments tr in treatments)
             {
                 if (tr.TreatmentId != 0)

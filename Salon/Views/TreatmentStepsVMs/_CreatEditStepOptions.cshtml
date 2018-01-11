@@ -15,7 +15,8 @@
     {
         <div class="panel">
             <div class="panel-heading panel-default">
-                @Html.HiddenFor(modelItem => modelItem[i].StepOptionId, new { htmlAttributes = new { @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].StepOptionId" } })
+                <input type="hidden" value="@Model[i].StepOptionId" name="[@ViewBag.TreatmentLoopId][@ViewBag.StepLoopId][@i].StepOptionId" />
+                @*@Html.HiddenFor(modelItem => modelItem[i].StepOptionId, new { htmlAttributes = new { @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].StepOptionId" } })*@
                 <div class="inline-text">
                     <div class="form-group">
                         @Html.EditorFor(modelItem => modelItem[i].Position, new { htmlAttributes = new { @class = "form-control", @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].Position" } })
@@ -27,7 +28,6 @@
                     </div>
                     <div class="form-group">
                         @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control", @Name = "[" + ViewBag.TreatmentLoopId + "][" + ViewBag.StepLoopId + "][" + i + "].isActive" } })
-                        @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
