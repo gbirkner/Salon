@@ -8,8 +8,6 @@ namespace Salon.Views.ViewModels
 {
     public class WorkPerClassViewModel
     {
-        public string SelectedTeacher { get; set; }
-
         public WorkPerClassViewModel()
         {
             StudentName = "";

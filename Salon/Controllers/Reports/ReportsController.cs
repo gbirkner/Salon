@@ -342,5 +342,39 @@ namespace Salon.Controllers.Reports
             }
             return RedirectToAction("WorkPerClass");
         }
+
+        /// <summary>
+        /// Shows the work for the currently loggedon User
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MyWork()
+        {
+            var user = "155e3efb-35be-44f2-b318-daf06cd1bf3a";
+            var visits = db.Visits;
+            ViewBag.Downloaded = Download;
+            ViewBag.Success = SuccessfullDownload;
+            ViewBag.ErrorMessage = ErrorMessage;
+            workPerClassList.Clear();
+
+            if (Download == true)
+                Download = false;
+            if (SuccessfullDownload == true)
+                SuccessfullDownload = false;
+
+            IEnumerable<WorkPerClassViewModel> MyWork =
+                db.GetMyWork(user)
+                    .Select(c => new WorkPerClassViewModel()
+                    {
+                        Class = c.Class,
+                        StudentName = c.StudentName,
+                        TeacherName = c.TeacherName,
+                        Treatment = c.Treatement,
+                        Date = c.Date ?? Convert.ToDateTime(c.Date),
+                        StepsPerTreatment = this.GetStepsPerTreatment(c.TreatmentId),
+                        Room = c.Room
+                    }).ToList();
+
+            return View(MyWork.ToList());
+        }
     }
 }

@@ -409,6 +409,9 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="GetClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetMyWork" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="studentId" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetRooms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="GetStepsPerTreatment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="treatmentId" Type="int" Mode="In" />
@@ -1030,6 +1033,9 @@
             <End Role="Rooms" EntitySet="Rooms" />
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
+          <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
+            <Parameter Name="studentId" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetClasses">
           <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
@@ -1071,6 +1077,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetMyWork">
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1295,6 +1310,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetMyWork" FunctionName="SalonModel.Store.GetMyWork">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetMyWork">
+                <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
+                <ScalarProperty Name="Class" ColumnName="Class" />
+                <ScalarProperty Name="Treatement" ColumnName="Treatement" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Room" ColumnName="Room" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

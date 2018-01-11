@@ -194,6 +194,9 @@
     <Compile Include="Models\GetClasses.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetMyWork.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\GetStepsPerTreatment.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -426,6 +429,7 @@
     <Content Include="Views\Reports\CustomerConnections.cshtml" />
     <Content Include="Views\Reports\WorkPerClass.cshtml" />
     <Content Include="Views\Reports\WorkPerClassResponse.cshtml" />
+    <Content Include="Views\Reports\MyWork.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

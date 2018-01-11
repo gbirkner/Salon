@@ -82,5 +82,14 @@ namespace Salon.Models
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTeachers>("GetTeachers");
         }
+    
+        public virtual ObjectResult<GetMyWork> GetMyWork(string studentId)
+        {
+            var studentIdParameter = studentId != null ?
+                new ObjectParameter("studentId", studentId) :
+                new ObjectParameter("studentId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMyWork>("GetMyWork", studentIdParameter);
+        }
     }
 }
