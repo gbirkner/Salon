@@ -7,15 +7,17 @@
 <h2>Besuch</h2>
 
 @{ 
-    string action = ""; 
+    string action = "";
+    int vId = 0;
     if (Model.visitId == null) {
         action = Url.Action("saveVisit", "Visits");
     }  else {
         action = Url.Action("updateVisit", "Visits", new { id = Model.visitId });
+        vId = (int)Model.visitId;
     }
 }
 
-<input type="hidden" id="visitId" value="@Model.visitId" />
+<input type="hidden" id="visitId" value="@vId" />
 <form method="post" action="@action" class="form-horizontal">
     <input type="hidden" id="inp_stylistId" name="inp_stylistId" value="@Model.stylist.Id" />
     <div class="row">
@@ -161,6 +163,20 @@
     </div>
 </div>
 
+<div class="modal fade" role="dialog" id="changeCustomerAlert">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Kunden &auml;ndern</h4>
+            </div>
+
+            <div class="modal-body" id="changeCustomerMessage">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -274,16 +290,19 @@
             function getSwitchCustomerMessage(oldCustomer, newCustomer) {
                 var visitId = $("#visitId").val();
                 var link = '@Url.Action("checkCustomerSwitch", "Visits")' + "?cusId1=" + oldCustomer + "&cusId2=" + newCustomer + "&visitId=" + visitId;
-                $.ajax({
-                    url: link
-                }).done(function (data) {
-                    alert(data);
-                });
+                //alert(link);
+                return $.ajax({
+                    url: link,
+                    async: false
+                }).responseText;
             }
 
-            function changeCustomer(oldCus, newCus) {
-                
-
+            function changeCustomer(id, fName, lName, reload) {
+                $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
+                $("#slc_customerId").val(id);
+                if (reload) {
+                    $("#btn_quickSave").click();
+                }
             }
 
 
@@ -308,20 +327,33 @@
                 $.get($("#lnk_customerPicker").prop('href'), function (response) {
                     $('#customerPickerContainer').html(response);
                     $(".customerPickerEntry").each(function (e) {
+                        /**
+                         * switch customer function
+                         */
                         $(this).on('click', function (event) {
                             var id = $(this).find(".customerPickerId").html();
                             id = id.trim();
                             var oldId = $("#slc_customerId").val();
 
-                            var fName = $(this).find(".customerPickerFName").html();
-                            var lName = $(this).find(".customerPickerLName").html();
+                            if (oldId.length > 0) {
+                                var modal = $("#changeCustomerAlert");
+                                var con = $("#changeCustomerMessage");
+                                var msg = getSwitchCustomerMessage(oldId, id);
+                                if (msg == "ok") {
+                                    changeCustomer(id, fName, lName, true);
+                                    return;
+                                }
+                                //alert(msg);
+                                con.html(msg);
+                                modal.modal();
+                            } else {
+                                var fName = $(this).find(".customerPickerFName").html();
+                                var lName = $(this).find(".customerPickerLName").html();
+                                changeCustomer(id, fName, lName, false);
+                            }
 
-                            getSwitchCustomerMessage(oldId, id);
-
-                            $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
-                            $("#slc_customerId").val(id);
+                           
                             $("#customerPicker").modal('hide');
-
                         }); //onclick
                     }); //each
 
@@ -336,7 +368,6 @@
                         $("#customerPicker").modal();
                     });
 
-                    $("#customerPicker").modal();
                 }); //get
 
 
@@ -380,6 +411,15 @@
 
             }); //END
         </script>
+    @if (Model.customer == null) {
+        <script>
+            $(function () {
+                $("#customerPicker").modal();
+            });
+           
+        </script>
+        
+    }
 
 }
 
