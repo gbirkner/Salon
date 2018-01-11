@@ -94,6 +94,17 @@ namespace Salon.Controllers
 
             // Anmeldefehler werden bezüglich einer Kontosperre nicht gezählt.
             // Wenn Sie aktivieren möchten, dass Kennwortfehler eine Sperre auslösen, ändern Sie in "shouldLockout: true".
+
+            var user = from u in db.AspNetUsers
+                        where u.UserName.Contains(model.UserName)
+                        select u;
+
+
+            if (model.entryDate > DateTime.Now && model.resignationDate < DateTime.Now)
+            {
+                ModelState.AddModelError("", "Ungültiger Anmeldeversuch.");
+                return View(model);
+            }
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
             switch (result)

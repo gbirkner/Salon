@@ -67,7 +67,13 @@ namespace Salon.Models
         [Display(Name = "Lehrer")]
         public string Teacher { get; set; }
 
-        // This property will hold all available states for selection
+        [Display(Name = "Eintrittsdatum")]
+        public DateTime entryDate { get; set; }
+
+        [Display(Name = "Austrittdatum")]
+        public DateTime resignationDate { get; set; }
+
+        // This property will hold all available rooms for selection
         public IEnumerable<System.Web.Mvc.SelectListItem> Rooms { get; set; }
 
         // This property will hold all available teachers for selection

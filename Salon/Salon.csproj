@@ -173,8 +173,10 @@
     <Compile Include="Controllers\CitiesController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Helpers\UserCSV.cs" />
     <Compile Include="Migrations\201711300903518_InitialCreate.cs" />
     <Compile Include="Migrations\201711300903518_InitialCreate.Designer.cs">
       <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
@@ -365,6 +367,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Import\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
