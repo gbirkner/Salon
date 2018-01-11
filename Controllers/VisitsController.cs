@@ -95,8 +95,14 @@ namespace Salon.Controllers
         }
 
         [Authorize]
-        public ActionResult VisitCreate(int? id) {
-            Customers customer = null;
+        public ActionResult VisitCreate(int? id, int? cusId) {
+            Customers customer;
+            if (cusId != null) {
+                customer = db.Customers.Find(cusId);
+            } else {
+                customer = null;
+            }
+            
             //AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             AspNetUsers stylist = db.AspNetUsers.Find(User.Identity.GetUserId());
 
@@ -323,13 +329,18 @@ namespace Salon.Controllers
         }
 
         public string checkCustomerSwitch(int cusId1, int cusId2, int visitId) {
+            if(visitId == 0) {
+                return makeAlert("Der Besuch mus vor der &Auml;nderung des Kunden abgespeichert werden!<br /> Bitte speichern Sie den Besuch ab und veruchen es erneut!", "Speichern!", "danger");
+            }
             Customers c1 = db.Customers.Find(cusId1);
             Customers c2 = db.Customers.Find(cusId2);
+            string btn = String.Format("<button type='button' class='btn btn-primary' onclick=\"changeCustomer('{0}', '{1}', '{2}', true)\">Kunden &auml;ndern!</button>",
+                c2.CustomerId, c2.FName, c2.LName);
             Visits v = db.Visits.Find(visitId);
             string res = "";
 
             if(c1.allowSensitive != c2.allowSensitive) {
-                res = "ACHTUNG! Die Sensitiven Daten Freigabe von den neuen Kunden stimmt nicht mit dem alten Kunden &uuml;berein!<br />";
+                res = makeAlert("Die Freigabe der Sensitiven Daten zwischen den Kunden ist unterschiedlich!", "Achtung!", "danger");
                 List<TreatmentSteps> diff = new List<TreatmentSteps>();
                 foreach (VisitTreatment vt in getVisitTreatments(v)) {
                     diff.AddRange(vt.getSensitiveTasks());
@@ -345,8 +356,15 @@ namespace Salon.Controllers
                 }
                 res += "</ul>";
             }else {
-                res = "ok";
+                return "ok";
             }
+            
+            res += btn;
+            return res;
+        }
+
+        private string makeAlert(string msg, string label, string type) {
+            string res = String.Format("<div class='alert alert-{0}'><strong>{1}</strong> {2}</div>", type, label, msg);
             return res;
         }
 
