@@ -43,14 +43,23 @@ namespace Salon.Controllers
             return PartialView("_TreatmentStepOptions", db.StepOptions.Where( sid => sid.StepId == id).ToList());
         }
 
-
-        // Submit and add or update database
-        public ActionResult CreatEditTreatments()   
+        // GET: Countries/Edit/5
+        public ActionResult EditTreatment(string id)
         {
-            return View(db.Treatments.ToList());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Treatments treatments = db.Treatments.Find(id);
+            if (treatments == null)
+            {
+                return HttpNotFound();
+            }
+            return View(treatments);
         }
 
-        public ActionResult CreatEditSteps(int? id = null, int? tId = null)
+        // GET: Countries/Edit/5
+        public ActionResult CreateEditSteps(int? id = null)
         {
             var tsteps = db.TreatmentSteps.Include(y => y.Steps);
             List<StepsVM> TreatmentSteps = (from t in tsteps
@@ -63,10 +72,25 @@ namespace Salon.Controllers
                                                 isSensitive = t.Steps.isSensitive,
                                                 isActive = t.Steps.isActive,
                                                 Duration = t.Duration,
-                                                Order = t.StepOrder,
-                                                StepOptions = t.Steps.StepOptions.ToList()
+                                                Order = t.StepOrder
+                                            }).ToList();
+            return View("CreateEditSteps", TreatmentSteps);
+        }
+        public ActionResult CreatEditSteps(int? id = null)
+        {
+            var tsteps = db.TreatmentSteps.Include(y => y.Steps);
+            List<StepsVM> TreatmentSteps = (from t in tsteps
+                                            where t.TreatmentId == id
+                                            select new StepsVM
+                                            {
+                                                StepsId = t.StepId,
+                                                Title = t.Steps.Title,
+                                                Description = t.Steps.Description,
+                                                isSensitive = t.Steps.isSensitive,
+                                                isActive = t.Steps.isActive,
+                                                Duration = t.Duration,
+                                                Order = t.StepOrder
                                                    }).ToList();
-            ViewBag.TreatmentLoopId = tId;
             return PartialView("_CreatEditSteps", TreatmentSteps);
         }
 

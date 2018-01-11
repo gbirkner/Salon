@@ -9,6 +9,7 @@
         <p>@Html.DisplayNameFor(model => model.Title)</p>
         <p>@Html.DisplayNameFor(model => model.Description)</p>
         <p></p>
+        <p></p>
     </div>
     <div class="panel-group" id="accordion">
 
@@ -21,7 +22,8 @@
                             <div class="inline-text">
                                 <p>@Html.DisplayFor(modelItem => item.Title)</p>
                                 <p>@Html.DisplayFor(modelItem => item.Description)</p>
-                                <p>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId, data_parent = "#accordion" })</p>
+                                @Html.ActionLink("Arbeitsschritte anzeigen", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId, data_parent = "#accordion" })
+                                @Html.ActionLink("Arbeitsschritte bearbeiten", "CreateEditSteps", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "btn btn-default"})
                             </div>
                     </div>
                     <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">

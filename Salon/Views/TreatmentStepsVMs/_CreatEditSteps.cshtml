@@ -1,4 +1,4 @@
-﻿@model  List<Salon.Models.StepsVM>
+﻿@model  <Salon.Models.StepsVM>
 
 @if (Model.Any())
 {
@@ -14,7 +14,7 @@
 
     </div>
 }
-    <div class="panel-group" id="accordion-@ViewBag.TreatmentLoopId">
+    <div class="panel-group" id="accordion">
     @for (int i = 0; i < Model.Count(); i++)
     {
         <div class="panel">
