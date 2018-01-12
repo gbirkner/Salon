@@ -12,18 +12,12 @@ namespace Salon.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRoles
+    public partial class AspNetUserLogins
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AspNetRoles()
-        {
-            this.AspNetUsers = new HashSet<AspNetUsers>();
-        }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public string UserId { get; set; }
     
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
+        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }

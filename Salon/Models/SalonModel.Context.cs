@@ -28,6 +28,8 @@ namespace Salon.Models
         }
     
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Connections> Connections { get; set; }
@@ -45,6 +47,11 @@ namespace Salon.Models
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
     
+        public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AnonymizeCustomerByDays");
+        }
+    
         public virtual int AnonymizeCustomerByID(Nullable<int> customerID)
         {
             var customerIDParameter = customerID.HasValue ?
@@ -52,11 +59,6 @@ namespace Salon.Models
                 new ObjectParameter("CustomerID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AnonymizeCustomerByID", customerIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AnonymizeCustomerByDays");
         }
     
         public virtual ObjectResult<Nullable<int>> AnonymizeUserByDays()
@@ -99,6 +101,98 @@ namespace Salon.Models
                 new ObjectParameter("CustomerID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserByID", customerIDParameter);
+        }
+    
+        public virtual ObjectResult<string> GetClasses()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetClasses");
+        }
+    
+        public virtual ObjectResult<GetMyWork_Result> GetMyWork(string studentId)
+        {
+            var studentIdParameter = studentId != null ?
+                new ObjectParameter("studentId", studentId) :
+                new ObjectParameter("studentId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMyWork_Result>("GetMyWork", studentIdParameter);
+        }
+    
+        public virtual ObjectResult<GetRooms_Result> GetRooms()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRooms_Result>("GetRooms");
+        }
+    
+        public virtual ObjectResult<GetStepsPerTreatment_Result> GetStepsPerTreatment(Nullable<int> treatmentId)
+        {
+            var treatmentIdParameter = treatmentId.HasValue ?
+                new ObjectParameter("treatmentId", treatmentId) :
+                new ObjectParameter("treatmentId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStepsPerTreatment_Result>("GetStepsPerTreatment", treatmentIdParameter);
+        }
+    
+        public virtual ObjectResult<string> GetTeachers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetTeachers");
+        }
+    
+        public virtual ObjectResult<GetWorkPerClass_Result> GetWorkPerClass(string @class, string teacherFirst, string teacherLast, string room)
+        {
+            var classParameter = @class != null ?
+                new ObjectParameter("class", @class) :
+                new ObjectParameter("class", typeof(string));
+    
+            var teacherFirstParameter = teacherFirst != null ?
+                new ObjectParameter("teacherFirst", teacherFirst) :
+                new ObjectParameter("teacherFirst", typeof(string));
+    
+            var teacherLastParameter = teacherLast != null ?
+                new ObjectParameter("teacherLast", teacherLast) :
+                new ObjectParameter("teacherLast", typeof(string));
+    
+            var roomParameter = room != null ?
+                new ObjectParameter("room", room) :
+                new ObjectParameter("room", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass_Result>("GetWorkPerClass", classParameter, teacherFirstParameter, teacherLastParameter, roomParameter);
+        }
+    
+        public virtual ObjectResult<insSteps_Result> insSteps(string title, string description, Nullable<bool> isSensitive)
+        {
+            var titleParameter = title != null ?
+                new ObjectParameter("title", title) :
+                new ObjectParameter("title", typeof(string));
+    
+            var descriptionParameter = description != null ?
+                new ObjectParameter("description", description) :
+                new ObjectParameter("description", typeof(string));
+    
+            var isSensitiveParameter = isSensitive.HasValue ?
+                new ObjectParameter("isSensitive", isSensitive) :
+                new ObjectParameter("isSensitive", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<insSteps_Result>("insSteps", titleParameter, descriptionParameter, isSensitiveParameter);
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     }
 }
