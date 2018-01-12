@@ -45,6 +45,11 @@ namespace Salon.Models
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
     
+        public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AnonymizeCustomerByDays");
+        }
+    
         public virtual int AnonymizeCustomerByID(Nullable<int> customerID)
         {
             var customerIDParameter = customerID.HasValue ?
@@ -52,11 +57,6 @@ namespace Salon.Models
                 new ObjectParameter("CustomerID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AnonymizeCustomerByID", customerIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AnonymizeCustomerByDays");
         }
     
         public virtual ObjectResult<Nullable<int>> AnonymizeUserByDays()

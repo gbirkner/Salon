@@ -595,22 +595,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SalonEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="AnonymizeCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="AnonymizeUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="DeleteCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
-          <FunctionImport Name="DeleteUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="AspNetRoles" EntityType="SalonModel.AspNetRoles" />
           <EntitySet Name="AspNetUsers" EntityType="SalonModel.AspNetUsers" />
           <EntitySet Name="Cities" EntityType="SalonModel.Cities" />
@@ -708,6 +692,22 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="AnonymizeCustomerByID">
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="AnonymizeUserByID">
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="DeleteCustomerByID">
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="DeleteUserByID">
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -1188,14 +1188,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SalonModelStoreContainer" CdmEntityContainer="SalonEntities">
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
-          <FunctionImportMapping FunctionImportName="AnonymizeUserByDays" FunctionName="SalonModel.Store.AnonymizeUserByDays" />
-          <FunctionImportMapping FunctionImportName="AnonymizeUserByID" FunctionName="SalonModel.Store.AnonymizeUserByID" />
-          <FunctionImportMapping FunctionImportName="DeleteCustomerByDays" FunctionName="SalonModel.Store.DeleteCustomerByDays" />
-          <FunctionImportMapping FunctionImportName="DeleteCustomerByID" FunctionName="SalonModel.Store.DeleteCustomerByID" />
-          <FunctionImportMapping FunctionImportName="DeleteUserByDays" FunctionName="SalonModel.Store.DeleteUserByDays" />
-          <FunctionImportMapping FunctionImportName="DeleteUserByID" FunctionName="SalonModel.Store.DeleteUserByID" />
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="SalonModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
@@ -1403,6 +1395,14 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
+          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
+          <FunctionImportMapping FunctionImportName="AnonymizeUserByDays" FunctionName="SalonModel.Store.AnonymizeUserByDays" />
+          <FunctionImportMapping FunctionImportName="AnonymizeUserByID" FunctionName="SalonModel.Store.AnonymizeUserByID" />
+          <FunctionImportMapping FunctionImportName="DeleteCustomerByDays" FunctionName="SalonModel.Store.DeleteCustomerByDays" />
+          <FunctionImportMapping FunctionImportName="DeleteCustomerByID" FunctionName="SalonModel.Store.DeleteCustomerByID" />
+          <FunctionImportMapping FunctionImportName="DeleteUserByDays" FunctionName="SalonModel.Store.DeleteUserByDays" />
+          <FunctionImportMapping FunctionImportName="DeleteUserByID" FunctionName="SalonModel.Store.DeleteUserByID" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
