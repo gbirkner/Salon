@@ -1,0 +1,65 @@
+﻿@model Salon.Models.Connections
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h2>Details</h2>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Customers.FName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customers.FName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Customers.LName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Customers.LName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ConnectionTypes.Title)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ConnectionTypes.Title)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+    
+
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ConnectionId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
