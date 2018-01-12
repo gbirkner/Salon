@@ -49,7 +49,13 @@ public partial class SalonEntities : DbContext
 
     public virtual DbSet<Customers> Customers { get; set; }
 
+    public virtual DbSet<Genders> Genders { get; set; }
+
     public virtual DbSet<Pictures> Pictures { get; set; }
+
+    public virtual DbSet<Rooms> Rooms { get; set; }
+
+    public virtual DbSet<Settings> Settings { get; set; }
 
     public virtual DbSet<StepOptions> StepOptions { get; set; }
 
@@ -62,8 +68,6 @@ public partial class SalonEntities : DbContext
     public virtual DbSet<Visits> Visits { get; set; }
 
     public virtual DbSet<VisitTasks> VisitTasks { get; set; }
-
-    public virtual DbSet<Genders> Genders { get; set; }
 
 
     public virtual int AnonymizeCustomerByID(Nullable<int> customerID)

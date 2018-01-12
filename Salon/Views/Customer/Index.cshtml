@@ -6,30 +6,25 @@
 
 <h2>Kunden</h2>
 
+
+
+
+@*<div class="container">
+    <div class="form-group">
+        <div class="input-group">*@
+            @*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
+            @*<input type="text" id="Search" placeholder="Search" class="form-control" />*@
+            <input type="text" id="Search" placeholder="Search..">
+            <div style="visibility: hidden">
+                @Html.ActionLink("Search", "CustomerOverview", new { searchstring = "" }, new { @class = "customer-overview" })
+            </div>
+        @*</div>
+    </div>
+</div>*@
+
 <p>
     @Html.ActionLink("Create New", "Create")
-</p>
-
-
-<div class="container">
-    <div class="form-group">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-            <input type="text" id="Search" placeholder="Search" class="form-control" />
-            @Html.ActionLink("Search", "CustomerOverview", new { searchstring = "" }, new { @class = "customer-overview" })
-        </div>
-    </div>
-
-    @*@using (Html.BeginForm())
-        {
-            <p>
-                @Html.TextBox("SearchString") <br />
-                @Html.ActionLink("Search", "CustomerOverview", new { searchstring =  }, new { @class = "customer-overview" })
-            </p>
-        }*@
-
-</div>
-
+</p>  
 
 <div id="CustomerMaster" style="height : 310px; overflow:auto;">
     <table class="table" id="tbl_cust">
@@ -66,7 +61,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GenderID)
+                    @Html.DisplayFor(modelItem => item.GenderTitle)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FName)
@@ -98,8 +93,8 @@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
-                    @Html.ActionLink("View Visits", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
-                    @Html.ActionLink("View Connections", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
+                    @Html.ActionLink("Besuche", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
+                    @Html.ActionLink("Kontaktdaten", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
 
                 </td>
             </tr>
@@ -174,46 +169,16 @@
 
             var Searchtext = $("#Search").val().toLowerCase();
 
-            $(".customer-overview").attr("href", "/CustomerVisit/CustomerOverview?searchstring=" + Searchtext);
+            $(".customer-overview").attr("href", "/Customer/CustomerOverview?searchstring=" + Searchtext);
         });
 
+        $("#Search").keyup(function (event) {
+            //if (event.keyCode === 13) {
+                $(".customer-overview").click();
+            //}
+        });
 
-
-       /* $("#Search").keyup( function (e) {
-
-            //get filter
-
-
-
-            var table, tr, td;
-            table = document.getElementById("tbl_cust");
-            tr = table.$("#Search").keyup("tr");
-
-            var hitrow = 0;
-            var hit = false;
-
-            for (var i = 1; i < tr.length; i++)
-            {       //loop through table rows
-                td = tr[i].getElementsByTagName("td");
-                for (var j = 0; j < td.length; j++)
-                {
-
-                    if (td[j].innerHTML.indexOf(Searchtext))
-                    {
-                        hit = true;
-                    }
-                }
-                if (hit)
-                {
-                    tr[i].style.display = "";
-                }
-                else
-                {
-                    tr[i].style.display = "none";
-                }
-
-            }
-        });*/
+      
     </script>
 }
 

@@ -43,17 +43,25 @@ public partial class Visits
 
     public System.DateTime Created { get; set; }
 
+    public Nullable<int> RoomId { get; set; }
+
+    public string TeacherId { get; set; }
+
 
 
     public virtual AspNetUsers AspNetUsers { get; set; }
 
     public virtual AspNetUsers AspNetUsers1 { get; set; }
 
+    public virtual AspNetUsers AspNetUsers2 { get; set; }
+
     public virtual Customers Customers { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<Pictures> Pictures { get; set; }
+
+    public virtual Rooms Rooms { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

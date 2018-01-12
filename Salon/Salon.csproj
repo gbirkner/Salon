@@ -171,11 +171,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\ConnectionsController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\GendersController.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -191,50 +201,35 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Genders.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MetaData\Settings.cs" />
-    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ViewModels\CustomerVisit.cs" />
+    <Compile Include="Models\MetaData\Genders.cs" />
+    <Compile Include="Models\MetaData\Customers.cs" />
     <Compile Include="Models\MetaData\Connections.cs" />
-    <Compile Include="Models\MetaData\VisitTasks.cs" />
+    <Compile Include="Models\MetaData\Cities.cs" />
+    <Compile Include="Models\MetaData\ConnectionTypes.cs" />
+    <Compile Include="Models\MetaData\Settings.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\VisitViewModels.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SalonModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    <Compile Include="Models\Rooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SalonModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SalonModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
+    <Compile Include="Models\Settings.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Startup.cs" />
     <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -247,12 +242,34 @@
     <Compile Include="Models\TreatmentSteps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\CountriesVM.cs" />
+    <Compile Include="Models\ViewModels\CitiesVM.cs" />
+    <Compile Include="Models\ViewModels\ConnectionsVM.cs" />
+    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\CustomerVM.cs" />
+    <Compile Include="Models\MetaData\Countries.cs" />
+    <Compile Include="Models\MetaData\VisitTasks.cs" />
     <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VisitTasks.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VisitViewModels.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\SalonModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalonModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -337,14 +354,7 @@
     <Content Include="Views\Countries\Details.cshtml" />
     <Content Include="Views\Countries\Edit.cshtml" />
     <Content Include="Views\Countries\Index.cshtml" />
-    <Content Include="Views\Cities\Create.cshtml" />
-    <Content Include="Views\Cities\Delete.cshtml" />
-    <Content Include="Views\Cities\Details.cshtml" />
-    <Content Include="Views\Cities\Edit.cshtml" />
-    <Content Include="Views\Cities\Index.cshtml" />
-    <Content Include="Views\CustomerVisit\Index.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
-    <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
+    <Content Include="Views\Customer\_VisitShort.cshtml" />
     <Content Include="Views\Visits\Create.cshtml" />
     <Content Include="Views\Visits\Delete.cshtml" />
     <Content Include="Views\Visits\Details.cshtml" />
@@ -352,14 +362,42 @@
     <Content Include="Views\Visits\Index.cshtml" />
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
+    <Content Include="Views\Customer\_CustomerConnection.cshtml" />
+    <Content Include="Views\Customer\_CustomerOverview.cshtml" />
     <Content Include="Views\Settings\Create.cshtml" />
     <Content Include="Views\Settings\Delete.cshtml" />
     <Content Include="Views\Settings\Details.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\Create.cshtml" />
+    <Content Include="Views\Customer\Details.cshtml" />
+    <Content Include="Views\Cities\Create.cshtml" />
+    <Content Include="Views\Cities\Delete.cshtml" />
+    <Content Include="Views\Cities\Details.cshtml" />
+    <Content Include="Views\Cities\Edit.cshtml" />
+    <Content Include="Views\Cities\Index.cshtml" />
+    <Content Include="Views\Genders\Create.cshtml" />
+    <Content Include="Views\Genders\Delete.cshtml" />
+    <Content Include="Views\Genders\Details.cshtml" />
+    <Content Include="Views\Genders\Edit.cshtml" />
+    <Content Include="Views\Genders\Index.cshtml" />
+    <Content Include="Views\Cities\_CitiesOverview.cshtml" />
+    <Content Include="Views\Countries\_CountriesOverview.cshtml" />
+    <Content Include="Views\Customers\Create.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Edit.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Customers\_CustomerConnection.cshtml" />
+    <Content Include="Views\Customers\_CustomerOverview.cshtml" />
+    <Content Include="Views\Customers\_VisitShort.cshtml" />
+    <Content Include="Views\Customers\_EditConnection.cshtml" />
+    <Content Include="Views\Connections\Create.cshtml" />
+    <Content Include="Views\Connections\Delete.cshtml" />
+    <Content Include="Views\Connections\Details.cshtml" />
+    <Content Include="Views\Connections\Edit.cshtml" />
+    <Content Include="Views\Connections\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
