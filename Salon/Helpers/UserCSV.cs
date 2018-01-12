@@ -7,14 +7,21 @@ namespace Salon.Helpers
 {
     public class UserCSV
     {
-        public userData( string nKlasse, string nFirstName, string nLastName)
+        public void userData( string nClass, string nFirstName, string nLastName, string nEntryDate, string nResignationDate, string nStudentNumber)
         {
-            Klasse = nKlasse;
+            Class = nClass;
+            FirstName = nFirstName;
+            LastName = nLastName;
+            EntryDate = nEntryDate;
+            ResignationDate = nResignationDate;
+            StudentNumber = nStudentNumber;
         }
 
-        public string Klasse { get; set; }
+        public string Class { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MyProperty { get; set; }
+        public string EntryDate { get; set; }
+        public string ResignationDate { get; set; }
+        public string StudentNumber { get; set; }
     }
 }

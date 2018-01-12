@@ -22,11 +22,11 @@ namespace Salon.Controllers
             if (file.ContentLength > 0)
             {
                 StreamReader csvreader = new StreamReader(file.InputStream);
-                List
+
                 while (!csvreader.EndOfStream)
                 {
-                    var lines = csvreader.ReadLine();
-                    var values = lines.Split(';');
+                    var line = csvreader.ReadLine();
+                    var values = line.Split(';');
 
                     foreach(var value in values)
                     {
