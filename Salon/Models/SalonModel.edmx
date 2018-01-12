@@ -474,6 +474,18 @@
         <Function Name="AnonymizeCustomerByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CustomerID" Type="int" Mode="In" />
         </Function>
+        <Function Name="AnonymizeUserByDays" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="AnonymizeUserByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteCustomerByDays" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteCustomerByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteUserByDays" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DeleteUserByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CustomerID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
@@ -582,109 +594,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="SalonEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="AnonymizeCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
-          <EntitySet Name="AspNetRoles" EntityType="SalonModel.AspNetRoles" />
-          <EntitySet Name="AspNetUsers" EntityType="SalonModel.AspNetUsers" />
-          <EntitySet Name="Cities" EntityType="SalonModel.Cities" />
-          <EntitySet Name="Connections" EntityType="SalonModel.Connections" />
-          <EntitySet Name="ConnectionTypes" EntityType="SalonModel.ConnectionTypes" />
-          <EntitySet Name="Countries" EntityType="SalonModel.Countries" />
-          <EntitySet Name="Customers" EntityType="SalonModel.Customers" />
-          <EntitySet Name="Genders" EntityType="SalonModel.Genders" />
-          <EntitySet Name="Pictures" EntityType="SalonModel.Pictures" />
-          <EntitySet Name="Rooms" EntityType="SalonModel.Rooms" />
-          <EntitySet Name="Settings" EntityType="SalonModel.Settings" />
-          <EntitySet Name="StepOptions" EntityType="SalonModel.StepOptions" />
-          <EntitySet Name="Steps" EntityType="SalonModel.Steps" />
-          <EntitySet Name="Treatments" EntityType="SalonModel.Treatments" />
-          <EntitySet Name="TreatmentSteps" EntityType="SalonModel.TreatmentSteps" />
-          <EntitySet Name="Visits" EntityType="SalonModel.Visits" />
-          <EntitySet Name="VisitTasks" EntityType="SalonModel.VisitTasks" />
-          <AssociationSet Name="fk_CustomersCreatedBy" Association="SalonModel.fk_CustomersCreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="fk_CustomersModifiedBy" Association="SalonModel.fk_CustomersModifiedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="fk_VisitModifiedBy" Association="SalonModel.fk_VisitModifiedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
-          <AssociationSet Name="fk_VisitsCreatedBy" Association="SalonModel.fk_VisitsCreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
-          <AssociationSet Name="fk_VisitsTeacherID" Association="SalonModel.fk_VisitsTeacherID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
-          <AssociationSet Name="fk_cities_countries" Association="SalonModel.fk_cities_countries">
-            <End Role="Countries" EntitySet="Countries" />
-            <End Role="Cities" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="fk_customers_cities" Association="SalonModel.fk_customers_cities">
-            <End Role="Cities" EntitySet="Cities" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId" Association="SalonModel.FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId">
-            <End Role="ConnectionTypes" EntitySet="ConnectionTypes" />
-            <End Role="Connections" EntitySet="Connections" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Connections_dbo_Customers_CustomerId" Association="SalonModel.FK_dbo_Connections_dbo_Customers_CustomerId">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Connections" EntitySet="Connections" />
-          </AssociationSet>
-          <AssociationSet Name="fk_CustomersGenders" Association="SalonModel.fk_CustomersGenders">
-            <End Role="Genders" EntitySet="Genders" />
-            <End Role="Customers" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="fk_VisitsCustomerID" Association="SalonModel.fk_VisitsCustomerID">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_Pictures_dbo_Visits_VisitId" Association="SalonModel.FK_dbo_Pictures_dbo_Visits_VisitId">
-            <End Role="Visits" EntitySet="Visits" />
-            <End Role="Pictures" EntitySet="Pictures" />
-          </AssociationSet>
-          <AssociationSet Name="fk_VisitsRoomID" Association="SalonModel.fk_VisitsRoomID">
-            <End Role="Rooms" EntitySet="Rooms" />
-            <End Role="Visits" EntitySet="Visits" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_StepOptions_dbo_Steps_StepId" Association="SalonModel.FK_dbo_StepOptions_dbo_Steps_StepId">
-            <End Role="Steps" EntitySet="Steps" />
-            <End Role="StepOptions" EntitySet="StepOptions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId" Association="SalonModel.FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId">
-            <End Role="StepOptions" EntitySet="StepOptions" />
-            <End Role="VisitTasks" EntitySet="VisitTasks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_TreatmentSteps_dbo_Steps_StepId" Association="SalonModel.FK_dbo_TreatmentSteps_dbo_Steps_StepId">
-            <End Role="Steps" EntitySet="Steps" />
-            <End Role="TreatmentSteps" EntitySet="TreatmentSteps" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_TreatmentSteps_dbo_Treatments_TreatmentId" Association="SalonModel.FK_dbo_TreatmentSteps_dbo_Treatments_TreatmentId">
-            <End Role="Treatments" EntitySet="Treatments" />
-            <End Role="TreatmentSteps" EntitySet="TreatmentSteps" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" Association="SalonModel.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId">
-            <End Role="TreatmentSteps" EntitySet="TreatmentSteps" />
-            <End Role="VisitTasks" EntitySet="VisitTasks" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_VisitTasks_dbo_Visits_VisitId" Association="SalonModel.FK_dbo_VisitTasks_dbo_Visits_VisitId">
-            <End Role="Visits" EntitySet="Visits" />
-            <End Role="VisitTasks" EntitySet="VisitTasks" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="SalonModel.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -1164,8 +1073,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SalonModelStoreContainer" CdmEntityContainer="SalonEntities">
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByID" FunctionName="SalonModel.Store.AnonymizeCustomerByID" />
-          <FunctionImportMapping FunctionImportName="AnonymizeCustomerByDays" FunctionName="SalonModel.Store.AnonymizeCustomerByDays" />
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="SalonModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">

@@ -22,8 +22,19 @@ namespace Salon.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public bool isSensitive { get; set; }
-        public string Duration { get; set; }
-        public string Order { get; set; }
+        public bool isActive{ get; set; }
+        public int Duration { get; set; }
+        public int Order { get; set; }
 
+    }
+    public class OptionsVM
+    {
+        [Key]
+        public int StepOptionId { get; set; }
+        public int StepId { get; set; }
+        public int Position{ get; set; }
+        public string Option { get; set; }
+        public string Description { get; set; }
+        public bool isActive { get; set; }
     }
 }
