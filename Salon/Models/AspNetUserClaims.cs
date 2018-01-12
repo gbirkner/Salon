@@ -12,12 +12,13 @@ namespace Salon.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Settings
+    public partial class AspNetUserClaims
     {
-        public int SettingID { get; set; }
-        public short AnonymizeUserByDays { get; set; }
-        public short AnonymizeCustomerByDays { get; set; }
-        public short DeleteUserByDays { get; set; }
-        public short DeleteCustomerByDays { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public string ClaimType { get; set; }
+        public string ClaimValue { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }

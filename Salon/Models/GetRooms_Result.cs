@@ -10,14 +10,10 @@
 namespace Salon.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Settings
+    public partial class GetRooms_Result
     {
-        public int SettingID { get; set; }
-        public short AnonymizeUserByDays { get; set; }
-        public short AnonymizeCustomerByDays { get; set; }
-        public short DeleteUserByDays { get; set; }
-        public short DeleteCustomerByDays { get; set; }
+        public int RoomId { get; set; }
+        public string Title { get; set; }
     }
 }
