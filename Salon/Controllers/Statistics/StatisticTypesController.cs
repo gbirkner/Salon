@@ -24,15 +24,15 @@ namespace Salon.Controllers.Statistics
                 ));
             
             definedStatistics.Add(new StatisticTypes(
-                "Kundenauswertung", "Zeigt eine Liste aller Kunden mit vielen Filteroptionen", "Auswertung", "/Reports/CustomerStatistics"
+                "Kundenauswertung", "Zeigt eine Liste aller Kunden mit vielen Filteroptionen", "Auswertung", "/Statistics/CustomerStatistics"
                 ));
 
             definedStatistics.Add(new StatisticTypes(
-                "Schülerauswertung", "Zeigt eine Liste aller Schüler mit deren Arbeitsschritten an", "Auswertung", "/Reports/WorkPerClass"
+                "Schülerauswertung", "Zeigt eine Liste aller Schüler mit deren Arbeitsschritten an", "Auswertung", "/Statistics/WorkPerClass"
                 ));
 
             definedStatistics.Add(new StatisticTypes(
-                "Meine Arbeit", "Zeigt eine Liste aller Arbeiten des angemeldeten Schülers an", "Auswertung", "/Reports/MyWork"
+                "Meine Arbeit", "Zeigt eine Liste aller Arbeiten des angemeldeten Schülers an", "Auswertung", "/Statistics/MyWork"
                 ));
 
             return View(definedStatistics);

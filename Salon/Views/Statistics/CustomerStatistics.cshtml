@@ -143,7 +143,7 @@
         var custID = custid.id;
         $.ajax({
             type: 'get',
-            url: '/Reports/CustomerStatistics?cust=' + custID,
+            url: '/Statistics/CustomerStatistics?cust=' + custID,
             success: function (result) {                
                 $(".modal-body").html(result);
                 $("#modalBox").show();
@@ -288,7 +288,7 @@
     function exportClick() {
         $.ajax({
             type: 'post',
-            url: '/Reports/CustomerStatistics',
+            url: '/Statistics/CustomerStatistics',
             data: {
                 download: true,
                 cities: equipedCity,

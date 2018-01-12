@@ -49,7 +49,7 @@
 <div id="header" style="margin-top: 20px;">    
     <button style="display: inline-block; width: 150px; height: 40px;" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter">Filter</button> @*Filter button, that collapses the div beyond*@
     <button style="margin-left: 10px; width: 150px; height: 40px; display: inline-block; clear: both" class="btn btn-primary" onclick="changeClass();">Anzeigen</button> @*Show data*@
-    <button style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Reports", new {name = "WorkPerClass"})'">Download &#x21e9</button> @*Download button*@
+    <button style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Statistics", new {name = "WorkPerClass"})'">Download &#x21e9</button> @*Download button*@
 </div>
 <div id="filter" class="collapse"> @*div that collapses on button click*@
     <div style="margin: 20px 0px 0px 0px; display: inline-block; width: 80%">
@@ -111,7 +111,7 @@
 <script>
 	function changeClass() {
 		$.ajax({
-		    url: "/reports/workperclass?cl=" + $("#classSelector").val() + "&sort=" + $("#sortSelector").val() + "&teacher=" + $("#teacherSelector").val() + "&room=" + $("#roomSelector").val(),
+		    url: "/Statistics/workperclass?cl=" + $("#classSelector").val() + "&sort=" + $("#sortSelector").val() + "&teacher=" + $("#teacherSelector").val() + "&room=" + $("#roomSelector").val(),
 			type: "get",
 			success: function (result) {
 				$("#workTable").html(result);

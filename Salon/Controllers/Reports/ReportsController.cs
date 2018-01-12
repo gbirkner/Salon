@@ -8,10 +8,11 @@ using System.IO;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using Salon.Models.Statistics;
+using Microsoft.AspNet.Identity;
 
-namespace Salon.Controllers.Reports
+namespace Salon.Controllers.Statistics
 {
-    public class ReportsController : Controller
+    public class StatisticsController : Controller
     {
         public static bool Download = false;
         public static bool SuccessfullDownload = false;
@@ -74,7 +75,7 @@ namespace Salon.Controllers.Reports
             if (cust != null)
             {
                 var connectionData = customerStats.GetConnections(Convert.ToInt32(cust));
-                return View("~/Views/Reports/CustomerConnections.cshtml", connectionData);
+                return View("~/Views/Statistics/CustomerConnections.cshtml", connectionData);
             }
             // download a exported csv with filters
             else if (download)
@@ -304,7 +305,7 @@ namespace Salon.Controllers.Reports
                         workPerClassList = WorkPerClass.OrderByDescending(w => w.StudentName).ThenBy(w => w.Date).ToList();
                         break;
                 }
-                return View("~/Views/Reports/WorkPerClassResponse.cshtml", workPerClassList);
+                return View("~/Views/Statistics/WorkPerClassResponse.cshtml", workPerClassList);
             }
             else
             {
@@ -362,10 +363,6 @@ namespace Salon.Controllers.Reports
 
             if (name == "WorkPerClass")
             {
-                //returnValue.Add("Arbeit pro Klasse");
-                //returnValue.Add("Klasse: " + workPerClassList.First().Class);
-                //returnValue.Add("");
-
                 foreach (var property in properties) //headers
                 {
                     var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
@@ -400,10 +397,6 @@ namespace Salon.Controllers.Reports
             }
             else if (name == "MyWork")
             {
-                //returnValue.Add("Meine Arbeit");
-                //returnValue.Add("Name: " + myWorkList.First().StudentName);
-                //returnValue.Add("");
-
                 foreach (var property in properties) //headers
                 {
                     var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
@@ -445,7 +438,7 @@ namespace Salon.Controllers.Reports
         /// <returns></returns>
         public ActionResult MyWork()
         {
-            var user = "155e3efb-35be-44f2-b318-daf06cd1bf3a";
+            var userId = User.Identity.GetUserId();
             var visits = db.Visits;
             ViewBag.Downloaded = Download;
             ViewBag.Success = SuccessfullDownload;
@@ -458,7 +451,7 @@ namespace Salon.Controllers.Reports
                 SuccessfullDownload = false;
 
             IEnumerable<WorkPerClassViewModel> MyWork =
-                db.GetMyWork(user)
+                db.GetMyWork(userId)
                     .Select(c => new WorkPerClassViewModel()
                     {
                         Class = c.Class,
