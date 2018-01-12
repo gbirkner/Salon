@@ -68,7 +68,10 @@
                         @item.customer.FName @item.customer.LName
                     </td>
                     <td>
-                        @item.stylist.UserName
+                        @if(item.stylist != null) {
+                            @item.stylist.UserName
+                        }
+                        
                     </td>
                     <td>
                         @Html.ActionLink("Details", "VisitDetails", new { id = item.visitId }, new { @class = "visitRow" })
