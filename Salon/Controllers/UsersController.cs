@@ -118,12 +118,7 @@ namespace Salon.Controllers
             }
 
             var userRoles = await UserManager.GetRolesAsync(user.Id);
-            ViewBag.RoleList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
-            {
-                Selected = userRoles.Contains(x.Name),
-                Text = x.Name,
-                Value = x.Id
-            });
+            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Id", "Name");
 
             return View(user);
         }
