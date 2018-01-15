@@ -79,12 +79,7 @@ namespace Salon.Controllers
 
         public ActionResult ShowTreatment(int? id = null)
         {
-            Treatments treatments = db.Treatments.Find(id);
-            if (treatments == null)
-            {
-                return HttpNotFound();
-            }
-            return PartialView(treatments);
+            return PartialView(db.StepOptions.Where(tid => tid.TreatmentId == id).ToList());
         }
 
         public ActionResult CreatEditSteps(int? id = null)
@@ -115,29 +110,8 @@ namespace Salon.Controllers
         // POST: Create / Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditTreatments(List<Treatments> treatments, List<StepsVM> steps, List<StepOptions> options)
+        public ActionResult EditTreatments(List<StepsVM> steps)
         {
-            NameValueCollection nvc = Request.Form;
-            string[] array;
-            string t, st, o;
-            foreach (string key in nvc.AllKeys)
-            {
-                array = key.Split('[');
-                switch (array.Length)
-                {
-                    case 2:
-                        t = nvc[key]; //treatment
-                        break;
-                    case 3: 
-                        st = nvc[key]; //step
-                        break;
-                    case 4:
-                        o = nvc[key]; //options
-                        break;
-                    default:
-                        break;
-                }
-            }
             foreach (Treatments tr in treatments)
             {
                 if (tr.TreatmentId != 0)
