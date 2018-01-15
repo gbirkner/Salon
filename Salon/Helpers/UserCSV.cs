@@ -7,7 +7,7 @@ namespace Salon.Helpers
 {
     public class UserCSV
     {
-        public void userData( string nClass, string nFirstName, string nLastName, string nEntryDate, string nResignationDate, string nStudentNumber)
+        public UserCSV( string nClass, string nFirstName, string nLastName, string nEntryDate, string nResignationDate, string nStudentNumber, string nUserName, string nPassword)
         {
             Class = nClass;
             FirstName = nFirstName;
@@ -15,6 +15,8 @@ namespace Salon.Helpers
             EntryDate = nEntryDate;
             ResignationDate = nResignationDate;
             StudentNumber = nStudentNumber;
+            UserName = nUserName;
+            Password = nPassword;
         }
 
         public string Class { get; set; }
@@ -23,5 +25,7 @@ namespace Salon.Helpers
         public string EntryDate { get; set; }
         public string ResignationDate { get; set; }
         public string StudentNumber { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }
