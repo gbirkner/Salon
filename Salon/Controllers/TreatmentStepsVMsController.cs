@@ -76,6 +76,17 @@ namespace Salon.Controllers
                                             }).ToList();
             return View("CreateEditSteps", TreatmentSteps);
         }
+
+        public ActionResult ShowTreatment(int? id = null)
+        {
+            Treatments treatments = db.Treatments.Find(id);
+            if (treatments == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(treatments);
+        }
+
         public ActionResult CreatEditSteps(int? id = null)
         {
             var tsteps = db.TreatmentSteps.Include(y => y.Steps);

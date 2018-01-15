@@ -5,6 +5,7 @@
 }
 
 <div id="treatments" class="edit">
+    @{Html.RenderAction("ShowTreatment", "TreatmentStepsVMs", new { id = Model[0].TreatmentId});}
     <h2>Arbeitsschritte und Optionen bearbeiten/erstellen</h2>
     <div class="inline-text title">
 
@@ -27,7 +28,6 @@
                 <div class="panel">
                     <div class="panel-heading panel-default">
                         <div class="inline-text">
-                            @Html
                             @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
                             @Html.HiddenFor(modelItem => modelItem[i].StepsId)
                             <div class="form-group">

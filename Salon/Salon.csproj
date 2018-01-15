@@ -369,6 +369,7 @@
     <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\EditTreatment.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\CreateEditSteps.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\TreatmentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
