@@ -109,6 +109,22 @@ namespace Salon.Controllers
             }
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
+            model.Rooms = db.Rooms.ToList().Select(c => new SelectListItem
+            {
+                Text = c.Title,
+                Value = c.RoomId.ToString(),
+            }).ToList();
+
+            var users = from u in db.AspNetUsers
+                        where u.AspNetRoles.Any(r => r.Name == "Lehrer")
+                        select u;
+
+            model.Teachers = users.ToList().Select(c => new SelectListItem
+            {
+                Text = c.UserName,
+                Value = c.Id.ToString(),
+            }).ToList();
+
             switch (result)
             {
                 case SignInStatus.Success:

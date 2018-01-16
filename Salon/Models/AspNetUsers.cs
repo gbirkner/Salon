@@ -22,6 +22,14 @@ public partial class AspNetUsers
     public AspNetUsers()
     {
 
+        this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
+
+        this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
+
+        this.Customers = new HashSet<Customers>();
+
+        this.Customers1 = new HashSet<Customers>();
+
         this.Visits = new HashSet<Visits>();
 
         this.Visits1 = new HashSet<Visits>();
@@ -67,7 +75,27 @@ public partial class AspNetUsers
 
     public Nullable<System.DateTime> resignationDate { get; set; }
 
+    public string studentNumber { get; set; }
 
+    public Nullable<bool> ChangedPassword { get; set; }
+
+
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Customers> Customers { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Customers> Customers1 { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

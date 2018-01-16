@@ -18,6 +18,17 @@ using System;
 public partial class Cities
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public Cities()
+    {
+
+        this.Customers = new HashSet<Customers>();
+
+    }
+
+
+    public int CityId { get; set; }
+
     public string CountryId { get; set; }
 
     public string PostalCode { get; set; }
@@ -27,6 +38,10 @@ public partial class Cities
 
 
     public virtual Countries Countries { get; set; }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<Customers> Customers { get; set; }
 
 }
 

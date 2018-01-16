@@ -5,34 +5,40 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="830b72f4158948638d9763bd28e29f98" Name="Diagram1" ZoomLevel="52">
-        <AssociationConnector Association="SalonModel.fk_VisitsLehrerId" />
-        <EntityTypeShape EntityType="SalonModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="3.25" />
-        <EntityTypeShape EntityType="SalonModel.AspNetUsers" Width="1.5" PointX="3" PointY="1.5" />
-        <EntityTypeShape EntityType="SalonModel.Cities" Width="1.5" PointX="13" PointY="6.875" />
-        <EntityTypeShape EntityType="SalonModel.Connections" Width="1.5" PointX="5.25" PointY="15.125" />
-        <EntityTypeShape EntityType="SalonModel.ConnectionTypes" Width="1.5" PointX="3" PointY="15.5" />
-        <EntityTypeShape EntityType="SalonModel.Countries" Width="1.5" PointX="10.75" PointY="7" />
-        <EntityTypeShape EntityType="SalonModel.Customers" Width="1.5" PointX="3" PointY="10.125" />
-        <EntityTypeShape EntityType="SalonModel.Genders" Width="1.5" PointX="0.75" PointY="11.625" />
-        <EntityTypeShape EntityType="SalonModel.Pictures" Width="1.5" PointX="7.5" PointY="3" />
-        <EntityTypeShape EntityType="SalonModel.Rooms" Width="1.5" PointX="3" PointY="7.625" />
-        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="10.75" PointY="9.75" />
-        <EntityTypeShape EntityType="SalonModel.StepOptions" Width="1.5" PointX="8.25" PointY="7.25" />
-        <EntityTypeShape EntityType="SalonModel.Steps" Width="1.5" PointX="6" PointY="7.25" />
-        <EntityTypeShape EntityType="SalonModel.Treatments" Width="1.5" PointX="6" PointY="11.75" />
-        <EntityTypeShape EntityType="SalonModel.TreatmentSteps" Width="1.5" PointX="8.25" PointY="11.5" />
-        <EntityTypeShape EntityType="SalonModel.Visits" Width="1.5" PointX="5.25" PointY="2" />
-        <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="10.5" PointY="2.625" />
-        <AssociationConnector Association="SalonModel.fk_VisitsLehrerId" />
-        <AssociationConnector Association="SalonModel.fkVisitCreatedBy" />
-        <AssociationConnector Association="SalonModel.fkVisitModifiedBy" />
-        <AssociationConnector Association="SalonModel.FK_dbo_Cities_dbo_Countries_CountryId" />
+        <EntityTypeShape EntityType="SalonModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SalonModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="15.5" />
+        <EntityTypeShape EntityType="SalonModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="7.375" />
+        <EntityTypeShape EntityType="SalonModel.AspNetUsers" Width="1.5" PointX="3" PointY="6.5" />
+        <EntityTypeShape EntityType="SalonModel.Cities" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="SalonModel.Connections" Width="1.5" PointX="13.5" PointY="8.375" />
+        <EntityTypeShape EntityType="SalonModel.ConnectionTypes" Width="1.5" PointX="11.25" PointY="4.75" />
+        <EntityTypeShape EntityType="SalonModel.Countries" Width="1.5" PointX="3.75" PointY="3.625" />
+        <EntityTypeShape EntityType="SalonModel.Customers" Width="1.5" PointX="8.25" PointY="7.125" />
+        <EntityTypeShape EntityType="SalonModel.Genders" Width="1.5" PointX="6" PointY="10.25" />
+        <EntityTypeShape EntityType="SalonModel.Pictures" Width="1.5" PointX="12.75" PointY="12.5" />
+        <EntityTypeShape EntityType="SalonModel.Rooms" Width="1.5" PointX="8.25" PointY="3.75" />
+        <EntityTypeShape EntityType="SalonModel.Settings" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="SalonModel.StepOptions" Width="1.5" PointX="13.5" PointY="0.75" />
+        <EntityTypeShape EntityType="SalonModel.Steps" Width="1.5" PointX="11.25" PointY="1.125" />
+        <EntityTypeShape EntityType="SalonModel.Treatments" Width="1.5" PointX="11.25" PointY="16.25" />
+        <EntityTypeShape EntityType="SalonModel.TreatmentSteps" Width="1.5" PointX="13.5" PointY="16" />
+        <EntityTypeShape EntityType="SalonModel.Visits" Width="1.5" PointX="10.5" PointY="7.5" />
+        <EntityTypeShape EntityType="SalonModel.VisitTasks" Width="1.5" PointX="15.75" PointY="8.125" />
+        <AssociationConnector Association="SalonModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SalonModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SalonModel.fk_CustomersCreatedBy" />
+        <AssociationConnector Association="SalonModel.fk_CustomersModifiedBy" />
+        <AssociationConnector Association="SalonModel.fk_VisitModifiedBy" />
+        <AssociationConnector Association="SalonModel.fk_VisitsCreatedBy" />
+        <AssociationConnector Association="SalonModel.fk_VisitsTeacherID" />
+        <AssociationConnector Association="SalonModel.fk_cities_countries" />
+        <AssociationConnector Association="SalonModel.fk_customers_cities" />
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId" />
         <AssociationConnector Association="SalonModel.FK_dbo_Connections_dbo_Customers_CustomerId" />
         <AssociationConnector Association="SalonModel.fk_CustomersGenders" />
-        <AssociationConnector Association="SalonModel.FK_dbo_Visits_dbo_Customers_CustomerId" />
+        <AssociationConnector Association="SalonModel.fk_VisitsCustomerID" />
         <AssociationConnector Association="SalonModel.FK_dbo_Pictures_dbo_Visits_VisitId" />
-        <AssociationConnector Association="SalonModel.fk_VisitsRoomId" />
+        <AssociationConnector Association="SalonModel.fk_VisitsRoomID" />
         <AssociationConnector Association="SalonModel.FK_dbo_StepOptions_dbo_Steps_StepId" />
         <AssociationConnector Association="SalonModel.FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId" />
         <AssociationConnector Association="SalonModel.FK_dbo_TreatmentSteps_dbo_Steps_StepId" />

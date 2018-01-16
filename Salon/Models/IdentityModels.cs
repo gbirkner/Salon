@@ -29,6 +29,12 @@ namespace Salon.Models
         [Display(Name = "Austrittdatum")]
         public DateTime? resignationDate { get; set; }
 
+        [StringLength(20)]
+        [Display(Name = "Schülerkennzahl")]
+        public string studentNumber { get; set; }
+
+        public bool ChangedPassword { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Beachten Sie, dass der "authenticationType" mit dem in "CookieAuthenticationOptions.AuthenticationType" definierten Typ übereinstimmen muss.

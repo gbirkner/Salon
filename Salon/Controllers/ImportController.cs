@@ -58,20 +58,36 @@ namespace Salon.Controllers
 
                     foreach (UserCSV user in users)
                     {
-                        var newUser = new ApplicationUser();
-                        newUser.firstName = user.FirstName;
-                        newUser.lastName = user.LastName;
-                        newUser.UserName = user.UserName;
-                        newUser.Class = user.Class;
-                        //newUser.Email = s;
-                        newUser.entryDate = DateTime.Parse(user.EntryDate);
-                        newUser.resignationDate = DateTime.Parse(user.ResignationDate);
-                        var userResult = UserManager.Create(newUser, user.Password);
 
-                        //Add User Role Applicant
-                        if (userResult.Succeeded)
+                        ApplicationUser oldUser = db.Users.Where(x => x.studentNumber == user.StudentNumber).First();
+
+                        if (oldUser != null)
                         {
-                            var result = UserManager.AddToRole(newUser.Id, "Schüler");
+                            oldUser.Class = user.Class;
+                            oldUser.entryDate = DateTime.Parse(user.EntryDate);
+                            oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                            //oldUser.ChangedPassword = false;
+                            UserManager.Update(oldUser);
+                            //UserManager.AddPassword(oldUser.Id, user.Password);
+                        }
+                        else
+                        {
+                            var newUser = new ApplicationUser();
+                            newUser.firstName = user.FirstName;
+                            newUser.lastName = user.LastName;
+                            newUser.UserName = user.UserName;
+                            newUser.Class = user.Class;
+                            newUser.studentNumber = user.StudentNumber;
+                            newUser.ChangedPassword = false;
+                            newUser.entryDate = DateTime.Parse(user.EntryDate);
+                            newUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                            var userResult = UserManager.Create(newUser, user.Password);
+
+                            //Add User Role Applicant
+                            if (userResult.Succeeded)
+                            {
+                                var result = UserManager.AddToRole(newUser.Id, "Schüler");
+                            }
                         }
                     }
                 }
