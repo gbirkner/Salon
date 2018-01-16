@@ -18,7 +18,9 @@
         @Html.DisplayNameFor(x => x.stylist)
     </dt>
     <dd>
-        @Model.stylist.UserName
+        @if(Model.stylist != null) {
+            @Model.stylist.UserName        
+        }
     </dd>
 
     <dt>
