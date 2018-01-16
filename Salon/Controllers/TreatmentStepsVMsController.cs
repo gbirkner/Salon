@@ -74,14 +74,10 @@ namespace Salon.Controllers
                                                 Duration = t.Duration,
                                                 Order = t.StepOrder
                                             }).ToList();
+            ViewBag.Name = db.Treatments.Find(id).Title;
             return View("CreateEditSteps", TreatmentSteps);
         }
-
-        public ActionResult ShowTreatment(int? id = null)
-        {
-            return PartialView(db.StepOptions.Where(tid => tid.TreatmentId == id).ToList());
-        }
-
+        
         public ActionResult CreatEditSteps(int? id = null)
         {
             var tsteps = db.TreatmentSteps.Include(y => y.Steps);
@@ -112,7 +108,7 @@ namespace Salon.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditTreatments(List<StepsVM> steps)
         {
-            foreach (Treatments tr in treatments)
+            foreach (StepsVM tr in steps)
             {
                 if (tr.TreatmentId != 0)
                     db.Entry(tr).State = EntityState.Modified;
@@ -139,7 +135,7 @@ namespace Salon.Controllers
                     }
                 } while (SaveFailed == true);
             }
-            return RedirectToAction("CreatEditTreatments", treatments);
+            return RedirectToAction("CreatEditTreatments", steps);
         }        
 
         protected override void Dispose(bool disposing)
