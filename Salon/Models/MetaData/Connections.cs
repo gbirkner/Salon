@@ -14,21 +14,12 @@ namespace Salon.Models
 
         public int ConnectionTypeId;
 
-        [Display(Name = "Kunde")]
         public int CustomerId;
 
-        [Display(Name = "Kontakt")]
+        [Display(Name = "Connection")]
         public string Title;
 
-        [Display(Name = "Beschreibung")]
         public string Description;
-
-        [Display(Name = "Kontakttyp")]
-        public virtual ConnectionTypes ConnectionTypes { get; set; }
-
-        [Display(Name = "Kunde")]
-        public virtual Customers Customers { get; set; }
-
     }
 
     [MetadataType(typeof(ConnectionsMetaData))]

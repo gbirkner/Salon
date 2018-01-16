@@ -6,7 +6,7 @@
 
 <div id="VisitShort">
     <h2>Visits</h2>
-    <table class="table" style="height : 310px; overflow:auto;">
+    <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(x => x.created)
@@ -33,4 +33,5 @@
             </tr>
         }
     </table>
+    @Model.Count() Ergebnisse
 </div>

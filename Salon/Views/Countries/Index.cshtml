@@ -4,80 +4,30 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Länder</h2>
-
-<input type="text" id="Search" placeholder="Search..">
-<div style="visibility: hidden">
-    @Html.ActionLink("Search", "CountriesOverview", new { searchstring = "" }, new { @class = "countries-overview" })
-</div>
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<div id="CountriesMaster" style="height : 310px; overflow:auto;">
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CountryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th></th>
-        </tr>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CountryId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CountryId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CountryId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CountryId })
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CountryId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CountryId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CountryId })
+        </td>
+    </tr>
+}
 
-    </table>
-
-    </div>
-
-    @section scripts {
-
-
-
-        <script type="text/javascript">
-
-            $("#Search").keyup(function (e) {
-
-                var Searchtext = $("#Search").val().toLowerCase();
-
-                $(".countries-overview").attr("href", "/Countries/CountriesOverview?searchstring=" + Searchtext);
-            });
-
-            $("#Search").keyup(function (event) {
-                //if (event.keyCode === 13) {
-                $(".countries-overview").click();
-                //}
-            });
-
-            $(function () {
-                $('.countries-overview').on('click', function (e) {
-                    $.get($(this).prop('href'), function (response) {
-
-                        $('#CountriesMaster').html(response)
-                    });
-                    e.preventDefault();
-                });
-            });
-
-
-        </script>
-    }
-
-
+</table>

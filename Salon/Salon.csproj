@@ -177,7 +177,6 @@
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
     <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -193,9 +192,9 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
+    <!--     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManageController.cs" /> -->
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -205,7 +204,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ModelHelper\spExtensions.cs" />
     <Compile Include="Models\Rooms.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>

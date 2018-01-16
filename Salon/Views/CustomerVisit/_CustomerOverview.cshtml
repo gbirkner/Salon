@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Salon.Models.CustomerViewModel>
 
-<div id="CustomerMaster" style="height : 310px; overflow:auto;"> 
+<div id="CustomerMaster">
     <table class="table" id="tbl_cust">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.GenderID)
+                @Html.DisplayNameFor(model => model.GenderId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FName)
@@ -35,7 +35,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GenderID)
+                    @Html.DisplayFor(modelItem => item.GenderId)
                 </td>
 
 
@@ -74,11 +74,10 @@
                 </td>
 
                 <td>
-
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
-                    @Html.ActionLink("Besuche", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
-                    @Html.ActionLink("Kontaktdaten", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CountryId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CountryId }) |
+                    @Html.ActionLink("View Visits", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
+                    @Html.ActionLink("View Connections", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
 
                 </td>
             </tr>
