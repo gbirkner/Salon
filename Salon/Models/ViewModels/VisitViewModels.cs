@@ -55,6 +55,8 @@ namespace Salon.Models {
         public KeyValuePair<string, string> teacher { get; set; }
         [Display(Name = "Raum")]
         public KeyValuePair<int, string> room { get; set; }
+        [Display(Name = "Dauer Approx [min]")]
+        public int duration { get; set; }
 
         public VisitCreateViewModel() {
             this.availableTreatments = new List<Treatments>();
@@ -72,10 +74,33 @@ namespace Salon.Models {
         [Display(Name = "Schritte")]
         public List<VisitTasks> tasks { get; set; }
         public List<TreatmentSteps> possibleTasks { get; set; }
+        public int ran { get; set; }
+        public bool allowSensitive { get; set; }
 
         public VisitTreatment() {
             this.tasks = new List<VisitTasks>();
             this.possibleTasks = new List<TreatmentSteps>();
+            this.ran = new Random().Next();
+        }
+
+        public List<TreatmentSteps> getTasksWithoutSensitive() {
+            List<TreatmentSteps> steps = new List<TreatmentSteps>();
+            foreach(TreatmentSteps s in possibleTasks) {
+                if (!s.Steps.isSensitive) {
+                    steps.Add(s);
+                }
+            }
+            return steps;
+        }
+
+        public List<TreatmentSteps> getSensitiveTasks() {
+            List<TreatmentSteps> steps = new List<TreatmentSteps>();
+            foreach (TreatmentSteps s in possibleTasks) {
+                if (s.Steps.isSensitive) {
+                    steps.Add(s);
+                }
+            }
+            return steps;
         }
     }
 

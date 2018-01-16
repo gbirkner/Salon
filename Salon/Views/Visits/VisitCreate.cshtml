@@ -7,13 +7,17 @@
 <h2>Besuch</h2>
 
 @{ 
-    string action;
-    if(Model.visitId != null) {
-        action = Url.Action("updateVisit", "Visits", new {id = Model.visitId});
-    }else {
+    string action = "";
+    int vId = 0;
+    if (Model.visitId == null) {
         action = Url.Action("saveVisit", "Visits");
+    }  else {
+        action = Url.Action("updateVisit", "Visits", new { id = Model.visitId });
+        vId = (int)Model.visitId;
     }
 }
+
+<input type="hidden" id="visitId" value="@vId" />
 <form method="post" action="@action" class="form-horizontal">
     <input type="hidden" id="inp_stylistId" name="inp_stylistId" value="@Model.stylist.Id" />
     <div class="row">
@@ -45,7 +49,7 @@
                 @Model.created
             </h3>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="slc_teacher">Lehrer:</label>
                     <select name="slc_teacher" id="slc_teacher" class="form-control">
                         @foreach (var t in ViewBag.teachers) {
@@ -57,7 +61,7 @@
                         }
                     </select>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="slc_room">Raum:</label>
                     <select name="slc_room" id="slc_room" class="form-control">
                         @foreach (var r in ViewBag.rooms) {
@@ -68,6 +72,10 @@
                             }
                         }
                     </select>
+                </div>
+                <div class="col-sm-4">
+                    <label>Dauer Approx [min]:</label>
+                    <input type="number" min="0" id="inp_approx_duration" name="inp_approx_duration" class="form-control" value="@Model.duration"/> 
                 </div>
                
             </div>
@@ -88,7 +96,7 @@
                 <div class="list-group" id="selectedTreatmentsContainer" data-nextId="@Model.selectedTreatments.Count+1">
                     @{int i = 0; }
                     @foreach (var vt in Model.selectedTreatments) {
-                        <a class="list-group-item clearfix item_treatment" id="item_treatment_@i"
+                        <a class="list-group-item clearfix item_treatment" href="javascript:void(0)" id="item_treatment_@i"
                            onclick="switchTreatment('@i')">
                             @vt.name
                             <div class='pull-right'>
@@ -105,17 +113,7 @@
 
                 </div>
             }
-            
-            <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                Besuch abschließen
-            </button>
-            <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-                speichern
-            </button>
-
-
+        
         </div>
 
         <div class="col-sm-8" id="addTreatmentsContainer">
@@ -131,6 +129,14 @@
 
         </div>
     </div>
+    <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        Besuch abschließen
+    </button>
+    <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+        speichern
+    </button>
 </form>
 
 
@@ -145,7 +151,7 @@
             <div class="modal-body">
                 <div class="list-group">
                     @foreach (var t in Model.availableTreatments) {
-                        <a class="list-group-item addTreatmentEntry">
+                        <a class="list-group-item addTreatmentEntry" href="javascript:void(0)">
                             <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
                             <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
                             @t.Title
@@ -157,6 +163,20 @@
     </div>
 </div>
 
+<div class="modal fade" role="dialog" id="changeCustomerAlert">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Kunden &auml;ndern</h4>
+            </div>
+
+            <div class="modal-body" id="changeCustomerMessage">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -174,45 +194,33 @@
         @Scripts.Render("~/Scripts/graphicsbuttons.js")
 
         <script>
+            /****************************************** FUNCTION DECLARATIONS ********************************/
+            /**
+             Treatment form, sets listeners for the step-picker list in the treatment partial view
+            */
+            function visitTreatmentListeners() {
+                $(".item_allTasks").each(function () {
+                    $(this).on('click', function (e) {
+                        var stepId = $(this).data("stepid");
+                        var treatmentId = $(this).data("treatmentid");
+                        var ran = $(this).data("ran");
+                        if ($(this).hasClass('active')) {
+                            $(this).removeClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).addClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', true);
+                        } else {
+                            $(this).addClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).removeClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', false);
+                        }
+                        calculateDuration();
+                    }); //onclick
+                }); //each
+            } //END visitTreatmentListener
 
-            $("#customerContainer").on("click", function (e) {
-                $("#customerPicker").modal();
-            });
-
-            $(".addTreatmentEntry").each(function (e) {
-                $(this).on('click', function (event) {
-                    //TODO load according treatment view
-                    var id = $(this).find(".inp_addTreatmentId").val();
-                    var name = $(this).find(".inp_addTreatmentName").val();
-                    var con = $("#selectedTreatmentsContainer");
-                    var entryId = parseInt(con.data("nextid"));
-                    con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' "+
-                        "onclick=\"switchTreatment('"+entryId+"')\">" + name +
-                        "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
-                        "onclick=\"removeTreatment('" + entryId + "')\">" +
-                        "<span class='glyphicon glyphicon-remove'></span></button></div></a>");
-
-
-                    $.ajax({
-                        url: '@Url.Action("_TreatmentForm", "Visits")/' + id
-                    }).done(function (data) {
-                        $("#addTreatmentsContainer").append(
-                            "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
-                        switchTreatment(entryId);
-                    });
-
-                    var tmp = entryId + 1;
-                    con.data("nextid", tmp);
-                });
-            });
-
-            function removeTreatment(id) {
-                var item = $("#item_treatment_" + id);
-                var form = $("#form_treatment_" + id);
-                item.remove();
-                form.remove();
-            }
-
+            /**
+             switches the treatment triggers when a treatment gets loaded and when the treatment in the list is clicked
+             */
             function switchTreatment(id) {
                 var item = $("#item_treatment_" + id);
                 var form = $("#form_treatment_" + id);
@@ -231,36 +239,126 @@
                 form.css("display", "");
             }
 
-            $(function () {
-                switchTreatment(0);
+            /**
+             Removes a treatment
+             */
+            function removeTreatment(id) {
+                var item = $("#item_treatment_" + id);
+                var form = $("#form_treatment_" + id);
+                item.remove();
+                form.remove();
+                calculateDuration();
+            }
+
+            /**
+             Calculates the duration of the Visit (from the steps) triggers when a treatment gets added/removed or a step gets added/removed
+             */
+            function calculateDuration() {
+                var duration = 0;
+                $(".grp_treatmentStep").each(function () {
+                    if (!$(this).hasClass("hidden")) {
+                        duration += Number($(this).data("duration"));
+                    }
+                });
+                $("#inp_approx_duration").val(duration);
+            }
+
+            /**
+             filters the name list of the customer picker
+             */
+            function filterList() {
+                var fNameFilter = $("#inp_fName").val().toUpperCase();
+                var lNameFilter = $("#inp_lName").val().toUpperCase();
+                var list = $("#customerSelectModalCustomerList");
+
+                list.find(".customerPickerEntry").each(function (e) {
+                    var fOk = false;
+                    var lOk = false;
+                    if ($(this).find(".customerPickerFName").html().toUpperCase().indexOf(fNameFilter) > -1) {
+                        fOk = true;
+                    }
+                    if ($(this).find(".customerPickerLName").html().toUpperCase().indexOf(lNameFilter) > -1) {
+                        lOk = true;
+                    }
+
+                    if ((lNameFilter.length < 1 || lOk) && (fNameFilter.length < 1 || fOk)) {
+                        $(this).css("display", "");
+                    } else {
+                        $(this).css("display", "none");
+                    }
+
+                });//each
+            }//filterList
+
+            function getSwitchCustomerMessage(oldCustomer, newCustomer) {
+                var visitId = $("#visitId").val();
+                var link = '@Url.Action("checkCustomerSwitch", "Visits")' + "?cusId1=" + oldCustomer + "&cusId2=" + newCustomer + "&visitId=" + visitId;
+                //alert(link);
+                return $.ajax({
+                    url: link,
+                    async: false
+                }).responseText;
+            }
+
+            function changeCustomer(id, fName, lName, reload) {
+                $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
+                $("#slc_customerId").val(id);
+                if (reload) {
+                    $("#btn_quickSave").click();
+                }
+            }
+
+
+            /************************************************ END FUNCTION DECLARATINOS *******************************/
+
+            $(function(){
+
+                $("#customerContainer").on("click", function (e) {
+                    $("#customerPicker").modal();
+                });
+
 
 
                 $("#btn_addTreatment").on('click', function (e) {
                     $("#addTreatmentModal").modal();
                 });
 
+
                 /**
                  * Load customer picker partial view
                  */
                 $.get($("#lnk_customerPicker").prop('href'), function (response) {
                     $('#customerPickerContainer').html(response);
-
-                    //$("#customerPicker").modal();
-
                     $(".customerPickerEntry").each(function (e) {
+                        /**
+                         * switch customer function
+                         */
                         $(this).on('click', function (event) {
                             var id = $(this).find(".customerPickerId").html();
                             id = id.trim();
+                            var oldId = $("#slc_customerId").val();
 
-                            var fName = $(this).find(".customerPickerFName").html();
-                            var lName = $(this).find(".customerPickerLName").html();
+                            if (oldId.length > 0) {
+                                var modal = $("#changeCustomerAlert");
+                                var con = $("#changeCustomerMessage");
+                                var msg = getSwitchCustomerMessage(oldId, id);
+                                if (msg == "ok") {
+                                    changeCustomer(id, fName, lName, true);
+                                    return;
+                                }
+                                //alert(msg);
+                                con.html(msg);
+                                modal.modal();
+                            } else {
+                                var fName = $(this).find(".customerPickerFName").html();
+                                var lName = $(this).find(".customerPickerLName").html();
+                                changeCustomer(id, fName, lName, false);
+                            }
 
-                            $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
-                            $("#slc_customerId").val(id);
+                           
                             $("#customerPicker").modal('hide');
-
-                        });
-                    });
+                        }); //onclick
+                    }); //each
 
                     $("#inp_fName").on("input", function (e) {
                         filterList();
@@ -269,62 +367,62 @@
                         filterList();
                     });
 
-                    function filterList() {
-                        var fNameFilter = $("#inp_fName").val().toUpperCase();
-                        var lNameFilter = $("#inp_lName").val().toUpperCase();
-                        var list = $("#customerSelectModalCustomerList");
-
-                        list.find(".customerPickerEntry").each(function (e) {
-                            var fOk = false;
-                            var lOk = false;
-                            if ($(this).find(".customerPickerFName").html().toUpperCase().indexOf(fNameFilter) > -1) {
-                                fOk = true;
-                            }
-                            if ($(this).find(".customerPickerLName").html().toUpperCase().indexOf(lNameFilter) > -1) {
-                                lOk = true;
-                            }
-
-                            if ((lNameFilter.length < 1 || lOk) && (fNameFilter.length < 1 || fOk)) {
-                                $(this).css("display", "");
-                            } else {
-                                $(this).css("display", "none");
-                            }
-
-                        });
-                    }
-
                     $("#btn_setCustomer").on('click', function (e) {
                         $("#customerPicker").modal();
                     });
-                });
+
+                }); //get
 
 
-                /****************************************** TREATMENT FORM ***************************************/
 
-                $(function () {
-                    $(".item_allTasks").each(function () {
-                        $(this).on('click', function (e) {
-                            var stepId = $(this).data("stepid");
-                            var treatmentId = $(this).data("treatmentid");
-                            if ($(this).hasClass('active')) {
-                                $(this).removeClass('active');
-                                $('#grp_step_' + treatmentId + "_" + stepId).addClass("hidden");
-                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', true);
-                            } else {
-                                $(this).addClass('active');
-                                $('#grp_step_' + treatmentId + "_" + stepId).removeClass("hidden");
-                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', false);
-                            }
+                $(".addTreatmentEntry").each(function (e) {
+                    $(this).on('click', function (event) {
+                        //TODO load according treatment view
+                        var id = $(this).find(".inp_addTreatmentId").val();
+                        var name = $(this).find(".inp_addTreatmentName").val();
+                        var con = $("#selectedTreatmentsContainer");
+                        var entryId = parseInt(con.data("nextid"));
+                        var cusId = $("#slc_customerId").val()
+                        con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' href='javascript:void(0)' " +
+                            "onclick=\"switchTreatment('" + entryId + "')\">" + name +
+                            "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
+                            "onclick=\"removeTreatment('" + entryId + "')\">" +
+                            "<span class='glyphicon glyphicon-remove'></span></button></div></a>");
+
+                        $.ajax({
+                            url: '@Url.Action("getCustomerSensitive", "Visits")' + "?customerId=" + cusId
+                        }).done(function (data) {
+                            $.ajax({
+                                url: '@Url.Action("_TreatmentForm", "Visits")/' + id + "?sensitive=" + data
+                            }).done(function (data) {
+                                $("#addTreatmentsContainer").append(
+                                    "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
+                                switchTreatment(entryId);
+                                calculateDuration();
+                                visitTreatmentListeners();
+                            });
+                            var tmp = entryId + 1;
+                            con.data("nextid", tmp);
                         });
-                    });
-                });
+                    }); //onclick
+                }); //each
 
-                
-            });
-           /* $(window).bind('beforeunload', function () {
-                return 'Are you sure you want to leave?';
-            });*/
+
+
+
+                visitTreatmentListeners();
+
+            }); //END
         </script>
+    @if (Model.customer == null) {
+        <script>
+            $(function () {
+                $("#customerPicker").modal();
+            });
+           
+        </script>
+        
+    }
 
 }
 

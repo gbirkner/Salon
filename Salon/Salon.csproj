@@ -19,8 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -35,6 +35,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DeployEncryptKey>Encryption password is used only if any deployment setting is marked as secure</DeployEncryptKey>
+    <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +46,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInTheProject</FilesToIncludeForPublish>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -184,6 +188,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Controllers\Reports\ReportsController.cs" />
+    <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -211,36 +217,65 @@
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Genders.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MetaData\Settings.cs" />
+    <Compile Include="Models\GetClasses.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetMyWork.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetRooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetStepsPerTreatment.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetTeachers.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetWorkPerClass.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\insSteps_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Rooms.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SalonModel.cs" />
-    <Compile Include="Models\SalonModel1.cs">
+    <Compile Include="Models\SalonModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalonModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalonModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Settings.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Statistics\BarChart.cs" />
+    <Compile Include="Models\Statistics\ChartData.cs" />
+    <Compile Include="Models\Statistics\CustomerStatistics.cs" />
+    <Compile Include="Models\Statistics\LineChart.cs" />
+    <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
+    <Compile Include="Models\Statistics\StatisticTypes.cs" />
     <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Steps.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Treatments.cs">
@@ -263,25 +298,19 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SalonModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SalonModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
+    <Compile Include="Views\ViewModels\WorkPerClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\customerstat.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\searchicon.png" />
     <Content Include="Models\SalonModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>SalonModel.edmx</DependentUpon>
@@ -289,7 +318,8 @@
     </Content>
     <Content Include="Models\SalonModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SalonModel1.cs</LastGenOutput>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+      <LastGenOutput>SalonModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -305,6 +335,7 @@
     <Content Include="Scripts\graphicsbuttons.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\Chart.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -314,6 +345,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Images\default_logo.svg" />
     <Content Include="Views\Visits\VisitStyle.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -393,10 +425,23 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Visits\_CustomerPicker.cshtml" />
     <Content Include="Views\Visits\_TreatmentForm.cshtml" />
+    <Content Include="Views\StatisticTypes\Index.cshtml" />
+    <Content Include="Views\Chart\LineChart.cshtml" />
+    <Content Include="Views\Statistics\Customers.cshtml" />
+    <Content Include="Views\Chart\BarChart.cshtml" />
+    <Content Include="Views\Statistics\CustomerStatistics.cshtml" />
+    <Content Include="Views\Statistics\CustomerConnections.cshtml" />
+    <Content Include="Views\Statistics\WorkPerClass.cshtml" />
+    <Content Include="Views\Statistics\WorkPerClassResponse.cshtml" />
+    <Content Include="Views\Statistics\MyWork.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewFolder1\" />
+    <Folder Include="Content\bootstrap\mixins\" />
+    <Folder Include="Content\fonts\" />
+    <Folder Include="Views\AverageCustomersTimeSpan\" />
+    <Folder Include="Views\AverageCustomerTimeSpan\" />
+    <Folder Include="Views\CustomerViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -404,7 +449,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -423,7 +467,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6241</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
