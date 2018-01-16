@@ -1,6 +1,7 @@
 ﻿Importend Git Commands
 
 List the files you've changed and those you still need to add or commit: 	
+
 git status
 
 Add one or more files to staging (index):

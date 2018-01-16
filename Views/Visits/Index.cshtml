@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Salon.Models.VisitShortViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<link rel="stylesheet" href="~/Views/Visits/VisitStyle.css" />
+
+<style>
+#visitTableContainer{
+    height: 75vh;
+    overflow-y: scroll;
+}
+</style>
+
+@if(ViewBag.success == true) {
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-floppy-saved"></span> 
+        Der Besuch wurde erfolgreich gespeichert!
+    </div>
+} else if (ViewBag.success == false) {
+    <div class="alert alert-danger alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Der Besuch konnte nicht gespeichert werden!
+    </div>
+}
+
+<h2>Besuche</h2>
+
+<div class="row">
+    <div class="col-sm-7" id="visitTableContainer">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="inp_filterDate">
+                    @Html.DisplayNameFor(x => x.created)
+                </label>
+            </div>
+            <div class="col-sm-3">
+                <label for="inp_filterCustomer">
+                    @Html.DisplayNameFor(x => x.customer)
+                </label>
+            </div>
+            <div class="col-sm-3">
+                <label for="inp_filterStylist">
+                    @Html.DisplayNameFor(x => x.stylist)
+                </label>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterDate" class="form-control" on />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterCustomer" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterStylist" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-primary" id="btn_filter">
+                    <span class="glyphicon glyphicon-search"></span> Suche
+                </button>
+            </div>
+        </div>
+            
+        <hr />
+        <table class="table" id="tbl_visits">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(x => x.created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => x.customer)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(x => x.stylist)
+                </th>
+            </tr>
+            @foreach (var item in Model) {
+                <tr class="tr_visits" style="cursor: pointer;">
+                    <td>
+                        @item.created
+                    </td>
+                    <td>
+                        @item.customer.FName @item.customer.LName
+                    </td>
+                    <td>
+                        @if (item.stylist != null) {
+                            @item.stylist.UserName
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "VisitDetails", new { id = item.visitId }, new { @class = "visitRow" })
+                    </td>
+                </tr>
+            }
+        </table>
+        <font id="fnt_hits">
+            @Model.Count() Ergebniss(e)
+        </font>
+        <ul class="pager">
+            @if (ViewBag.skip == 0) {
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </a>
+                </li>
+            } else {
+                <li >
+                    <a href="@Url.Action("Index", "Visits", new { skip = ViewBag.skip - 1 }) ">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </a>
+                </li>
+            }
+            <li>
+                <a href="@Url.Action("Index", "Visits", new { skip = ViewBag.skip + 1 }) ">
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </a>
+            </li>
+        </ul> 
+    </div>
+    <div class="col-sm-5">
+        <div id="VisitTableContainer">
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+<script type="text/javascript">
+    $(function() {
+        $('.visitRow').on('click', function (e) {
+
+            $.get($(this).prop('href'), function (response) {
+                $('#VisitTableContainer').html(response)
+            });
+            e.preventDefault();
+        });
+
+        $(".tr_visits").each(function () {
+            $(this).on('click', function (e) {
+                
+                $("#tbl_visits").find("tr").each(function (e) {
+                    $(this).removeClass("active");
+                });
+                $(this).toggleClass("active");
+                $.get($(this).find(".visitRow").prop('href'), function (response) {
+                    $('#VisitTableContainer').html(response)
+                });
+                e.preventDefault();
+            });
+        });
+
+        
+    });
+
+    // ====================================== EVENT LISTENERS ======================= //
+    $("#btn_filter").on('click', function (e) {
+        filter();
+    });
+
+    $("#inp_filterDate").keyup(function (event) {
+        filter();
+    });
+
+    $("#inp_filterCustomer").keyup(function (event) {
+         filter();
+    });
+
+    $("#inp_filterStylist").keyup(function (event) {
+        filter();
+    });
+
+
+    /**
+     * Visit Table Filter
+     */
+    function filter() {
+        //get filter
+        var fDate = $("#inp_filterDate").val();
+        var fCustomer = $("#inp_filterCustomer").val();
+        var fStylist = $("#inp_filterStylist").val();
+
+        var table, tr, date, cust, styl;
+        table = document.getElementById("tbl_visits");
+        tr = table.getElementsByTagName("tr");
+
+        var hitDate, hitCust, hitStyl, hits = 0;
+
+        for (var i = 1; i < tr.length; i++) {       //loop through table rows
+            date = tr[i].getElementsByTagName("td")[0];
+            cust = tr[i].getElementsByTagName("td")[1];
+            styl = tr[i].getElementsByTagName("td")[2];
+
+            hitDate = false;
+            hitCust = false;
+            hitStyl = false;
+
+            if (fDate.length > 0 && date.innerHTML.toUpperCase().indexOf(fDate.toUpperCase()) > -1) {
+                hitDate = true;
+            }
+            if (fCustomer.length > 0 && cust.innerHTML.toUpperCase().indexOf(fCustomer.toUpperCase()) > -1) {
+                hitCust = true;
+            }
+            if (fStylist.length > 0 && styl.innerHTML.toUpperCase().indexOf(fStylist.toUpperCase()) > -1) {
+                hitStyl = true;
+            }
+
+            //check all filtered fields (if filter is empty check succeeds)
+            if ((fDate.length == 0 || hitDate) && (fCustomer.length == 0 || hitCust) && (fStylist.length == 0 || hitStyl)) {
+                tr[i].style.display = "";
+                hits++;
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+        $("#fnt_hits").html(hits + " Ergebnisse");
+    }
+
+</script>
+}
+
