@@ -52,7 +52,7 @@ namespace Salon.Views.ViewModels
 
                 foreach(var cl in classes)
                 {
-                    returnValue.Add(""); //todo
+                    returnValue.Add(cl.Class);
                 }
             }
             return returnValue;
@@ -73,7 +73,7 @@ namespace Salon.Views.ViewModels
 
                 foreach (var t in teachers)
                 {
-                    teacherList.Add(""); //todo
+                    teacherList.Add(t.Teacher);
                 }
             }
             return new SelectList(teacherList);
