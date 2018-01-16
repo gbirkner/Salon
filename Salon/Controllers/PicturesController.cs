@@ -144,7 +144,7 @@ namespace Salon.Controllers
         [HttpGet]
         public ActionResult DrawSketch()
         {
-            List<Pictures> pictures = db.Pictures.Where(e => e.PictureId >= 16 && e.PictureId <= 18).ToList();
+            List<Pictures> pictures = db.Pictures.Where(e => e.PictureId >= 59 && e.PictureId <= 61).ToList();
             return PartialView("DrawSketch", pictures);
         }
 

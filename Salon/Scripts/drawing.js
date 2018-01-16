@@ -221,12 +221,12 @@ function modeButtonPressed(e) {
     if (drawMode == 2) {
 
         drawMode = 1;
-        modeButton.innerHTML = 'Linie';
+        modeButton.innerHTML = '<span class="glyphicon glyphicon-pencil"></span> Linie';
 
     } else if (drawMode == 1) {
 
         drawMode = 2;
-        modeButton.innerHTML = 'Freihand';
+        modeButton.innerHTML = '<span class="glyphicon glyphicon-pencil"></span> Freihand';
     }
 }
 
@@ -236,38 +236,50 @@ function viewButtonPressed(e) {
     if (e.target == frontViewButton) {
 
         viewMode = 1;
-        sketchCanvasFront.style.visibility = 'visible';
-        sketchCanvasBack.style.visibility = 'hidden';
-        sketchCanvasSide.style.visibility = 'hidden';
+        sketchCanvasFront.style.display = 'block';
+        sketchCanvasBack.style.display = 'none';
+        sketchCanvasSide.style.display = 'none';
         drawContext = sketchCanvasFrontContext;
 
-        descriptionFront.style.visibility = 'visible';
-        descriptionBack.style.visibility = 'hidden';
-        descriptionSide.style.visibility = 'hidden';
+        descriptionFront.style.display = 'block';
+        descriptionBack.style.display = 'none';
+        descriptionSide.style.display = 'none';
+
+        frontViewButton.className = 'btn btn-primary';
+        backViewButton.className = 'btn btn-default';
+        sideViewButton.className = 'btn btn-default';
 
     } else if (e.target == backViewButton) {
 
         viewMode = 2;
-        sketchCanvasFront.style.visibility = 'hidden';
-        sketchCanvasBack.style.visibility = 'visible';
-        sketchCanvasSide.style.visibility = 'hidden';
+        sketchCanvasFront.style.display = 'none';
+        sketchCanvasBack.style.display = 'block';
+        sketchCanvasSide.style.display = 'none';
         drawContext = sketchCanvasBackContext;
 
-        descriptionFront.style.visibility = 'hidden';
-        descriptionBack.style.visibility = 'visible';
-        descriptionSide.style.visibility = 'hidden';
+        descriptionFront.style.display = 'none';
+        descriptionBack.style.display = 'block';
+        descriptionSide.style.display = 'none';
+
+        frontViewButton.className = 'btn btn-default';
+        backViewButton.className = 'btn btn-primary';
+        sideViewButton.className = 'btn btn-default';
 
     } else if (e.target == sideViewButton) {
 
         viewMode = 3;
-        sketchCanvasFront.style.visibility = 'hidden';
-        sketchCanvasBack.style.visibility = 'hidden';
-        sketchCanvasSide.style.visibility = 'visible';
+        sketchCanvasFront.style.display = 'none';
+        sketchCanvasBack.style.display = 'none';
+        sketchCanvasSide.style.display = 'block';
         drawContext = sketchCanvasSideContext;
 
-        descriptionFront.style.visibility = 'hidden';
-        descriptionBack.style.visibility = 'hidden';
-        descriptionSide.style.visibility = 'visible';
+        descriptionFront.style.display = 'none';
+        descriptionBack.style.display = 'none';
+        descriptionSide.style.display = 'block';
+
+        frontViewButton.className = 'btn btn-default';
+        backViewButton.className = 'btn btn-default';
+        sideViewButton.className = 'btn btn-primary';
     }
 }
 

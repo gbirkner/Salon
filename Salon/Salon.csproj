@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -170,7 +171,26 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\PicturesController.cs" />
+    <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CustomerVisitController.cs" />
+    <Compile Include="Controllers\ConnectionTypesController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\VisitsController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRoles.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaims.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogins.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUsers.cs">
@@ -185,45 +205,42 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
+    <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Genders.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MetaData\Settings.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SalonModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    <Compile Include="Models\Rooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SalonModel.cs">
+    <Compile Include="Models\SalonModel.cs" />
+    <Compile Include="Models\SalonModel1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SalonModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
+    <Compile Include="Models\Setting.cs" />
+    <Compile Include="Models\Settings.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Startup.cs" />
     <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Steps.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Treatments.cs">
@@ -232,12 +249,31 @@
     <Compile Include="Models\TreatmentSteps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\CustomerVisit.cs" />
+    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MetaData\Connections.cs" />
+    <Compile Include="Models\MetaData\VisitTasks.cs" />
+    <Compile Include="Models\ViewModels\VisitViewModels.cs" />
     <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VisitTasks.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\SalonModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalonModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -253,8 +289,7 @@
     </Content>
     <Content Include="Models\SalonModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
-      <LastGenOutput>SalonModel.cs</LastGenOutput>
+      <LastGenOutput>SalonModel1.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -279,6 +314,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Visits\VisitStyle.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -321,9 +357,46 @@
     <Content Include="Views\Shared\DrawSketch.cshtml" />
     <Content Include="Views\Shared\GraphicsView.cshtml" />
     <Content Include="Views\Shared\AddPhoto.cshtml" />
+    <Content Include="Views\Statistics\StatisticsMainMenu.cshtml" />
+    <Content Include="Views\ConnectionTypes\Create.cshtml" />
+    <Content Include="Views\ConnectionTypes\Delete.cshtml" />
+    <Content Include="Views\ConnectionTypes\Details.cshtml" />
+    <Content Include="Views\ConnectionTypes\Edit.cshtml" />
+    <Content Include="Views\ConnectionTypes\Index.cshtml" />
+    <Content Include="Views\Countries\Create.cshtml" />
+    <Content Include="Views\Countries\Delete.cshtml" />
+    <Content Include="Views\Countries\Details.cshtml" />
+    <Content Include="Views\Countries\Edit.cshtml" />
+    <Content Include="Views\Countries\Index.cshtml" />
+    <Content Include="Views\Cities\Create.cshtml" />
+    <Content Include="Views\Cities\Delete.cshtml" />
+    <Content Include="Views\Cities\Details.cshtml" />
+    <Content Include="Views\Cities\Edit.cshtml" />
+    <Content Include="Views\Cities\Index.cshtml" />
+    <Content Include="Views\CustomerVisit\Index.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
+    <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
+    <Content Include="Views\Visits\Create.cshtml" />
+    <Content Include="Views\Visits\Delete.cshtml" />
+    <Content Include="Views\Visits\Details.cshtml" />
+    <Content Include="Views\Visits\Edit.cshtml" />
+    <Content Include="Views\Visits\Index.cshtml" />
+    <Content Include="Views\Visits\VisitDetails.cshtml" />
+    <Content Include="Views\Visits\VisitCreate.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
+    <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
+    <Content Include="Views\Settings\Create.cshtml" />
+    <Content Include="Views\Settings\Delete.cshtml" />
+    <Content Include="Views\Settings\Details.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Visits\_CustomerPicker.cshtml" />
+    <Content Include="Views\Visits\_TreatmentForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

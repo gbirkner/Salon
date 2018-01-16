@@ -1,13 +1,16 @@
 ﻿@model List<Salon.Models.Pictures>
 
-<button id="modeButton">Freihand</button>
-<button id="resetButton">Löschen</button>
-<button id="undoButton">Schritt zurück</button>
-<br />
-<button id="frontViewButton">Vorne</button>
-<button id="backViewButton">Hinten</button>
-<button id="sideViewButton">Seite</button>
-<br />
+<div class="btn-group">
+    <button id="frontViewButton" class="btn btn-primary">Vorne</button>
+    <button id="backViewButton" class="btn btn-default">Hinten</button>
+    <button id="sideViewButton" class="btn btn-default">Seite</button>
+</div>
+
+<div class="btn-group">
+    <button id="modeButton" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Freihand</button>
+    <button id="resetButton" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Löschen</button>
+    <button id="undoButton" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Schritt zurück</button>
+</div>
 
 <img id="sketchBgFront" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[0].Photo)" />
 <img id="sketchBgBack" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[1].Photo)" />
@@ -18,20 +21,21 @@
     <input type="hidden" id="sketchDataFront" name="sketchDataFront" />
     <input type="hidden" id="sketchDataBack" name="sketchDataBack" />
     <input type="hidden" id="sketchDataSide" name="sketchDataSide" />
+    
+    <label for="#descriptionFront">Beschreibung:</label>
 
-    <input type="text" id="descriptionFront" name="descriptionFront" style="position: absolute;" />
-    <input type="text" id="descriptionBack" name="descriptionBack" style="position: absolute; visibility:hidden" />
-    <input type="text" id="descriptionSide" name="descriptionSide" style="position: absolute; visibility:hidden" />
-    <br />
+    <input type="text" id="descriptionFront" class="form-control" name="descriptionFront" style="display: block;" />
+    <input type="text" id="descriptionBack" class="form-control" name="descriptionBack" style="display: none" />
+    <input type="text" id="descriptionSide" class="form-control" name="descriptionSide" style="display: none" />
+    
+    <div style="position: relative;">
+        <canvas id="sketchCanvasFront" width="500" height="500" style="z-index: 0; display: block"></canvas>
+        <canvas id="sketchCanvasBack" width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasSide" width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="tempCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+    </div>
 
-    <input type="submit" id="submitButton" value="AddSketches" />
+    <input type="submit" id="submitButton" class="btn btn-primary" value="Fertig" />
 }
-
-<div style="position: relative;">
-    <canvas id="sketchCanvasFront" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-    <canvas id="sketchCanvasBack" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0; visibility: hidden"></canvas>
-    <canvas id="sketchCanvasSide" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 0; visibility: hidden"></canvas>
-    <canvas id="tempCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-</div>
 
 @Scripts.Render("~/Scripts/drawing.js")

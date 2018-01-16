@@ -1,0 +1,338 @@
+﻿@model Salon.Models.VisitCreateViewModel
+
+@{
+    ViewBag.Title = "VisitCreate";
+}
+
+<h2>Besuch</h2>
+
+@{ 
+    string action;
+    if(Model.visitId != null) {
+        action = Url.Action("updateVisit", "Visits", new {id = Model.visitId});
+    }else {
+        action = Url.Action("saveVisit", "Visits");
+    }
+}
+<form method="post" action="@action" class="form-horizontal">
+    <input type="hidden" id="inp_stylistId" name="inp_stylistId" value="@Model.stylist.Id" />
+    <div class="row">
+
+        <div class="col-sm-4">
+            @if (Model.customer != null) {
+                <div id="customerContainer" class="well">
+                    <input type="hidden" id="slc_customerId" name="slc_customerId" value="@Model.customer.CustomerId" />
+                    <h4>Kunde:</h4>
+                    <div id="slc_customer">
+                        <h5>@Model.customer.FName @Model.customer.LName</h5>
+                    </div>
+                </div>
+            } else {
+                <div id="customerContainer" class="well">
+                    <input type="hidden" id="slc_customerId" name="slc_customerId" />
+                    <h4>Kunde:</h4>
+                    <div id="slc_customer">
+                        <div class="alert alert-warning">Kein Kunde ausgew&auml;hlt!</div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div class="col-sm-8">
+            <h3>
+                Datum:
+                @Model.created
+            </h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="slc_teacher">Lehrer:</label>
+                    <select name="slc_teacher" id="slc_teacher" class="form-control">
+                        @foreach (var t in ViewBag.teachers) {
+                            if (t.Id == Model.teacher.Key) {
+                                <option value="@t.Id" selected>@t.lastName</option>
+                            } else {
+                                <option value="@t.Id">@t.lastName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="slc_room">Raum:</label>
+                    <select name="slc_room" id="slc_room" class="form-control">
+                        @foreach (var r in ViewBag.rooms) {
+                            if (r.RoomId == Model.room.Key) {
+                                <option value="@r.RoomId" selected>@r.Title</option>
+                            } else {
+                                <option value="@r.RoomId">@r.Title</option>
+                            }
+                        }
+                    </select>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3 class="col-sm-12">Behandlungen:</h3>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 treatmentContainer">
+            <button type="button" class="btn btn-primary" id="btn_addTreatment">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                Behandlung hinzuf&uuml;gen....
+            </button>
+            <hr />
+            @if (Model.selectedTreatments != null) {
+                <div class="list-group" id="selectedTreatmentsContainer" data-nextId="@Model.selectedTreatments.Count+1">
+                    @{int i = 0; }
+                    @foreach (var vt in Model.selectedTreatments) {
+                        <a class="list-group-item clearfix item_treatment" id="item_treatment_@i"
+                           onclick="switchTreatment('@i')">
+                            @vt.name
+                            <div class='pull-right'>
+                                <button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' onclick="removeTreatment(@i)">
+                                    <span class='glyphicon glyphicon-remove'></span>
+                                </button>
+                            </div>
+                        </a>
+                        i++;
+                    }
+                </div>
+            } else {
+                <div class="list-group" id="selectedTreatmentsContainer" data-nextId="0">
+
+                </div>
+            }
+            
+            <button type="submit" class="btn btn-success" id="btn_saveVisit" name="btn_save" value="back">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                Besuch abschließen
+            </button>
+            <button type="submit" class="btn btn-primary" id="btn_quickSave" name="btn_save" value="stay">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+                speichern
+            </button>
+
+
+        </div>
+
+        <div class="col-sm-8" id="addTreatmentsContainer">
+            <!-- BUILD VISIT FORM -->
+            @{ int j = 0;}
+            @foreach (var vt in Model.selectedTreatments) {
+                <div class='form_treatment' id='form_treatment_@j'>
+                    @Html.Partial("_TreatmentForm", vt)
+
+                </div>
+                j++;
+            }
+
+        </div>
+    </div>
+</form>
+
+
+
+<div class="modal fade" role="dialog" id="addTreatmentModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Behandlung ausw&auml;hlen</h4>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach (var t in Model.availableTreatments) {
+                        <a class="list-group-item addTreatmentEntry">
+                            <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
+                            <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
+                            @t.Title
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<a id="lnk_customerPicker" style="display: none;" href="@Url.Action("_CustomerPicker", "Visits")">
+    <span class="glyphicon glyphicon-arrow-left"></span>
+</a>
+
+<div id="customerPickerContainer">
+
+</div>
+
+@section scripts{  
+
+        @Scripts.Render("~/Scripts/graphicsbuttons.js")
+
+        <script>
+
+            $("#customerContainer").on("click", function (e) {
+                $("#customerPicker").modal();
+            });
+
+            $(".addTreatmentEntry").each(function (e) {
+                $(this).on('click', function (event) {
+                    //TODO load according treatment view
+                    var id = $(this).find(".inp_addTreatmentId").val();
+                    var name = $(this).find(".inp_addTreatmentName").val();
+                    var con = $("#selectedTreatmentsContainer");
+                    var entryId = parseInt(con.data("nextid"));
+                    con.append("<a class='list-group-item clearfix item_treatment' id='item_treatment_" + entryId + "' "+
+                        "onclick=\"switchTreatment('"+entryId+"')\">" + name +
+                        "<div class='pull-right'><button type='button' class='btn btn-xs btn-danger btn_removeTreatmentItem' " +
+                        "onclick=\"removeTreatment('" + entryId + "')\">" +
+                        "<span class='glyphicon glyphicon-remove'></span></button></div></a>");
+
+
+                    $.ajax({
+                        url: '@Url.Action("_TreatmentForm", "Visits")/' + id
+                    }).done(function (data) {
+                        $("#addTreatmentsContainer").append(
+                            "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
+                        switchTreatment(entryId);
+                    });
+
+                    var tmp = entryId + 1;
+                    con.data("nextid", tmp);
+                });
+            });
+
+            function removeTreatment(id) {
+                var item = $("#item_treatment_" + id);
+                var form = $("#form_treatment_" + id);
+                item.remove();
+                form.remove();
+            }
+
+            function switchTreatment(id) {
+                var item = $("#item_treatment_" + id);
+                var form = $("#form_treatment_" + id);
+
+                $(".item_treatment").each(function () {
+                    if ($(this).hasClass("active")) {
+                        $(this).removeClass("active");
+                    }
+                });
+
+                $(".form_treatment").each(function () {
+                    $(this).css("display", "none");
+                });
+
+                item.addClass("active");
+                form.css("display", "");
+            }
+
+            $(function () {
+                switchTreatment(0);
+
+
+                $("#btn_addTreatment").on('click', function (e) {
+                    $("#addTreatmentModal").modal();
+                });
+
+                /**
+                 * Load customer picker partial view
+                 */
+                $.get($("#lnk_customerPicker").prop('href'), function (response) {
+                    $('#customerPickerContainer').html(response);
+
+                    //$("#customerPicker").modal();
+
+                    $(".customerPickerEntry").each(function (e) {
+                        $(this).on('click', function (event) {
+                            var id = $(this).find(".customerPickerId").html();
+                            id = id.trim();
+
+                            var fName = $(this).find(".customerPickerFName").html();
+                            var lName = $(this).find(".customerPickerLName").html();
+
+                            $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
+                            $("#slc_customerId").val(id);
+                            $("#customerPicker").modal('hide');
+
+                        });
+                    });
+
+                    $("#inp_fName").on("input", function (e) {
+                        filterList();
+                    });
+                    $("#inp_lName").on("input", function (e) {
+                        filterList();
+                    });
+
+                    function filterList() {
+                        var fNameFilter = $("#inp_fName").val().toUpperCase();
+                        var lNameFilter = $("#inp_lName").val().toUpperCase();
+                        var list = $("#customerSelectModalCustomerList");
+
+                        list.find(".customerPickerEntry").each(function (e) {
+                            var fOk = false;
+                            var lOk = false;
+                            if ($(this).find(".customerPickerFName").html().toUpperCase().indexOf(fNameFilter) > -1) {
+                                fOk = true;
+                            }
+                            if ($(this).find(".customerPickerLName").html().toUpperCase().indexOf(lNameFilter) > -1) {
+                                lOk = true;
+                            }
+
+                            if ((lNameFilter.length < 1 || lOk) && (fNameFilter.length < 1 || fOk)) {
+                                $(this).css("display", "");
+                            } else {
+                                $(this).css("display", "none");
+                            }
+
+                        });
+                    }
+
+                    $("#btn_setCustomer").on('click', function (e) {
+                        $("#customerPicker").modal();
+                    });
+                });
+
+
+                /****************************************** TREATMENT FORM ***************************************/
+
+                $(function () {
+                    $(".item_allTasks").each(function () {
+                        $(this).on('click', function (e) {
+                            var stepId = $(this).data("stepid");
+                            var treatmentId = $(this).data("treatmentid");
+                            if ($(this).hasClass('active')) {
+                                $(this).removeClass('active');
+                                $('#grp_step_' + treatmentId + "_" + stepId).addClass("hidden");
+                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', true);
+                            } else {
+                                $(this).addClass('active');
+                                $('#grp_step_' + treatmentId + "_" + stepId).removeClass("hidden");
+                                $('#inp_step_' + treatmentId + "_" + stepId).prop('disabled', false);
+                            }
+                        });
+                    });
+                });
+
+                
+            });
+           /* $(window).bind('beforeunload', function () {
+                return 'Are you sure you want to leave?';
+            });*/
+        </script>
+
+}
+
+<style>
+
+</style>
+
+
+
+
+
