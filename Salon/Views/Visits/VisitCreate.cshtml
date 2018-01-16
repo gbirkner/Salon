@@ -141,14 +141,14 @@
 
 
 
-<div class="modal fade" role="dialog" id="addTreatmentModal">
+<div class="modal fade" role="dialog" id="addTreatmentModal" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Behandlung ausw&auml;hlen</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 70vh; overflow-y: scroll">
                 <div class="list-group">
                     @foreach (var t in Model.availableTreatments) {
                         <a class="list-group-item addTreatmentEntry" href="javascript:void(0)">
@@ -196,8 +196,7 @@
              Treatment form, sets listeners for the step-picker list in the treatment partial view
             */
             function visitTreatmentListeners() {
-                $(".item_allTasks").each(function () {
-                    $(this).on('click', function (e) {
+                $("body").on('click', '.item_allTasks', function () {
                         var stepId = $(this).data("stepid");
                         var treatmentId = $(this).data("treatmentid");
                         var ran = $(this).data("ran");
@@ -211,8 +210,8 @@
                             $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', false);
                         }
                         calculateDuration();
-                    }); //onclick
-                }); //each
+                  
+                }); //click
             } //END visitTreatmentListener
 
             /**
@@ -396,7 +395,7 @@
                                     "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
                                 switchTreatment(entryId);
                                 calculateDuration();
-                                visitTreatmentListeners();
+                                //visitTreatmentListeners();
                             });
                             var tmp = entryId + 1;
                             con.data("nextid", tmp);
