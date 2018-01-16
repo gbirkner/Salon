@@ -10,14 +10,10 @@
 namespace Salon.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class AspNetUserLogins
+    public partial class GetRooms_Result
     {
-        public string LoginProvider { get; set; }
-        public string ProviderKey { get; set; }
-        public string UserId { get; set; }
-    
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        public int RoomId { get; set; }
+        public string Title { get; set; }
     }
 }
