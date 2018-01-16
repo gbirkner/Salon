@@ -31,7 +31,7 @@ namespace Salon.Controllers
         // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SettingID,AnonymizeUserByDays,AnonymizeCustomerByDays,DeleteUserByDays,DeleteCustomerByDays")] Settings settings)
+        public ActionResult Create([Bind(Include = "SettingID,AnonymizeUserByDays,AnonymizeCustomerByDays")] Settings settings)
         {
             if (ModelState.IsValid)
             {

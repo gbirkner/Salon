@@ -6,28 +6,22 @@ using System.Web;
 
 namespace Salon.Models
 {
-
+    [MetadataType(typeof(ConnectionTypes))]
     public class ConnectionTypesMetaData
     {
         [Key]
-        [Display(Name = "Kontakttyp")]
-        public int ConnectionTypeId { get; set; }
+        public int ConnectionTypeId;
 
-        [Display(Name = "Kontakttyp")]
-        public string Title { get; set; }
+        [Required]
+        [Display(Name = "Connectiontype", ShortName = "C-Type")]
+        [StringLength(255, MinimumLength = 2, ErrorMessage = "")]
+        public string Title;
 
-        [Display(Name = "Beschreibung")]
-        public string Description { get; set; }
-
-
-        public virtual ICollection<Connections> Connections { get; set; }
+        [StringLength(500, ErrorMessage = "Die Beschreibung darf max. 500 Zeichen lang sein.")]
+        public string Description;
     }
 
-    [MetadataType(typeof(ConnectionTypesMetaData))]
     public partial class ConnectionTypes
     {
-
     }
-
-
 }

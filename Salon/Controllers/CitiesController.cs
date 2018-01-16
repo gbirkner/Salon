@@ -22,7 +22,7 @@ namespace Salon.Controllers
         }
 
         // GET: Cities/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
             if (id == null)
             {
@@ -48,7 +48,7 @@ namespace Salon.Controllers
         // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CityId,CountryId,PostalCode,Title")] Cities cities)
+        public ActionResult Create([Bind(Include = "CountryId,PostalCode,Title")] Cities cities)
         {
             if (ModelState.IsValid)
             {
@@ -61,30 +61,8 @@ namespace Salon.Controllers
             return View(cities);
         }
 
-
-        public ActionResult CitiesOverview(string searchstring = null)
-        {
-            var city = db.Cities.Include(p => p.Countries);
-            IEnumerable<CitiesViewModel> CitiesVM = (
-                from c in city
-                where c.PostalCode.Contains(searchstring) || c.Title.Contains(searchstring) || c.Countries.Title.Contains(searchstring)
-                orderby c.Title
-                select new CitiesViewModel
-                {
-                    CityId = c.CityId,
-                    Title = c.Title,
-                    PostalCode = c.PostalCode,
-                    Country = c.Countries.Title
-                }
-                ).ToList();
-
-            return PartialView("_CitiesOverview", CitiesVM);
-        }
-
-
-
         // GET: Cities/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
             if (id == null)
             {
@@ -104,7 +82,7 @@ namespace Salon.Controllers
         // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CityId,CountryId,PostalCode,Title")] Cities cities)
+        public ActionResult Edit([Bind(Include = "CountryId,PostalCode,Title")] Cities cities)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +95,7 @@ namespace Salon.Controllers
         }
 
         // GET: Cities/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
             if (id == null)
             {
@@ -134,7 +112,7 @@ namespace Salon.Controllers
         // POST: Cities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
             Cities cities = db.Cities.Find(id);
             db.Cities.Remove(cities);
