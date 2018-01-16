@@ -1,6 +1,7 @@
 ﻿@model Salon.Models.VisitTreatment
 @{
     ViewBag.Title = "_TreatmentForm";
+    int ran = new Random().Next();
 }
 
 
@@ -13,23 +14,32 @@
     </button>
 </h2>
 
-
+allow sensitive: @Model.allowSensitive
 
 <div class="treatmentFormContainer">
     <input type="hidden" id="hidden_treatmentId" value="@Model.treatmentID"/>
-    @foreach(var tStep in Model.possibleTasks) {
-        string treatmentstepId = tStep.TreatmentId + "_" + tStep.StepId;
-        var task = Model.tasks.Find(x => x.StepId == tStep.StepId);       
+    @{ 
+        List<Salon.Models.TreatmentSteps> allSteps;
+        if (Model.allowSensitive) {
+            allSteps = Model.possibleTasks;
+        }else {
+            allSteps = Model.getTasksWithoutSensitive();
+        }
+    }
+       
+    @foreach (var tStep in allSteps) {
+        string treatmentstepId = tStep.TreatmentId + "_" + tStep.StepId + "_" + ran;
+        var task = Model.tasks.Find(x => x.StepId == tStep.StepId);
 
         if (task != null) {
             <div class="form-group grp_treatmentStep" id="grp_step_@treatmentstepId" data-duration="@tStep.Duration">
                 <label class="col-sm-3 control-label">@tStep.Steps.Title</label>
                 <div class="col-sm-7">
-                    @if(tStep.Steps.StepOptions != null && tStep.Steps.StepOptions.Count > 0) {
+                    @if (tStep.Steps.StepOptions != null && tStep.Steps.StepOptions.Count > 0) {
                         <select name="slc_step_@treatmentstepId" id="inp_step_@treatmentstepId" class="form-control" required>
                             <option disabled value selected> -- Option ausw&auml;hlen -- </option>
                             @foreach (var stepOption in tStep.Steps.StepOptions) {
-                                if (task.StepOptionId == stepOption.StepOptionId) {
+                            if (task.StepOptionId == stepOption.StepOptionId) {
                                     <option value="@stepOption.StepOptionId" selected>@stepOption.Option</option>
                                 } else {
                                     <option value="@stepOption.StepOptionId">@stepOption.Option</option>
@@ -39,7 +49,7 @@
                     } else {
                         <input type="text" name="inp_step_@treatmentstepId" id="inp_step_@treatmentstepId" class="form-control" value="@task.Description" required />
                     }
-                   
+
                 </div>
             </div>
         } else {
@@ -59,6 +69,8 @@
                 </div>
             </div>
         }
+
+        //foreach 
     }
     <!--@foreach (var tStep in Model.tasks) {
         string treatmentstepId = tStep.TreatmentId + "_" + tStep.StepId;
@@ -91,8 +103,9 @@
             <div class="modal-body">
                 <div class="list-group">
                     @{ bool selected = false; }
-                    @foreach (var ts in Model.possibleTasks) {
+                    @foreach (var ts in allSteps) {
                         foreach (var task in Model.tasks) {
+         
                             if (ts.StepId == task.StepId) {
                                 selected = true;
                                 break;
@@ -101,11 +114,11 @@
                             }
                         }
                         if (selected) {
-                            <a class="list-group-item active item_allTasks" data-stepId="@ts.StepId" data-treatmentId="@Model.treatmentID">
+                            <a class="list-group-item active item_allTasks" data-stepId="@ts.StepId" data-treatmentId="@Model.treatmentID" data-ran="@ran">
                                 @ts.Steps.Title
                             </a>
                         } else {
-                            <a class="list-group-item item_allTasks" data-stepId="@ts.StepId" data-treatmentId="@Model.treatmentID">
+                            <a class="list-group-item item_allTasks" data-stepId="@ts.StepId" data-treatmentId="@Model.treatmentID" data-ran="@ran">
                                 @ts.Steps.Title
                             </a>
                         }

@@ -26,16 +26,16 @@
                         <input type="text" id="inp_lName" class="form-control" />
                     </div>
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-primary">
+                        <!--<button type="button" class="btn btn-primary">
                             Erstellen
-                        </button>
+                        </button>--->
                     </div>
                 </div>
 
                 <div>
                     <hr />
                     <h4>Bestehenden Kunden ausw&auml;len:</h4>
-                    <div id="customerSelectModalCustomerList" class="list-group">
+                    <div id="customerSelectModalCustomerList" class="list-group" style="max-height: 60vh; overflow-y: scroll;">
                         @foreach(var c in Model) {
                             <a class="list-group-item customerPickerEntry">
                                 <font class="customerPickerId" style="display: none;">
