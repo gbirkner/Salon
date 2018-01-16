@@ -171,14 +171,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
-    <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
     <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserClaims.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogins.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUsers.cs">
@@ -204,6 +209,21 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetMyWork_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetRooms_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetStepsPerTreatment_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetWorkPerClass_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\insSteps_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelHelper\spExtensions.cs" />
     <Compile Include="Models\Rooms.cs">
