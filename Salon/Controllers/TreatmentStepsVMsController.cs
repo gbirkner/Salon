@@ -106,14 +106,38 @@ namespace Salon.Controllers
         // POST: Create / Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditTreatments(List<StepsVM> steps)
+        public ActionResult EditSteps(List<StepsVM> svm)
         {
-            foreach (StepsVM tr in steps)
+            List<Steps> steps = (from s in svm
+                                 select new Steps
+                                 {
+                                     StepId = s.StepsId,
+                                     Title = s.Title,
+                                     Description = s.Description,
+                                     isSensitive = s.isSensitive,
+                                     isActive = s.isActive
+                                 }).ToList();
+            List<TreatmentSteps> tsteps = (from st in svm
+                                 select new TreatmentSteps
+                                 {
+                                     TreatmentId = st.TreatmentId,
+                                     StepId = st.StepsId,
+                                     StepOrder = st.Order,
+                                     Duration = st.Duration
+                                 }).ToList();
+            foreach (Steps s in steps)
             {
-                if (tr.TreatmentId != 0)
-                    db.Entry(tr).State = EntityState.Modified;
+                if (s.StepId != 0)
+                    db.Entry(s).State = EntityState.Modified;
                 else
-                    db.Entry(tr).State = EntityState.Added;
+                    db.Entry(s).State = EntityState.Added;
+            }
+            foreach (TreatmentSteps st in tsteps)
+            {
+                if (st.StepId != 0)
+                    db.Entry(st).State = EntityState.Modified;
+                else
+                    db.Entry(st).State = EntityState.Added;
             }
             if (ModelState.IsValid)
             {
@@ -135,7 +159,7 @@ namespace Salon.Controllers
                     }
                 } while (SaveFailed == true);
             }
-            return RedirectToAction("CreatEditTreatments", steps);
+            return RedirectToAction("index");
         }        
 
         protected override void Dispose(bool disposing)

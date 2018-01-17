@@ -18,7 +18,7 @@
     </div>
 
     <div class="panel-group" id="accordion">
-        @using (Html.BeginForm("EditTreatments", "TreatmentStepsVMs", FormMethod.Post, new { }))
+        @using (Html.BeginForm("EditSteps", "TreatmentStepsVMs", FormMethod.Post, new { }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -57,6 +57,110 @@
                     </div>
                 </div>
                 }
+            <div class="special">
+                <input id="CreateStep" type="button" onclick="addRow();" value="Arbeitsschritt hinzufügen" class="btn btn-default" />
+                <input type="submit" value="Speichern" class="btn btn-default" name="EditStep" />
+            </div>
             }
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function addRow() {
+
+            @{
+                Model.Add(new Salon.Models.StepsVM());
+            }
+
+            var index = $("#accordion .panel").length;
+
+            var treatmentIndexCell = '@Html.HiddenFor(modelItem => modelItem[0].TreatmentId)';
+
+            var stepIndexCell = '@Html.HiddenFor(modelItem => modelItem[0].StepsId)';
+
+            var titleCell = '@Html.EditorFor(modelItem => modelItem[0].Title, new { htmlAttributes = new { @class = "form-control" } })';
+            var titleValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Title, "", new { @class = "text-danger" })';
+
+            var descriptionCell = '@Html.EditorFor(modelItem => modelItem[0].Description, new { htmlAttributes = new { @class = "form-control" } })';
+            var descriptionValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Description, "", new { @class = "text-danger" })';
+
+            var isActiveCell = '@Html.EditorFor(modelItem => modelItem[0].isActive, new { htmlAttributes = new { @class = "form-control" } })';
+            var isActiveValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].isActive, "", new { @class = "text-danger" })';
+
+            var isSensitiveCell = '@Html.EditorFor(modelItem => modelItem[0].isSensitive, new { htmlAttributes = new { @class = "form-control" } })';
+            var isSensitiveValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].isSensitive, "", new { @class = "text-danger" })';
+
+            var durationCell = '@Html.EditorFor(modelItem => modelItem[0].Duration, new { htmlAttributes = new { @class = "form-control" } })';
+            var durationValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Duration, "", new { @class = "text-danger" })';
+
+            var orderCell = '@Html.EditorFor(modelItem => modelItem[0].Order, new { htmlAttributes = new { @class = "form-control" } })';
+            var orderValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Order, "", new { @class = "text-danger" })';
+
+            var newRow =
+                '<div class="panel">' +
+                    '<div class="panel-heading panel-default">' +
+                        '<div class="inline-text">' +
+                            treatmentIndexCell +
+                            stepIndexCell +
+                            '<div class="form-group">' +
+                                titleCell +
+                                titleValidation +
+                            '</div>' +
+                            '<div class="form-group">' +
+                                descriptionCell +
+                                descriptionValidation +
+                            '</div>' +
+                            '<div class="form-group">' +
+                                isSensitiveCell +
+                                isSensitiveValidation +
+                            '</div>' +
+                            '<div class="form-group">' +
+                                isActiveCell +
+                                isActiveValidation +
+                            '</div>' +
+                            '<div class="form-group">' +
+                                durationCell +
+                                durationValidation +
+                            '</div>' +
+                            '<div class="form-group">' +
+                                orderCell +
+                                orderValidation +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+
+                $("#accordion .panel:last").after(newRow);
+                clearLastInput(index);
+                clearLastValidation(index);
+        }
+        function removeRow(id) {
+            var controlToBeRemoved = "#trBook" + id;
+            var Ingredient = "#IngredientID" + id;
+            var IngredientID = $(Ingredient).val();
+            var IngredientIDs = $('#hiddenIngredientIDs').val();
+            $("#hiddenIngredientIDs").val(IngredientIDs + "," + IngredientID);
+            $(controlToBeRemoved).remove();
+        }
+
+        function clearLastInput(index) {
+              var inputs = $("#accordion .panel:last input");
+              inputs.each(function () {
+                  $(this).val("");
+                  $(this).removeAttr("checked");
+                  $(this).attr("value", "");
+                  name = $(this).attr("name").replace("[0]", "[" + index + "]");
+                  $(this).attr("name", name);
+               });
+        }
+        function clearLastValidation(index) {
+            var spans = $("#accordion .panel:last span");
+            spans.each(function () {
+                name = $(this).attr("data-valmsg-for").replace("[0]", "[" + index + "]");
+                $(this).attr("data-valmsg-for", name)
+            });
+        }
+    </script>
+}
