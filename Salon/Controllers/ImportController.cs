@@ -46,7 +46,8 @@ namespace Salon.Controllers
         {
             var validImportTypes = new string[]
            {
-                "text/csv"
+                "text/csv",
+                "application/vnd.ms-excel"
            };
 
             if (model.CSVUpload == null || model.CSVUpload.ContentLength == 0)
