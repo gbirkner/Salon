@@ -197,23 +197,22 @@
              Treatment form, sets listeners for the step-picker list in the treatment partial view
             */
             function visitTreatmentListeners() {
-                $(".item_allTasks").each(function () {
-                    $(this).on('click', function (e) {
-                        var stepId = $(this).data("stepid");
-                        var treatmentId = $(this).data("treatmentid");
-                        var ran = $(this).data("ran");
-                        if ($(this).hasClass('active')) {
-                            $(this).removeClass('active');
-                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).addClass("hidden");
-                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', true);
-                        } else {
-                            $(this).addClass('active');
-                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).removeClass("hidden");
-                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', false);
-                        }
-                        calculateDuration();
-                    }); //onclick
-                }); //each
+
+                $("body").on('click', '.item_allTasks', function (e) {
+                    var stepId = $(this).data("stepid");
+                    var treatmentId = $(this).data("treatmentid");
+                    var ran = $(this).data("ran");
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active');
+                        $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).addClass("hidden");
+                        $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', true);
+                    } else {
+                        $(this).addClass('active');
+                        $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).removeClass("hidden");
+                        $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', false);
+                    }
+                    calculateDuration();
+                }); //onclick
             } //END visitTreatmentListener
 
             /**
@@ -397,7 +396,7 @@
                                     "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
                                 switchTreatment(entryId);
                                 calculateDuration();
-                                visitTreatmentListeners();
+                                //visitTreatmentListeners();
                             });
                             var tmp = entryId + 1;
                             con.data("nextid", tmp);
