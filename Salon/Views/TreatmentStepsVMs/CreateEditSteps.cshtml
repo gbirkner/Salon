@@ -14,6 +14,7 @@
         <p>@Html.DisplayNameFor(model => model[0].isActive)</p>
         <p>@Html.DisplayNameFor(model => model[0].Duration)</p>
         <p>@Html.DisplayNameFor(model => model[0].Order)</p>
+        <p></p>
 
     </div>
 
@@ -30,7 +31,7 @@
                             @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
                             @Html.HiddenFor(modelItem => modelItem[i].StepsId)
                             <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].Title, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group">
@@ -42,32 +43,60 @@
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].isSensitive, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(modelItem => modelItem[i].isActive, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].isActive, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Duration, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(modelItem => modelItem[i].Duration, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].Duration, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group">
-                                @Html.EditorFor(modelItem => modelItem[i].Order, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(modelItem => modelItem[i].Order, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].Order, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.ActionLink("Optionen bearbeiten", "CreatEditStepOptions", new { id = Model[i].StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
+                                @*<a href="javascript:void(0)" class="btn btn-danger" id="deleteOption">&times;</a>*@
                             </div>
                         </div>
                     </div>
                 </div>
-                }
+            }
             <div class="special">
                 <input id="CreateStep" type="button" onclick="addRow();" value="Arbeitsschritt hinzufügen" class="btn btn-default" />
                 <input type="submit" value="Speichern" class="btn btn-default" name="EditStep" />
+                @Html.ActionLink("Zurück", "Index", null, new { @class = "btn btn-default" })
             </div>
-            }
+        }
+    </div>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        $('.options-viewdetail').on('click', function (e) {
+            e.preventDefault();
+            $that = $(this);
+
+            $.get($that.prop('href'), function (response) {
+                $('.modal-dialog').html(response)
+            });
+        });
+
+        //delete option
+        $('body').on('click', '#deleteOption', function () {
+            $(this).closest('.panel').remove();
+        });
+
+        //delete step
+        $('body').on('click', '#deleteStep', function () {
+            $(this).closest('.panel').remove();
+        });
+
         function addRow() {
 
             @{
@@ -86,11 +115,13 @@
             var descriptionCell = '@Html.EditorFor(modelItem => modelItem[0].Description, new { htmlAttributes = new { @class = "form-control" } })';
             var descriptionValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Description, "", new { @class = "text-danger" })';
 
-            var isActiveCell = '@Html.EditorFor(modelItem => modelItem[0].isActive, new { htmlAttributes = new { @class = "form-control" } })';
-            var isActiveValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].isActive, "", new { @class = "text-danger" })';
+            var isActiveCell = '<input checked="checked" class="form-control check-box" data-val="true" data-val-required="Das Feld &quot;isActive&quot; ist erforderlich." name="[' + index + '].isActive" type="checkbox" value="true">';
+            var isActiveHidden = '<input name="[' + index + '].isActive" type="hidden" value="true">';
+            var isActiveValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="['+index+'].isActive" data-valmsg-replace="true"></span>';
 
-            var isSensitiveCell = '@Html.EditorFor(modelItem => modelItem[0].isSensitive, new { htmlAttributes = new { @class = "form-control" } })';
-            var isSensitiveValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].isSensitive, "", new { @class = "text-danger" })';
+            var isSensitiveCell = '<input class="form-control check-box" data-val="true" data-val-required="Das Feld &quot;isSensitive&quot; ist erforderlich." name="[' + index + '].isSensitive" type="checkbox" value="false">';
+            var isSensivtiveHidden = '<input name="['+index+'].isSensitive" type="hidden" value="false">'
+            var isSensitiveValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="['+index+'].isSensitive" data-valmsg-replace="true"></span>';
 
             var durationCell = '@Html.EditorFor(modelItem => modelItem[0].Duration, new { htmlAttributes = new { @class = "form-control" } })';
             var durationValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Duration, "", new { @class = "text-danger" })';
@@ -102,58 +133,115 @@
                 '<div class="panel">' +
                     '<div class="panel-heading panel-default">' +
                         '<div class="inline-text">' +
-                            treatmentIndexCell +
-                            stepIndexCell +
-                            '<div class="form-group">' +
+                            '<div class="ignore-cell input-field">' + treatmentIndexCell + '</div>' +
+                            '<div class="input-field">' + stepIndexCell +'</div>' +
+                            '<div class="form-group input-field">' +
                                 titleCell +
                                 titleValidation +
+                            '</div>' +
+                            '<div class="form-group input-field">' +
+                                descriptionCell +
+                                descriptionValidation +
+                            '</div>' +
+                            '<div class="form-group ignore-cell input-field">' +
+                                isSensitiveCell +
+                                isSensivtiveHidden +
+                                isSensitiveValidation +
+                            '</div>' +
+                            '<div class="form-group ignore-cell input-field">' +
+                                isActiveCell +
+                                isActiveHidden +
+                                isActiveValidation +
+                            '</div>' +
+                            '<div class="form-group input-field">' +
+                                durationCell +
+                                durationValidation +
+                            '</div>' +
+                            '<div class="form-group input-field">' +
+                                orderCell +
+                                orderValidation +
+                            '</div>' +
+                            '<div><a class="btn btn-default" href="#" style="visibility: hidden;">Optionen bearbeiten</a></div>'
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+
+            if ($("#accordion .panel").length) {
+                $("#accordion .panel:last").after(newRow);
+            } else {
+                $("#accordion input:first").after(newRow);
+            }
+            clearLastInput(index);
+            clearLastValidation(index);
+        }
+
+        function addOptionRow() {
+
+            var index = $("#accordion2 .panel").length;
+            var stepId = $("#StepId").data('id');
+
+            var stepOptionIdCell = '<input data-val="true" data-val-number="Das Feld &quot;StepOptionId&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;StepOptionId&quot; ist erforderlich." name="[' + index + '].StepOptionId" type="hidden" value="">';
+
+            var stepIdCell = '<input data-val="true" data-val-number="Das Feld &quot;StepId&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;StepOptionId&quot; ist erforderlich." name="[' + index + '].StepId" type="hidden" value="' + stepId + '">';
+
+            var positionCell = '<input class="form-control text-box single-line" data-val="true" data-val-number="Das Feld &quot;Position&quot; muss eine Zahl sein." data-val-required="Das Feld &quot;Position&quot; ist erforderlich." name="[' + index + '].Position" type="number" value="">';
+            var positionValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="[' + index + '].Position" data-valmsg-replace="true"></span>';
+
+            var descriptionCell = '<input class="form-control text-box single-line" name="['+index+'].Description" type="text" value="">';
+            var descriptionValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="['+index+'].Description" data-valmsg-replace="true"></span>';
+
+            var optionCell = '<input class="form-control text-box single-line" name="['+index+'].Option" type="text" value>';
+            var optionValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="[' + index + '].Option" data-valmsg-replace="true"></span>';
+
+            var isActiveCell = '<input checked="checked" class="form-control check-box" data-val="true" data-val-required="Das Feld &quot;isActive&quot; ist erforderlich." name="['+index+'].isActive" type="checkbox" value="true">';
+            var isActiveHidden = '<input name="[' + index + '].isActive" type="hidden" value="false">';
+            var isActiveValidation = '<span class="field-validation-valid text-danger" data-valmsg-for="['+index+'].isActive" data-valmsg-replace="true"></span>';
+
+            var newRow =
+                '<div class="panel">' +
+                    '<div class="panel-heading panel-default">' +
+                        '<div class="inline-text">' +
+                            stepOptionIdCell +
+                            stepIdCell +
+                            '<div class="form-group">' +
+                                positionCell +
+                                positionValidation +
+                            '</div>' +
+                            '<div class="form-group input-field">' +
+                                optionCell +
+                                optionValidation +
                             '</div>' +
                             '<div class="form-group">' +
                                 descriptionCell +
                                 descriptionValidation +
                             '</div>' +
-                            '<div class="form-group">' +
-                                isSensitiveCell +
-                                isSensitiveValidation +
-                            '</div>' +
-                            '<div class="form-group">' +
+                            '<div class="form-group input-field">' +
                                 isActiveCell +
+                                isActiveHidden +
                                 isActiveValidation +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                durationCell +
-                                durationValidation +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                orderCell +
-                                orderValidation +
                             '</div>' +
                         '</div>' +
                     '</div>' +
                 '</div>'
 
-                $("#accordion .panel:last").after(newRow);
-                clearLastInput(index);
-                clearLastValidation(index);
-        }
-        function removeRow(id) {
-            var controlToBeRemoved = "#trBook" + id;
-            var Ingredient = "#IngredientID" + id;
-            var IngredientID = $(Ingredient).val();
-            var IngredientIDs = $('#hiddenIngredientIDs').val();
-            $("#hiddenIngredientIDs").val(IngredientIDs + "," + IngredientID);
-            $(controlToBeRemoved).remove();
+            if ($("#accordion2 .panel").length) {
+                $("#accordion2 .panel:last").after(newRow);
+            } else {
+                $("#accordion2 input:first").after(newRow);
+            }
         }
 
         function clearLastInput(index) {
-              var inputs = $("#accordion .panel:last input");
-              inputs.each(function () {
-                  $(this).val("");
-                  $(this).removeAttr("checked");
-                  $(this).attr("value", "");
-                  name = $(this).attr("name").replace("[0]", "[" + index + "]");
-                  $(this).attr("name", name);
-               });
+            var inputs = $("#accordion .panel:last .input-field");
+            inputs.each(function () {
+                var input = $(this).find('input');
+                if (!$(this).hasClass('ignore-cell')) {
+                    input.attr("value", "");
+                    input.val("");
+                }
+                name = input.attr("name").replace("[0]", "[" + index + "]");
+                input.attr("name", name);
+            });
         }
         function clearLastValidation(index) {
             var spans = $("#accordion .panel:last span");

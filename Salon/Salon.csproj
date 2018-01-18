@@ -364,11 +364,10 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
-    <Content Include="Views\TreatmentStepsVMs\CreatEditTreatments.cshtml" />
-    <Content Include="Views\TreatmentStepsVMs\_CreatEditSteps.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\EditTreatment.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\CreateEditSteps.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\CreateTreatment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -51,6 +51,7 @@ textarea {
 #treatments .inline-text p {
     width: 25%;
     margin: 0;
+    text-align: center;
 }
 
 #treatments .inline-text.title p{
@@ -75,4 +76,15 @@ textarea {
 }
 #treatments .special .btn{
     margin-top: 10px;
+}
+#treatments .btn{
+    max-width: 100%;
+}
+#treatments .manyButtons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#treatments .manyButtons .btn {
+    margin-bottom: 5px;
 }
