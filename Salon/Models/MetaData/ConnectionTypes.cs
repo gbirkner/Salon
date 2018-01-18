@@ -10,13 +10,18 @@ namespace Salon.Models
     public class ConnectionTypesMetaData
     {
         [Key]
+        [Required]
         [Display(Name = "Kontakttyp")]
         public int ConnectionTypeId { get; set; }
 
+        [Required]
         [Display(Name = "Kontakttyp")]
+        [StringLength(255, MinimumLength = 1)]
         public string Title { get; set; }
 
+        [Required]
         [Display(Name = "Beschreibung")]
+        [StringLength(500)]
         public string Description { get; set; }
 
 

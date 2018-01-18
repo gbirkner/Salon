@@ -1,51 +1,180 @@
 ﻿@model IEnumerable<Salon.Models.ConnectionViewModel>
 
-<div id="CustomerConnection" style="height : 310px; overflow:auto;">
+<div id="CustomerConnection" >
     <h2>Kontaktdaten</h2>
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
+    <p>
+        <a href="#" onclick="AddCon(@ViewBag.CustomerId)">Create new</a>
+    </p>
+    <div style="height : 310px; overflow:auto;">
 
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Value)
+                </th>
 
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @* @Html.ActionLink("Edit", "EditCon", new { id = item.ConnectionId }, new { @class = "edit-btn" }) |*@
+                        @*@Html.ActionLink("Delete", "DeleteCon", new { id = item.ConnectionId }, new { @class = "delete-btn" })*@
+                        <a href="#" onclick="EditCon(@item.ConnectionId)">Edit</a> |
+                        <a href="#" onclick="DeleteCon(@item.ConnectionId)">Delete</a>
+
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "EditCon", new { id = item.ConnectionId }) |
-                    @Html.ActionLink("Delete", "DeleteCon", new { id = item.ConnectionId })
+                    @* @Html.ActionLink("Add Row", "CreateCon", null, new { @class = "create-btn" })*@
+                    @*//<a class="modal1">Add Row</a>*@
+                    @*<a href="#" onclick="AddCon(@ViewBag.CustomerId)">Add Kontakt</a>*@
                 </td>
             </tr>
-        }
 
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                @Html.ActionLink("Add Row", "addrow")
-            </td>
-        </tr>
-
-    </table>
+        </table>
+    </div>
 </div>
+
+
+<!-- The Create Modal -->
+<div id="mc" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn-create" style="float: right; cursor: pointer;">&times;</span>
+            <h2>Kontakt hinzufügen</h2>
+        </div>
+        <div id="mbc" class="modal-body-create">
+       
+        </div>
+    </div>
+</div>
+
+<!-- The Delete Modal -->
+<div id="md" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn-delete" style="float: right; cursor: pointer;">&times;</span>
+            <h2>Kontakt hinzufügen</h2>
+        </div>
+        <div id="mbd" class="modal-body-delete">
+
+        </div>
+    </div>
+</div>
+
+<!-- The Edit Modal -->
+<div id="me" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close-btn-edit" style="float: right; cursor: pointer;">&times;</span>
+            <h2>Kontakt hinzufügen</h2>
+        </div>
+        <div id="mbe" class="modal-body-edit">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+
+
+    $(".close-btn-create").click(function () {
+        $("#mc").hide();
+    });
+
+
+    $(".close-btn-edit").click(function () {
+        $("#me").hide();
+    });
+
+    $(".close-btn-delete").click(function () {
+        $("#md").hide();
+    });
+
+
+
+    //End
+
+    var AddCon = function (id) {
+
+        var url = "/Customers/_Create?id=" + id;            //?ConnectionId" + conid;
+
+        $("#mbc").load(url, function () {
+            $("#mc").show();
+        });
+
+    }
+
+    //var AddConSub = function (id) {
+   
+
+
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Customers/_Create", //in asp.net mvc using ActionResult
+    //        data:{CustomerId},
+    //        dataType: 'html',
+    //        success: function (result) {
+    //            //Your result is here
+    //            $("#yourContainerId").html(result);
+    //        }
+    //    });
+    //}
+
+    var EditCon = function (id) {
+
+        //alert(id);
+
+        var url = "/Customers/_Edit?id=" + id;
+        //alert(url);
+
+        $("#mbe").load(url, function () {
+            $("#me").show();
+        })
+
+    }
+
+    var DeleteCon = function (id) {
+
+        //alert(id);
+
+        var url = "/Customers/_Delete?id=" + id;
+        //alert(url);
+
+        $("#mbd").load(url, function () {
+            $("#md").show();
+        })
+
+    }
+</script>

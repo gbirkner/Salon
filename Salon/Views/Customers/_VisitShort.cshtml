@@ -3,10 +3,10 @@
 @{
     ViewBag.Title = "_VisitShort";
 }
-
 <div id="VisitShort">
     <h2>Visits</h2>
-    <table class="table" style="height : 310px; overflow:auto;">
+    <div style="height : 310px; overflow:auto;">
+    <table class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(x => x.created)
@@ -28,9 +28,10 @@
                     @item.customer.FName
                 </td>
                 <td>
-                    @item.stylist.UserName
+                    @item.stylist
                 </td>
             </tr>
         }
     </table>
+   </div>
 </div>

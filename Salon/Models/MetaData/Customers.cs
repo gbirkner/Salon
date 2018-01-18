@@ -82,6 +82,13 @@ namespace Salon.Models
     [MetadataType(typeof(CustomersMetaData))]
     public partial class Customers
     {
+        public string NameFull
+        {
+            get
+            {
+                return FName + " " + LName;
+            }
+        }
 
     }
 
