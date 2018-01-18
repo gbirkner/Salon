@@ -91,13 +91,13 @@
             <tr>
                 <td>@item.LName @item.FName</td>
                 <td>@Model.GetCity(item.CityId)</td>
-                <td><button onclick="treatmentClick(this);" id="@item.CustomerId-visit" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>
-                <!-- <td>@Model.LastTreatment(item.CustomerId)</td> -->
+                <td>@string.Join(", ", Model.GetLastVisit(Convert.ToInt32(item.CustomerId)))</td>                                
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
     </table>
 
+    <!-- acutall visible table -->
     <table class="table" id="searchtable">
         <tr>
             <th>Name</th>
@@ -110,9 +110,8 @@
         {
             <tr>
                 <td>@item.LName @item.FName</td>
-                <td>@Model.GetCity(item.CityId)</td>
-                <td><button onclick="treatmentClick(this);" id="@item.CustomerId-visit" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>
-                <!--<td>@Model.LastTreatment(item.CustomerId)</td>-->
+                <td>@Model.GetCity(item.CityId)</td>                
+                <td><button onclick="treatmentClick(this);" id="@item.CustomerId-visit" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>                
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }

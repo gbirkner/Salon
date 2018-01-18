@@ -127,7 +127,7 @@ namespace Salon.Controllers.Statistics
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
 
-                        string newLine = $"{item.FName} {item.LName};{item.city};{customerStats.LastTreatment(item.custID)};{contactData};";
+                        string newLine = $"{item.FName} {item.LName};{item.city};{string.Join(", ", customerStats.GetLastVisit(item.custID))};{contactData};";
                         returnValue.Add(newLine);
                     }
 
@@ -173,7 +173,7 @@ namespace Salon.Controllers.Statistics
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
 
-                        string newLine = $"{item.FName}{item.LName};{item.city};{customerStats.LastTreatment(item.custID)};{contactData};";
+                        string newLine = $"{item.FName} {item.LName};{item.city};{string.Join(", ", customerStats.GetLastVisit(item.custID))};{contactData};";
                         if (customerStats.LastTreatment(item.custID) == treatments)
                         {
                             returnValue.Add(newLine);
@@ -223,7 +223,7 @@ namespace Salon.Controllers.Statistics
                             contactData = "keine Kontaktinformationen vorhanden";
                         }
 
-                        string newLine = $"{item.FName}{item.LName};{item.city};{customerStats.LastTreatment(item.custID)};{contactData};";
+                        string newLine = $"{item.FName} {item.LName};{item.city};{string.Join(", ", customerStats.GetLastVisit(item.custID))};{contactData};";
                         returnValue.Add(newLine);
                     }
 
