@@ -77,10 +77,10 @@
     </ul>
 
     <h3>Bilder:</h3>
-    @foreach(var p in Model.images) {
-
-        <img src="data:image/jpg;base64,@Convert.ToBase64String(p)" />
+    @foreach (var p in Model.images) {
+            <img src="data:image/jpg;base64,@Convert.ToBase64String(p)" style="width: 32vh; height: 32vh" />
     }
+    
 
 </div>
 
