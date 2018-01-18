@@ -33,7 +33,8 @@ namespace Salon.Controllers
                                                                          visitId = v.VisitId,
                                                                          created = v.Created,
                                                                          customer = v.Customers,
-                                                                         stylist = v.AspNetUsers1
+                                                                         stylist = v.AspNetUsers1,
+                                                                         images = v.Pictures.ToList()
                                                                      }).Skip((int)skip * 50).Take(50).ToList();
             return View(shortVisitViewModels);
         }
@@ -135,12 +136,16 @@ namespace Salon.Controllers
             model.created = DateTime.Now;
             model.customer = customer;
             model.stylist = stylist;
-            model.availableTreatments = db.Treatments.ToList();
+            model.availableTreatments = sortTheGoddamnedListThxDaniel(db.Treatments.ToList());
             model.selectedTreatments = visitTreatments;
             model.teacher = new KeyValuePair<string, string>(teacher.Id, teacher.lastName);
             model.room = new KeyValuePair<int, string>(room.RoomId, room.Title);
             model.duration = duration;
             return View(model);
+        }
+
+        private List<Treatments> sortTheGoddamnedListThxDaniel(List<Treatments> fckingUnsorted) {
+            return fckingUnsorted.OrderBy(x => x.Title).ToList();
         }
 
         public ActionResult SaveVisit() {

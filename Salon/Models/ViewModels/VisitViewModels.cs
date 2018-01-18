@@ -14,6 +14,11 @@ namespace Salon.Models {
         public Customers customer { get; set; }
         [Display(Name = "Stylist")]
         public AspNetUsers stylist { get; set; }
+        public List<Pictures> images { get; set; }
+
+        public VisitShortViewModel() {
+            images = new List<Pictures>();
+        }
 
     }
 
