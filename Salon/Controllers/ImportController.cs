@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 using Salon.Helpers;
 using Salon.Models;
 using System;
@@ -16,12 +18,15 @@ namespace Salon.Controllers
     public class ImportController : Controller
     {
         List<string> usernamelist = new List<string>();
+        int succeeded = 0;
         private ApplicationDbContext db = new ApplicationDbContext();
 
         public ImportController()
         {
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var provider = new DpapiDataProtectionProvider("Salon");
+            UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("Import"));
         }
 
         public ImportController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -64,7 +69,7 @@ namespace Salon.Controllers
 
                 if (model.CSVUpload != null && model.CSVUpload.ContentLength > 0)
                 {
-                    StreamReader csvreader = new StreamReader(model.CSVUpload.InputStream);
+                    StreamReader csvreader = new StreamReader(model.CSVUpload.InputStream, System.Text.Encoding.UTF8);
                     List<UserCSV> users = new List<UserCSV>();
                     string headerLine = csvreader.ReadLine();
 
@@ -72,51 +77,66 @@ namespace Salon.Controllers
                     {
                         string line = csvreader.ReadLine();
                         string[] values = line.Split(';');
-                        string username = GenerateUsername(values[1], values[2]);
+                        string username = GenerateUsername(values[2], values[1]);
                         string password = Membership.GeneratePassword(8, 3);
-                        users.Add(new UserCSV(values[0], values[1], values[2], values[3], values[4], values[5], username, password));
+                        users.Add(new UserCSV(values[0], values[2], values[1], values[3], values[4], values[5], username, password));
+                    }
 
-                        foreach (UserCSV user in users)
+                    foreach (UserCSV user in users)
+                    {
+
+                        ApplicationUser oldUser = db.Users.Where(x => x.studentNumber == user.StudentNumber).FirstOrDefault();
+
+                        if (oldUser != null)
                         {
+                            oldUser.Class = user.Class;
+                            oldUser.entryDate = DateTime.Parse(user.EntryDate);
+                            oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                            oldUser.ChangedPassword = false;
 
-                            ApplicationUser oldUser = db.Users.Where(x => x.studentNumber == user.StudentNumber).First();
+                            string resetToken = await UserManager.GeneratePasswordResetTokenAsync(oldUser.Id);
+                            IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(oldUser.Id, resetToken, user.Password);
 
-                            if (oldUser != null)
+                            if (passwordChangeResult.Succeeded)
                             {
-                                oldUser.Class = user.Class;
-                                oldUser.entryDate = DateTime.Parse(user.EntryDate);
-                                oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
-                                oldUser.ChangedPassword = false;
+                                var userResult = UserManager.Update(oldUser);
 
-                                string resetToken = await UserManager.GeneratePasswordResetTokenAsync(oldUser.Id);
-                                IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(oldUser.Id, resetToken, user.Password);
-
-                                if (passwordChangeResult.Succeeded)
+                                if (userResult.Succeeded)
                                 {
-                                    UserManager.Update(oldUser);
+                                    succeeded += 1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var newUser = new ApplicationUser();
+                            newUser.firstName = user.FirstName;
+                            newUser.lastName = user.LastName;
+                            newUser.UserName = user.UserName;
+                            newUser.Class = user.Class;
+                            newUser.studentNumber = user.StudentNumber;
+                            newUser.ChangedPassword = false;
+                            newUser.entryDate = DateTime.Parse(user.EntryDate);
+                            newUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                            var userResult = UserManager.Create(newUser, user.Password);
+
+                            //Add User Role Applicant
+                            if (userResult.Succeeded)
+                            {
+                                var roleResult = UserManager.AddToRole(newUser.Id, "Schueler");
+                                if (roleResult.Succeeded)
+                                {
+                                    succeeded += 1;
                                 }
                             }
                             else
                             {
-                                var newUser = new ApplicationUser();
-                                newUser.firstName = user.FirstName;
-                                newUser.lastName = user.LastName;
-                                newUser.UserName = user.UserName;
-                                newUser.Class = user.Class;
-                                newUser.studentNumber = user.StudentNumber;
-                                newUser.ChangedPassword = false;
-                                newUser.entryDate = DateTime.Parse(user.EntryDate);
-                                newUser.resignationDate = DateTime.Parse(user.ResignationDate);
-                                var userResult = UserManager.Create(newUser, user.Password);
 
-                                //Add User Role Applicant
-                                if (userResult.Succeeded)
-                                {
-                                    var result = UserManager.AddToRole(newUser.Id, "Schüler");
-                                }
                             }
                         }
                     }
+
+                    return Redirect("/users");
 
                 }
             }
@@ -173,6 +193,7 @@ namespace Salon.Controllers
             Text = Text.Replace("ä", "ae");
             Text = Text.Replace("ü", "ue");
             Text = Text.Replace("ö", "oe");
+            Text = Text.Replace("ß", "ss");
             return Text;
         }
     }
