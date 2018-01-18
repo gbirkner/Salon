@@ -156,24 +156,25 @@ namespace Salon.Controllers
 
         // upload photo
         [HttpPost]
-        public ActionResult AddPhoto(HttpPostedFileBase Photo, [Bind(Include = "PictureId,Description")] Pictures pictures)
+        public void AddPhoto(HttpPostedFileBase Photo, [Bind(Include = "PictureId,Description,visitId")] Pictures pictures)
         {
             if (ModelState.IsValid)
             {
                 if (Photo != null)
                 {
+                    int visitId = Int32.Parse(Request["photoVisitId"]);
+
                     pictures.Photo = new byte[Photo.ContentLength];
                     Photo.InputStream.Read(pictures.Photo, 0, Photo.ContentLength);
                     pictures.isSketch = false;
-                    pictures.VisitId = db.Visits.ToList()[0].VisitId;
+                    pictures.VisitId = visitId;
                     db.Pictures.Add(pictures);
                     db.SaveChanges();
-                    return RedirectToAction("Index");
                 }
             }
 
             ViewBag.VisitId = new SelectList(db.Visits, "VisitId", "ModifiedBy", pictures.VisitId);
-            return View(pictures);
+            //return View(pictures);
         }
 
         // upload sketches
@@ -188,6 +189,8 @@ namespace Salon.Controllers
             string imageDescriptionBack = Request["descriptionBack"];
             string imageDescriptionSide = Request["descriptionSide"];
 
+            string visitId = Request["sketchVisitId"];
+
             Pictures pictures;
             
             if (!imageDataFront.Equals(""))
@@ -196,7 +199,7 @@ namespace Salon.Controllers
                 pictures.Photo = Convert.FromBase64String(imageDataFront);
                 pictures.Description = imageDescriptionFront;
                 pictures.isSketch = true;
-                pictures.VisitId = db.Visits.ToList()[0].VisitId;
+                pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }
@@ -207,7 +210,7 @@ namespace Salon.Controllers
                 pictures.Photo = Convert.FromBase64String(imageDataBack);
                 pictures.Description = imageDescriptionBack;
                 pictures.isSketch = true;
-                pictures.VisitId = db.Visits.ToList()[0].VisitId;
+                pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }
@@ -218,7 +221,7 @@ namespace Salon.Controllers
                 pictures.Photo = Convert.FromBase64String(imageDataSide);
                 pictures.Description = imageDescriptionSide;
                 pictures.isSketch = true;
-                pictures.VisitId = db.Visits.ToList()[0].VisitId;
+                pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }

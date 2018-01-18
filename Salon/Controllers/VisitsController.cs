@@ -489,5 +489,18 @@ namespace Salon.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [ChildActionOnly]
+        public ActionResult GraphicsView(int? id)
+        {
+            PicturesVM pics = new PicturesVM();
+            if (id.HasValue)
+            {
+                pics.visitId = id.Value;
+                pics.Pictures = db.Pictures.Where(x => x.VisitId == id).ToList();
+
+            }
+            return PartialView(pics);
+        }
     }
 }

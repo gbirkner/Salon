@@ -284,6 +284,7 @@
     <Compile Include="Models\TreatmentSteps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\PicturesVM.cs" />
     <Compile Include="Models\ViewModels\CustomerVisit.cs" />
     <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
     <Compile Include="Models\IdentityModels.cs" />

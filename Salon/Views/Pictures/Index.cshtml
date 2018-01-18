@@ -24,7 +24,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Visits.ModifiedBy)
+            @Html.DisplayNameFor(model => model.Visits.VisitId)
         </th>
         <th></th>
     </tr>
@@ -44,7 +44,7 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Visits.ModifiedBy)
+            @Html.DisplayFor(modelItem => item.Visits.VisitId)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PictureId }) |
@@ -56,8 +56,8 @@
 
 </table>
 
-@{ Html.RenderPartial("GraphicsView"); }
+@*@{ Html.RenderPartial("GraphicsView"); }
 
 @section scripts{
     @Scripts.Render("~/Scripts/graphicsbuttons.js")
-}
+}*@

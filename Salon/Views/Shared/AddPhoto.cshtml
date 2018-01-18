@@ -1,10 +1,16 @@
 ﻿@model Salon.Models.Pictures
 
-@using (Html.BeginForm("AddPhoto", "Pictures", FormMethod.Post, new { enctype = "multipart/form-data" })) {
+@using (Html.BeginForm("AddPhoto", "Pictures", FormMethod.Post, new { enctype = "multipart/form-data", id = "photoForm" }))
+{
+    <input name="Photo" id="pictureData" type="file" accept="image/*;capture=camera">
 
-    <input type="text" name="Description" />
+    <br />
 
-    <input name="Photo" type="file" accept="image/*;capture=camera">
+    <label for="#description">Beschreibung:</label>
 
-    <input type="submit" value="AddPhoto" />
+    <input type="text" id="description" class="form-control" name="Description" />
+
+    <input type="hidden" id="photoVisitId" name="photoVisitId" />
+
+    <input type="submit"  id="submitPhotoButton" class="btn btn-primary" value="Fertig" />
 }
