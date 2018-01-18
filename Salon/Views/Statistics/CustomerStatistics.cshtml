@@ -82,7 +82,7 @@
         <tr>
             <th>Name</th>
             <th>Ort</th>
-            <th>Letzte Behandlung</th>
+            <th>Letzte Behandlungen</th>
             <th>Kontakt</th>
         </tr>
 
@@ -91,7 +91,8 @@
             <tr>
                 <td>@item.LName @item.FName</td>
                 <td>@Model.GetCity(item.CityId)</td>
-                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td><button onclick="treatmentClick(this);" id="@item.CustomerId visit" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>
+                <!-- <td>@Model.LastTreatment(item.CustomerId)</td> -->
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
@@ -110,7 +111,8 @@
             <tr>
                 <td>@item.LName @item.FName</td>
                 <td>@Model.GetCity(item.CityId)</td>
-                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td><button onclick="treatmentClick(this);" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>
+                <!--<td>@Model.LastTreatment(item.CustomerId)</td>-->
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
@@ -153,6 +155,22 @@
             }
         });        
     };
+
+    function treatmentClick(custid) {
+        var custID = custid.id;
+        custID = custID.replace(" visit", "");
+        $.ajax({
+            type: 'get',
+            url: '/Statistics/CustomerStatistics?cust=' + custID + "&action=getVisit",
+            success: function (result) {
+                $(".modal-body").html(result);
+                $("#modalBox").show();
+            },
+            failure: function (error) {
+
+            }
+        });
+    }
     
     /* MODAL functions */
     /* close modal onclick */

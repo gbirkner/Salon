@@ -149,12 +149,14 @@
                 <h4 class="modal-title">Behandlung ausw&auml;hlen</h4>
             </div>
             <div class="modal-body" style="max-height: 70vh; overflow-y: scroll">
-                <div class="list-group">
+                <input type="text" id="thxDaniel" placeholder="Suche" class="form-control" style="width: 100%; margin-bottom: 5px; max-width: none;" />
+                <div class="list-group" id="availableTreatmentList">
                     @foreach (var t in Model.availableTreatments) {
                         <a class="list-group-item addTreatmentEntry" href="javascript:void(0)">
                             <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
                             <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
-                            @t.Title
+                            <label class="title">@t.Title</label>
+                            
                         </a>
                     }
                 </div>
@@ -304,6 +306,22 @@
                 }
             }
 
+            function dankeDafuerDaniel() {
+                var search = $("#thxDaniel").val().toUpperCase();
+
+                var list = $("#availableTreatmentList");
+                var txt;
+
+                list.find(".title").each(function () {
+                    if ($(this).html().toUpperCase().indexOf(search) > -1) {
+                        $(this).parent().css("display", "");
+                    } else {
+                        $(this).parent().css("display", "none");
+                    }
+                });
+            }
+
+
 
             /************************************************ END FUNCTION DECLARATINOS *******************************/
 
@@ -317,6 +335,10 @@
 
                 $("#btn_addTreatment").on('click', function (e) {
                     $("#addTreatmentModal").modal();
+                });
+
+                $("#thxDaniel").on('input', function (e) {
+                    dankeDafuerDaniel();
                 });
 
 
