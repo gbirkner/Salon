@@ -6,7 +6,7 @@
 
 <h2>Kunden</h2>
 
-
+@*<input type="text" id="cusid" value="">*@
 
 
 @*<div class="container">
@@ -20,7 +20,7 @@
 </div>
 @*</div>
         </div>
-    </div>*@
+</div>*@
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -57,7 +57,7 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach(var item in Model)
         {
             <tr>
                 <td>
@@ -110,55 +110,60 @@
 
 </div>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script>
-    $(document).ready(function () {
-
-        $("#Search").keyup(function () {
-                            var SearchText = $("#Search").val().toLowerCase();
-
-
-
-                        });
-                    });
-</script>
-
 
 @section scripts {
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
 
-
+</script>
     <script type="text/javascript">
         $(function ()
         {
             $('.customer-visitshort').on('click', function (e)
             {
+                localStorage.setItem('cusid', $(this).prop('href'));
+
                 $.get($(this).prop('href'), function (response)
                 {
                     $('#MasterDetail').html(response)
                 });
-                                e.preventDefault();
-                            });
-                        });
+                e.preventDefault();
+            });
+        });
 
         $(function ()
         {
             $('.customer-connection').on('click', function (e)
             {
+                alert("amz")
+
+                localStorage.setItem('cusid', $(this).prop('href'));
+
                 $.get($(this).prop('href'), function (response)
                 {
                     $('#MasterDetail').html(response)
                 });
-                                e.preventDefault();
-                            });
+                e.preventDefault();
+            });
         });
+
+        //$(document).ready(function ()
+        //{
+        //    $("#Search").keyup(function ()
+        //    {
+        //        var SearchText = $("#Search").val().toLowerCase();
+        //    });
+        //});
 
 
         $(function () {
-            $('.customer-overview').on('click', function (e) {
-                $.get($(this).prop('href'), function (response) {
-
+            $('.customer-overview').on('click', function (e)
+            {
+                $.get($(this).prop('href'), function (response)
+                {
                     $('#CustomerMaster').html(response)
+                    $('#MasterDetail').html("")
                 });
                 e.preventDefault();
             });
@@ -166,19 +171,28 @@
 
 
         $("#Search").keyup(function (e) {
-
+            //localStorage.clear();
+            //alert("Amk");
             var Searchtext = $("#Search").val().toLowerCase();
 
-            $(".customer-overview").attr("href", "/Customer/CustomerOverview?searchstring=" + Searchtext);
+            //MasterDetail.html("");
+
+            $(".customer-overview").attr("href", "/Customers/CustomerOverview?searchstring=" + Searchtext);
+            //$(".customer-overview").click();
+            //getElementsByClassName("customer-overview").click();
+            document.querySelector('.customer-overview').click();
         });
 
-        $("#Search").keyup(function (event) {
-            //if (event.keyCode === 13) {
-                $(".customer-overview").click();
-            //}
-        });
+        window.onload = function () {
+            if (localStorage.getItem('cusid') != null)
+            {
+                var link = localStorage.getItem('cusid');
+                link = link.substring(21);
 
-
+                $("a[href$='" + link + "']").click();
+                localStorage.clear();
+            }
+        };
     </script>
 }
 

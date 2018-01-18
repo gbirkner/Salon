@@ -91,11 +91,96 @@ namespace Salon.Controllers
                 {
                     Title = c.ConnectionTypes.Title,
                     Value = c.Title,
-                    Description = c.Description
+                    Description = c.Description,
+                    ConnectionId = c.ConnectionId
                 }
                 ).ToList();
 
+            ViewBag.CustomerId = id;
+
             return PartialView("_CustomerConnection", ConViewModels);
+        }
+
+        public ActionResult _Create(int? id)
+        {
+            ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title");
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", id);
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _Create([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Connections.Add(connections);
+                db.SaveChanges();
+                //return CustomerConnection(connections.CustomerId);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
+            return View(connections);
+        }
+
+        public ActionResult _Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Connections connections = db.Connections.Find(id);
+            if (connections == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
+            return View(connections);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult _Edit([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(connections).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
+            return View(connections);
+        }
+
+        public ActionResult _Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Connections connections = db.Connections.Find(id);
+            if (connections == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(connections);
+        }
+
+        // POST: Connections/Delete/5
+        [HttpPost, ActionName("_Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult _DeleteConfirmed(int id)
+        {
+            Connections connections = db.Connections.Find(id);
+            db.Connections.Remove(connections);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
 

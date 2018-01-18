@@ -19,6 +19,7 @@ namespace Salon.Controllers
         {
             var connections = db.Connections.Include(c => c.ConnectionTypes).Include(c => c.Customers);
             return View(connections.ToList());
+            
         }
 
         // GET: Connections/Details/5
@@ -40,9 +41,18 @@ namespace Salon.Controllers
         public ActionResult Create()
         {
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title");
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "FName");
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull");
+
             return View();
         }
+
+        //public ActionResult CreateCon()
+        //{
+        //    ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title");
+        //    ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull");
+
+        //    return View();
+        //}
 
         // POST: Connections/Create
         // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
@@ -59,9 +69,28 @@ namespace Salon.Controllers
             }
 
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "FName", connections.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
             return View(connections);
         }
+
+        //// POST: Connections/Create
+        //// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
+        //// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CreateCon([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Connections.Add(connections);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
+        //    ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
+        //    return View(connections);
+        //}
 
         // GET: Connections/Edit/5
         public ActionResult Edit(int? id)
@@ -76,7 +105,7 @@ namespace Salon.Controllers
                 return HttpNotFound();
             }
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "FName", connections.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
             return View(connections);
         }
 
@@ -94,7 +123,7 @@ namespace Salon.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "FName", connections.CustomerId);
+            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
             return View(connections);
         }
 
