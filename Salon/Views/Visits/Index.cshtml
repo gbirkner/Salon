@@ -141,7 +141,6 @@
         $('.visitRow').on('click', function (e) {
 
             $.get($(this).prop('href'), function (response) {
-                alert(response);
                 $('#VisitTableContainer').html(response)
             });
             e.preventDefault();
