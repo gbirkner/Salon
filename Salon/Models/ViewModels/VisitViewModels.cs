@@ -14,11 +14,6 @@ namespace Salon.Models {
         public Customers customer { get; set; }
         [Display(Name = "Stylist")]
         public AspNetUsers stylist { get; set; }
-        public List<Pictures> images { get; set; }
-
-        public VisitShortViewModel() {
-            images = new List<Pictures>();
-        }
 
     }
 
@@ -39,6 +34,11 @@ namespace Salon.Models {
         public DateTime modified { get; set; }
         [Display(Name = "Behandlungen")]
         public List<VisitTreatment> treatments { get; set; }
+        public List<byte[]> images { get; set; }
+
+        public VisitDetailViewModel() {
+            images = new List<byte[]>();
+        }
 
     }
 

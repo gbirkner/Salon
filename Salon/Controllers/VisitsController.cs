@@ -33,8 +33,7 @@ namespace Salon.Controllers
                                                                          visitId = v.VisitId,
                                                                          created = v.Created,
                                                                          customer = v.Customers,
-                                                                         stylist = v.AspNetUsers1,
-                                                                         images = v.Pictures.ToList()
+                                                                         stylist = v.AspNetUsers1
                                                                      }).Skip((int)skip * 50).Take(50).ToList();
             return View(shortVisitViewModels);
         }
@@ -63,6 +62,10 @@ namespace Salon.Controllers
             visitDetails.modified = visit.Modified;
             visitDetails.duration = visit.Duration;
             visitDetails.treatments = getVisitTreatments(visit);
+            
+            foreach(Pictures p in visit.Pictures) {
+                visitDetails.images.Add(p.Photo);
+            }
             
             return PartialView(visitDetails);
         }
