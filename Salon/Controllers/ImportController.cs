@@ -34,67 +34,93 @@ namespace Salon.Controllers
         public RoleManager<IdentityRole> RoleManager { get; private set; }
 
         // GET: Import
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Import()
         {
-            return View();
+            return View(new UserCSVViewModel());
         }
 
         [HttpPost]
-        public ActionResult ImportUser(HttpPostedFileBase file)
+        [ValidateAntiForgeryToken]
+        public async System.Threading.Tasks.Task<ActionResult> Import(UserCSVViewModel model)
         {
-            if (file.ContentLength > 0)
+            var validImportTypes = new string[]
+           {
+                "text/csv"
+           };
+
+            if (model.CSVUpload == null || model.CSVUpload.ContentLength == 0)
             {
-                StreamReader csvreader = new StreamReader(file.InputStream);
-                List<UserCSV> users = new List<UserCSV>();
-                string headerLine = csvreader.ReadLine();
+                ModelState.AddModelError("CSVUpload", "This field is required");
+            }
+            else if (!validImportTypes.Contains(model.CSVUpload.ContentType))
+            {
+                ModelState.AddModelError("CSVUpload", "Please choose a CSV file.");
+    }
 
-                while (!csvreader.EndOfStream)
+            if (ModelState.IsValid)
+            {
+
+                if (model.CSVUpload != null && model.CSVUpload.ContentLength > 0)
                 {
-                    string line = csvreader.ReadLine();
-                    string [] values = line.Split(';');
-                    string username = GenerateUsername(values[1], values[2]);
-                    string password = Membership.GeneratePassword(8,3);
-                    users.Add(new UserCSV(values[0], values[1], values[2], values[3], values[4], values[5], username, password));
+                    StreamReader csvreader = new StreamReader(model.CSVUpload.InputStream);
+                    List<UserCSV> users = new List<UserCSV>();
+                    string headerLine = csvreader.ReadLine();
 
-                    foreach (UserCSV user in users)
+                    while (!csvreader.EndOfStream)
                     {
+                        string line = csvreader.ReadLine();
+                        string[] values = line.Split(';');
+                        string username = GenerateUsername(values[1], values[2]);
+                        string password = Membership.GeneratePassword(8, 3);
+                        users.Add(new UserCSV(values[0], values[1], values[2], values[3], values[4], values[5], username, password));
 
-                        ApplicationUser oldUser = db.Users.Where(x => x.studentNumber == user.StudentNumber).First();
-
-                        if (oldUser != null)
+                        foreach (UserCSV user in users)
                         {
-                            oldUser.Class = user.Class;
-                            oldUser.entryDate = DateTime.Parse(user.EntryDate);
-                            oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
-                            //oldUser.ChangedPassword = false;
-                            UserManager.Update(oldUser);
-                            //UserManager.AddPassword(oldUser.Id, user.Password);
-                        }
-                        else
-                        {
-                            var newUser = new ApplicationUser();
-                            newUser.firstName = user.FirstName;
-                            newUser.lastName = user.LastName;
-                            newUser.UserName = user.UserName;
-                            newUser.Class = user.Class;
-                            newUser.studentNumber = user.StudentNumber;
-                            newUser.ChangedPassword = false;
-                            newUser.entryDate = DateTime.Parse(user.EntryDate);
-                            newUser.resignationDate = DateTime.Parse(user.ResignationDate);
-                            var userResult = UserManager.Create(newUser, user.Password);
 
-                            //Add User Role Applicant
-                            if (userResult.Succeeded)
+                            ApplicationUser oldUser = db.Users.Where(x => x.studentNumber == user.StudentNumber).First();
+
+                            if (oldUser != null)
                             {
-                                var result = UserManager.AddToRole(newUser.Id, "Schüler");
+                                oldUser.Class = user.Class;
+                                oldUser.entryDate = DateTime.Parse(user.EntryDate);
+                                oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                                oldUser.ChangedPassword = false;
+
+                                string resetToken = await UserManager.GeneratePasswordResetTokenAsync(oldUser.Id);
+                                IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(oldUser.Id, resetToken, user.Password);
+
+                                if (passwordChangeResult.Succeeded)
+                                {
+                                    UserManager.Update(oldUser);
+                                }
+                            }
+                            else
+                            {
+                                var newUser = new ApplicationUser();
+                                newUser.firstName = user.FirstName;
+                                newUser.lastName = user.LastName;
+                                newUser.UserName = user.UserName;
+                                newUser.Class = user.Class;
+                                newUser.studentNumber = user.StudentNumber;
+                                newUser.ChangedPassword = false;
+                                newUser.entryDate = DateTime.Parse(user.EntryDate);
+                                newUser.resignationDate = DateTime.Parse(user.ResignationDate);
+                                var userResult = UserManager.Create(newUser, user.Password);
+
+                                //Add User Role Applicant
+                                if (userResult.Succeeded)
+                                {
+                                    var result = UserManager.AddToRole(newUser.Id, "Schüler");
+                                }
                             }
                         }
                     }
-                }
 
+                }
             }
 
-            return View();
+            return View(model);
 
         }
         [NonAction]

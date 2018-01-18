@@ -68,6 +68,9 @@ namespace Salon.Controllers
             {
                 var user = new ApplicationUser();
                 user.UserName = userViewModel.UserName;
+                user.firstName = userViewModel.firstName;
+                user.lastName = userViewModel.lastName;
+                user.ChangedPassword = false;
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User Admin to Role Admin

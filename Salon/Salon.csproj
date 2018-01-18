@@ -256,6 +256,7 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Models\ViewModels\UserCSVViewModel.cs" />
     <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -378,10 +379,10 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Import\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Import\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
