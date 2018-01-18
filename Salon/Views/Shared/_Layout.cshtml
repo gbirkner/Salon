@@ -42,10 +42,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Besuche", "Index", "Visits", new { @class="dark-header-link" })</li>
+                    <li>@Html.ActionLink("Besuche", "Index", "Visits", null, new { @class="dark-header-link" })</li>
                     <li>@Html.ActionLink("Kundendaten", "ACTION", "CONTROLLER", new { @class = "dark-header-link" })</li>
                     @if (User.IsInRole("Lehrer") || User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("Statistiken", "ACTION", "CONTROLLER", new { @class = "dark-header-link" })</li>
+                        <li>@Html.ActionLink("Statistiken", "Index", "StatisticTypes", null, new { @class = "dark-header-link" })</li>
                     }
                     @if (User.IsInRole("Admin")) {
                         <li class="dropdown">
