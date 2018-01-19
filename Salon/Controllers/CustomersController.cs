@@ -15,6 +15,27 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
+        public ActionResult Delete (int id)
+        {
+            db.DeleteCustomerByID(id);
+
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult Anonymize(int id)
+        {
+
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
         // GET: Customers
         public ActionResult Index()
         {
@@ -168,7 +189,7 @@ namespace Salon.Controllers
             {
                 return HttpNotFound();
             }
-
+            
             return View(connections);
         }
 
@@ -276,31 +297,31 @@ namespace Salon.Controllers
             return View(customers);
         }
 
-        // GET: Customers/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Customers customers = db.Customers.Find(id);
-            if (customers == null)
-            {
-                return HttpNotFound();
-            }
-            return View(customers);
-        }
+        //// GET: Customers/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Customers customers = db.Customers.Find(id);
+        //    if (customers == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(customers);
+        //}
 
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Customers customers = db.Customers.Find(id);
-            db.Customers.Remove(customers);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //// POST: Customers/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Customers customers = db.Customers.Find(id);
+        //    db.Customers.Remove(customers);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

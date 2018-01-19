@@ -27,6 +27,20 @@ namespace Salon.Models
         [StringLength(255, MinimumLength = 1)]
         public string Value { get; set; }
 
+        [Display(Name = "Vorname")]
+        [StringLength(255)]
+        public string FName { get; set; }
+
+        [Required]
+        [Display(Name = "Nachname")]
+        [StringLength(255, MinimumLength = 1)]
+        public string LName { get; set; }
+
+        [Required]
+        [Display(Name = "Kontakttyp")]
+        [StringLength(255, MinimumLength = 1)]
+        public string TypTitle { get; set; }
+
 
         public virtual ConnectionTypes ConnectionTypes { get; set; }
 

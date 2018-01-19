@@ -109,6 +109,30 @@ namespace Salon.Controllers
             return View(connections);
         }
 
+
+        public ActionResult ConnectionsOverview(string searchstring = null)
+        {
+            var cons = db.Connections.Include(p => p.Customers).Include(p => p.ConnectionTypes);
+            IEnumerable<ConnectionViewModel> ConVM = (
+                from c in cons
+                where c.Customers.FName.Contains(searchstring) || c.Customers.LName.Contains(searchstring) || c.Title.Contains(searchstring) || c.ConnectionTypes.Title.Contains(searchstring) || c.Description.Contains(searchstring)
+                orderby c.Title
+                select new ConnectionViewModel
+                {
+                    ConnectionId = c.ConnectionId,
+                    Title = c.Title,
+                    TypTitle = c.ConnectionTypes.Title,
+                    FName = c.Customers.FName,
+                    LName = c.Customers.LName,
+                    Description = c.Description
+                }
+                ).ToList();
+
+            return PartialView("_ConnectionsOverview", ConVM);
+        }
+
+
+
         // POST: Connections/Edit/5
         // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
         // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.

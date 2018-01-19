@@ -6,13 +6,20 @@
 
 <!DOCTYPE html>
 
+<h2>Kontaktdaten</h2>
+
+<input type="text" id="Search" placeholder="Search..">
+<div style="visibility: hidden">
+    @Html.ActionLink("Search", "ConnectionsOverview", new { searchstring = "" }, new { @class = "connections-overview" })
+</div>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
 </head>
 <body>
-    <h2>Kontaktdaten</h2>
+
 
     <p>
         @Html.ActionLink("Create New", "Create")
@@ -72,3 +79,36 @@
         </div>
 </body>
 </html>
+
+@section scripts {
+
+
+
+    <script type="text/javascript">
+
+            $("#Search").keyup(function (e) {
+
+                var Searchtext = $("#Search").val().toLowerCase();
+
+                $(".connections-overview").attr("href", "/Connections/ConnectionsOverview?searchstring=" + Searchtext);
+            });
+
+            $("#Search").keyup(function (event) {
+                //if (event.keyCode === 13) {
+                $(".connections-overview").click();
+                //}
+            });
+
+            $(function () {
+                $('.connections-overview').on('click', function (e) {
+                    $.get($(this).prop('href'), function (response) {
+
+                        $('#ConnectionsMaster').html(response)
+                    });
+                    e.preventDefault();
+                });
+            });
+
+
+    </script>
+}

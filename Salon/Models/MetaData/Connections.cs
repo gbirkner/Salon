@@ -14,6 +14,8 @@ namespace Salon.Models
         [Display(Name = "Kontakt")]
         public int ConnectionId;
 
+       
+
         [Display(Name = "Kontakttyp")]
         [Required]
         public int ConnectionTypeId;

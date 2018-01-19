@@ -62,8 +62,7 @@ namespace Salon.Models
         public int GenderID { get; set; }
 
         [Display(Name = "Stadt")]
-        public Nullable<int> CityId { get; set; }
-
+        public int? CityId { get; set; }
 
 
         public virtual AspNetUsers AspNetUsers { get; set; }

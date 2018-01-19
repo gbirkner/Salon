@@ -179,11 +179,21 @@
     <Compile Include="Controllers\VisitsController.cs" />
     <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AspNetUserClaims.cs" />
-    <Compile Include="Models\AspNetUserLogins.cs" />
+    <Compile Include="Models\AspNetUserClaims.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AspNetUserLogins.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AspNetUsers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -196,68 +206,50 @@
     <Compile Include="Models\ConnectionTypes.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Models\Countries.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
+    <Compile Include="Models\Genders.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetMyWork_Result.cs" />
-    <Compile Include="Models\GetRooms_Result.cs" />
-    <Compile Include="Models\GetStepsPerTreatment_Result.cs" />
-    <Compile Include="Models\GetWorkPerClass_Result.cs" />
-    <Compile Include="Models\insSteps_Result.cs" />
+    <Compile Include="Models\GetMyWork_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetRooms_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetStepsPerTreatment_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetWorkPerClass_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\insSteps_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MetaData\Cities.cs" />
     <Compile Include="Models\MetaData\ConnectionTypes.cs" />
     <Compile Include="Models\MetaData\Countries.cs" />
     <Compile Include="Models\MetaData\Customers.cs" />
     <Compile Include="Models\MetaData\Genders.cs" />
     <Compile Include="Models\ModelHelper\spExtensions.cs" />
-    <Compile Include="Models\Rooms.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Settings.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ViewModels\*.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Genders.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MetaData\Settings.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MetaData\Connections.cs" />
-    <Compile Include="Models\MetaData\VisitTasks.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SalonModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    <Compile Include="Models\Rooms.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SalonModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SalonModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SalonModel.edmx</DependentUpon>
+    <Compile Include="Models\Settings.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Startup.cs" />
     <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -270,12 +262,39 @@
     <Compile Include="Models\TreatmentSteps.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ViewModels\CitiesVM.cs" />
+    <Compile Include="Models\ViewModels\ConnectionsVM.cs" />
+    <Compile Include="Models\ViewModels\CountriesVM.cs" />
+    <Compile Include="Models\ViewModels\CustomerVM.cs" />
+    <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
+    <Compile Include="Models\ViewModels\VisitViewModels.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\MetaData\Settings.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MetaData\Connections.cs" />
+    <Compile Include="Models\MetaData\VisitTasks.cs" />
     <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VisitTasks.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\SalonModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SalonModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SalonModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Antlr3.Runtime.dll" />
@@ -475,6 +494,8 @@
     <Content Include="Views\Customers\_Create.cshtml" />
     <Content Include="Views\Customers\_Edit.cshtml" />
     <Content Include="Views\Customers\_Delete.cshtml" />
+    <Content Include="Views\Countries\_CountriesOverview.cshtml" />
+    <Content Include="Views\Connections\_ConnectionsOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
