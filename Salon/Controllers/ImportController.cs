@@ -153,11 +153,11 @@ namespace Salon.Controllers
             string username = null;
             int index = 0;
 
-           string FName = replaceGermanUmlauts(FirstName);
-           string LName = replaceGermanUmlauts(LastName);
+           string FName = FirstName.ToLower();
+           string LName = LastName.ToLower();
 
-            FName = FName.ToLower();
-            LName = LName.ToLower();
+            FName = replaceGermanUmlauts(FName);
+            LName = replaceGermanUmlauts(LName);
 
             if (LName.Length > 8){
                LName = LName.Substring(0, 8);
@@ -194,6 +194,7 @@ namespace Salon.Controllers
             Text = Text.Replace("ü", "ue");
             Text = Text.Replace("ö", "oe");
             Text = Text.Replace("ß", "ss");
+            Text = Text.Replace(" ", "");
             return Text;
         }
     }
