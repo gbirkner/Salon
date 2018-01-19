@@ -55,8 +55,8 @@
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].Order, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group">
-                                @Html.ActionLink("Optionen bearbeiten", "CreatEditStepOptions", new { id = Model[i].StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
-                                @*<a href="javascript:void(0)" class="btn btn-danger" id="deleteOption">&times;</a>*@
+                                @Html.ActionLink("Optionen", "CreatEditStepOptions", new { id = Model[i].StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
+                                <a href="javascript:void(0)" class="btn btn-danger" id="deleteStep">&times;</a>
                             </div>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                                 orderCell +
                                 orderValidation +
                             '</div>' +
-                            '<div><a class="btn btn-default" href="#" style="visibility: hidden;">Optionen bearbeiten</a></div>'
+                            '<div class="form-group"><a href="javascript:void(0)" class="btn btn-danger" id="deleteStep">&times;</a></div>'
                         '</div>' +
                     '</div>' +
                 '</div>'
@@ -220,6 +220,7 @@
                                 isActiveHidden +
                                 isActiveValidation +
                             '</div>' +
+                            '<div class="form-group"><a href="javascript:void(0)" class="btn btn-danger" id="deleteOption">&times;</a></div>' +
                         '</div>' +
                     '</div>' +
                 '</div>'

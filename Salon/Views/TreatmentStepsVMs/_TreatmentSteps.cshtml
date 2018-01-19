@@ -27,7 +27,7 @@
                         <p>@Html.DisplayFor(modelItem => item.isSensitive)</p>
                         <p>@Html.DisplayFor(modelItem => item.Duration)</p>
                         <p>@Html.DisplayFor(modelItem => item.Order)</p>
-                        <p>@Html.ActionLink("View Options", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + item.StepsId, data_parent = "#accordion2" })</p>
+                        <p>@Html.ActionLink("Optionen anzeigen", "TreatmentStepOptions", new { id = item.StepsId }, new { @class = "options-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-step-" + item.StepsId, data_parent = "#accordion2" })</p>
                     </div>
                 </div>
                 <div id="collapse-step-@Html.DisplayFor(modelItem => item.StepsId)" class="panel-collapse collapse">
