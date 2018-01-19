@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerClassViewModel>
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<body style="overflow: -moz-hidden-unscrollable">
+    <div id="ajaxContent" style="overflow: auto"> 
+        @if (Model.FirstOrDefault() != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr style="font-size: 16px; cursor: pointer">
+                        <th>
+                            @Html.DisplayNameFor(model => model.StudentName) 
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Class)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TeacherName) 
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Room)
+                        </th>                        
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date) 
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Treatment) 
+                        </th>
+                        <th>
+                            Schritt
+                        </th>
+                        <th>
+                            Schrittbeschreibung
+                        </th>
+                    </tr>
+                </thead>
+                <tbody style="overflow: auto; height: 50%">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Class)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeacherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Room)
+                            </td>
+                            <td>
+                                @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Treatment)
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        if (item.StepsPerTreatment.Count > 0)
+                        {
+                            foreach (var step in item.StepsPerTreatment)
+                            {
+                            <tr>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none"></td>
+                                <td style="border: none">
+                                    @Html.DisplayFor(x => step.StepTitle)
+                                </td>
+                                <td style="border: none">
+                                    @Html.DisplayFor(x => step.StepDescription)
+                                </td>
+                            </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>Kein Datensatz vorhanden!</h3>
+        }
+    </div>
+</body>
+</html>

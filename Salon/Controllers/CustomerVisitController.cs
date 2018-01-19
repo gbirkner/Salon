@@ -25,8 +25,8 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderID = c.GenderID,
-                    PostalCode = c.PostalCode,
+                    Sex = c.GenderID,
+                    //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
                     Street = c.Street,
@@ -38,7 +38,7 @@ namespace Salon.Controllers
         }
 
 
-        public ActionResult CustomerOverview(string searchstring = null)
+       /* public ActionResult CustomerOverview(string searchstring = null)
         {
             var i = db.AnonymizeCustomerByDays();
 
@@ -53,7 +53,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    GenderID = c.GenderID,
+                    Sex = c.GenderID,
                     PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
@@ -63,7 +63,7 @@ namespace Salon.Controllers
                 ).ToList();
 
             return PartialView("_CustomerOverview",CustomerViewModels);
-        }
+        }*/
 
         public ActionResult Edit(int? id)
         {
