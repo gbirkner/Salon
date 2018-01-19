@@ -22,3 +22,69 @@ select,
 textarea {
     max-width: 280px;
 }
+
+#treatments .panel {
+    border: 1px solid #aaa;
+}
+
+#treatments .panel-heading{
+    background-color: #eee;
+    padding: 10px 20px;
+}
+
+#treatments .inline-text{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#treatments .inline-text.title{
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    background-color: #eee;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid #aaa;
+}
+
+#treatments .inline-text p {
+    width: 25%;
+    margin: 0;
+    text-align: center;
+}
+
+#treatments .inline-text.title p{
+    font-weight: bold;
+}
+
+#treatments .form-group{
+    width: 25%;
+}
+
+#treatments .form-group input[type="radio"], #treatments .form-group input[type="checkbox"]{
+    margin: 0;
+    box-shadow: none;
+}
+
+#treatments.edit .inline-text.title p{
+    text-align: center;
+}
+
+#treatments.edit .form-group{
+    margin: 0 10px;
+}
+#treatments .special .btn{
+    margin-top: 10px;
+}
+#treatments .btn{
+    max-width: 100%;
+}
+#treatments .manyButtons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#treatments .manyButtons .btn {
+    margin-bottom: 5px;
+}

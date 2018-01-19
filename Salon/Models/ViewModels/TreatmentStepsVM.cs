@@ -6,14 +6,6 @@ using System.Web;
 
 namespace Salon.Models
 {
-    public class TreatmentsVM
-    {
-        [Key]
-        public int TreatmentId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public bool isActive { get; set; }
-    }
     public class StepsVM
     {
         [Key]
@@ -22,8 +14,8 @@ namespace Salon.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public bool isSensitive { get; set; }
-        public string Duration { get; set; }
-        public string Order { get; set; }
-
+        public bool isActive{ get; set; }
+        public int Duration { get; set; }
+        public int Order { get; set; }
     }
 }

@@ -17,7 +17,8 @@ namespace Salon.Models {
 
     }
 
-    public class VisitDetailViewModel {
+    public class VisitDetailViewModel
+    {
         [Key]
         public int visitId { get; set; }
         [Display(Name = "Datum")]
