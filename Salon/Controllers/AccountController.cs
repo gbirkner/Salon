@@ -97,14 +97,15 @@ namespace Salon.Controllers
 
 
             var user = db.AspNetUsers.Where(a => a.UserName.Equals(model.UserName)).FirstOrDefault();
-
-            if (user.entryDate != null && user.resignationDate != null)
-
+            if (user != null)
             {
-                if (user.entryDate > DateTime.Now && user.resignationDate < DateTime.Now)
+                if (user.entryDate != null && user.resignationDate != null)
                 {
-                    ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzulogen.");
-                    return View(model);
+                    if (user.entryDate > DateTime.Now && user.resignationDate < DateTime.Now)
+                    {
+                        ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzuloggen.");
+                        return View(model);
+                    }
                 }
             }
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
@@ -130,7 +131,18 @@ namespace Salon.Controllers
                 case SignInStatus.Success:
                     Session["Room"] = model.Room;
                     Session["Teacher"] = model.Teacher;
-                    return RedirectToLocal(returnUrl);
+                    if (user.ChangedPassword == null || user.ChangedPassword == false)
+                    {
+                        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+                        return Redirect(callbackUrl);
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -303,7 +315,7 @@ namespace Salon.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.Username);
             if (user == null)
             {
                 // Nicht anzeigen, dass der Benutzer nicht vorhanden ist.
@@ -312,7 +324,15 @@ namespace Salon.Controllers
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                var resulty = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
+                if(resulty.HasFlag(SignInStatus.Success))
+                {
+                    //Benutzer hat das Passwort geändert
+                    user.ChangedPassword = true;
+                    UserManager.Update(user);
+
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
             }
             AddErrors(result);
             return View();
