@@ -25,7 +25,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    Sex = c.GenderID,
+                    GenderID = c.GenderID,
                     //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,

@@ -158,7 +158,7 @@
           <Property Name="StepOptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StepId" Type="int" Nullable="false" />
           <Property Name="Position" Type="int" Nullable="false" />
-          <Property Name="Option" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Option" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -734,11 +734,6 @@
           <NavigationProperty Name="Visits1" Relationship="Self.fk_VisitsCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="Visits2" Relationship="Self.fk_VisitsTeacherID" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-          <Property Name="firstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="lastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Class" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="entryDate" Type="DateTime" Precision="3" />
-          <Property Name="resignationDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -850,7 +845,7 @@
           <Property Name="StepOptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StepId" Type="Int32" Nullable="false" />
           <Property Name="Position" Type="Int32" Nullable="false" />
-          <Property Name="Option" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Option" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Steps" Relationship="Self.FK_dbo_StepOptions_dbo_Steps_StepId" FromRole="StepOptions" ToRole="Steps" />
@@ -1205,7 +1200,7 @@
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="SalonEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
@@ -1388,7 +1383,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SalonModelStoreContainer" CdmEntityContainer="SalonEntities">
+        <EntityContainerMapping StorageEntityContainer="SalonModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="SalonModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
@@ -1419,11 +1414,6 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="SalonModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="resignationDate" ColumnName="resignationDate" />
-                <ScalarProperty Name="entryDate" ColumnName="entryDate" />
-                <ScalarProperty Name="Class" ColumnName="Class" />
-                <ScalarProperty Name="lastName" ColumnName="lastName" />
-                <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
@@ -1702,7 +1692,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
