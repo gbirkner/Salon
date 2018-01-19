@@ -22,7 +22,7 @@
                             <p>@Html.DisplayFor(modelItem => item.Description)</p>
                             <p>@Html.DisplayFor(modelItem => item.isActive)</p>
                             <p class="manyButtons">
-                                @Html.ActionLink("Behandlung bearbeiten", "EditTreatment", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Behandlung bearbeiten", "EditTreatment", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "treatment-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
                                 @Html.ActionLink("Arbeitsschritte anzeigen", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId, data_parent = "#accordion" })
                                 @Html.ActionLink("Arbeitsschritte bearbeiten", "CreateEditSteps", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "btn btn-default" })
                                 @*<a href="javascript:void(0)" class="btn btn-danger" id="deleteTreatment">&times;</a>*@
@@ -38,14 +38,26 @@
 
     </div>
     <div class="special">
-        @Html.ActionLink("Erstellen", "CreateTreatment", "TreatmentStepsVms", null, new { @class = "btn btn-default" })
+        @Html.ActionLink("Behandlung erstellen", "CreateTreatment", "TreatmentStepsVms", null, new { @class = "treatmentAdd-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
+    </div>
+    <div id="myModal" class="modal fade special-edit" role="dialog">
+        <div class="modal-dialog">
+        </div>
     </div>
 </div>
-
 @section scripts
 {
     <script>
         $(function () {
+            $('.treatmentAdd-viewdetail, .treatment-viewdetail').on('click', function (e) {
+                e.preventDefault();
+                $that = $(this);
+
+                $.get($that.prop('href'), function (response) {
+                    $('.modal-dialog').html(response)
+                });
+            });
+
             $('.steps-viewdetail').on('click', function (e) {
                 $that = $(this);
                 

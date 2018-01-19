@@ -47,7 +47,7 @@ namespace Salon.Controllers
         // GET: Treatment/Create
         public ActionResult CreateTreatment()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Treatment/Create
@@ -77,7 +77,7 @@ namespace Salon.Controllers
             {
                 return HttpNotFound();
             }
-            return View(treatments);
+            return PartialView(treatments);
         }
 
         // POST: EditTreatment/Edit/5

@@ -62,6 +62,10 @@ textarea {
     width: 25%;
 }
 
+#treatments .special-edit .form-group{
+    width: 100%;
+}
+
 #treatments .form-group input[type="radio"], #treatments .form-group input[type="checkbox"]{
     margin: 0;
     box-shadow: none;
