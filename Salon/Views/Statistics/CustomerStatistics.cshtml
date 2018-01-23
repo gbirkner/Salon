@@ -82,7 +82,7 @@
         <tr>
             <th>Name</th>
             <th>Ort</th>
-            <th>Letzte Behandlung</th>
+            <th>Letzte Behandlungen</th>
             <th>Kontakt</th>
         </tr>
 
@@ -91,12 +91,13 @@
             <tr>
                 <td>@item.LName @item.FName</td>
                 <td>@Model.GetCity(item.CityId)</td>
-                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td>@string.Join(", ", Model.GetLastVisit(Convert.ToInt32(item.CustomerId)))</td>                                
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
     </table>
 
+    <!-- acutall visible table -->
     <table class="table" id="searchtable">
         <tr>
             <th>Name</th>
@@ -109,8 +110,8 @@
         {
             <tr>
                 <td>@item.LName @item.FName</td>
-                <td>@Model.GetCity(item.CityId)</td>
-                <td>@Model.LastTreatment(item.CustomerId)</td>
+                <td>@Model.GetCity(item.CityId)</td>                
+                <td><button onclick="treatmentClick(this);" id="@item.CustomerId-visit" class="btn btn-primary" style="border: 1px solid #ccc">Letzter Besuch</button></td>                
                 <td><button onclick="contactClick(this);" id="@item.CustomerId" class="btn contact-btn btn-primary" style="border: 1px solid #ccc">Kontakt-Informationen</button></td>
             </tr>
         }
@@ -145,6 +146,8 @@
             type: 'get',
             url: '/Statistics/CustomerStatistics?cust=' + custID,
             success: function (result) {                
+                var head = '<span class="close-btn" onclick="closeModal();">&times;</span><h2> Kontakt - Informationen</h2>'
+                $(".modal-header").html(head);
                 $(".modal-body").html(result);
                 $("#modalBox").show();
             },
@@ -153,12 +156,30 @@
             }
         });        
     };
+
+    function treatmentClick(custid) {
+        var custID = custid.id;
+        custID = custID.replace("-visit", "");
+        $.ajax({
+            type: 'get',
+            url: '/Statistics/CustomerStatistics?cust=' + custID + "&result=getVisit",
+            success: function (result) {
+                var head = '<span class="close-btn" onclick="closeModal();">&times;</span><h2> Letzte Behandlung</h2>'
+                $(".modal-header").html(head);
+                $(".modal-body").html(result);
+                $("#modalBox").show();
+            },
+            failure: function (error) {
+
+            }
+        });
+    }
     
     /* MODAL functions */
     /* close modal onclick */
-    $(".close-btn").click(function () {
+    function closeModal() {
         $("#modalBox").hide();
-    });
+    }    
 
     window.onclick = function (event) {
         if (event.target == modal) {

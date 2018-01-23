@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
 using System.Data.Entity;
+using System.Net;
 
 namespace Salon.Controllers
 {
@@ -24,7 +25,7 @@ namespace Salon.Controllers
                     CustomerId = c.CustomerId,
                     FName = c.FName,
                     LName = c.LName,
-                    Sex = c.GenderID,
+                    GenderID = c.GenderID,
                     //PostalCode = c.PostalCode,
                     CityName = c.Cities.Title,
                     Country = c.Cities.Countries.Title,
@@ -39,6 +40,9 @@ namespace Salon.Controllers
 
        /* public ActionResult CustomerOverview(string searchstring = null)
         {
+            var i = db.AnonymizeCustomerByDays();
+
+
             var cust = db.Customers.Include(p => p.Cities);
             IEnumerable<CustomerViewModel> CustomerViewModels = (
                 from c in cust
@@ -60,6 +64,20 @@ namespace Salon.Controllers
 
             return PartialView("_CustomerOverview",CustomerViewModels);
         }*/
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Models.Customers Customers = db.Customers.Find(id);
+            if (Customers == null)
+            {
+                return HttpNotFound();
+            }
+            return View(Customers);
+        }
 
 
 

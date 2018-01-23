@@ -176,18 +176,39 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\PicturesController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Helpers\UserCSV.cs" />
+    <Compile Include="Migrations\201711300903518_InitialCreate.cs" />
+    <Compile Include="Migrations\201711300903518_InitialCreate.Designer.cs">
+      <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711300955402_AddUserProperties.cs" />
+    <Compile Include="Migrations\201711300955402_AddUserProperties.Designer.cs">
+      <DependentUpon>201711300955402_AddUserProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801161001181_AddNewsUserProperties.cs" />
+    <Compile Include="Migrations\201801161001181_AddNewsUserProperties.Designer.cs">
+      <DependentUpon>201801161001181_AddNewsUserProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801161107581_LeerMigration.cs" />
+    <Compile Include="Migrations\201801161107581_LeerMigration.Designer.cs">
+      <DependentUpon>201801161107581_LeerMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Controllers\VisitsController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\TreatmentStepsVMsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Controllers\Reports\ReportsController.cs" />
     <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
@@ -215,6 +236,9 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Customers.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C_MigBackup.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Genders.cs">
@@ -262,16 +286,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SalonModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Setting.cs" />
     <Compile Include="Models\Settings.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Statistics\BarChart.cs" />
-    <Compile Include="Models\Statistics\ChartData.cs" />
-    <Compile Include="Models\Statistics\CustomerStatistics.cs" />
-    <Compile Include="Models\Statistics\LineChart.cs" />
-    <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
-    <Compile Include="Models\Statistics\StatisticTypes.cs" />
     <Compile Include="Models\StepOptions.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -285,13 +302,17 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\PicturesVM.cs" />
+    <Compile Include="Models\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Models\ViewModels\UserCSVViewModel.cs" />
     <Compile Include="Models\ViewModels\CustomerVisit.cs" />
     <Compile Include="Models\ViewModels\TreatmentStepsVM.cs" />
+    <Compile Include="Models\ViewModels\VisitViewModels.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\MetaData\Settings.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MetaData\Connections.cs" />
     <Compile Include="Models\MetaData\VisitTasks.cs" />
-    <Compile Include="Models\ViewModels\VisitViewModels.cs" />
     <Compile Include="Models\Visits.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -299,6 +320,13 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\Setting.cs" />
+    <Compile Include="Models\Statistics\BarChart.cs" />
+    <Compile Include="Models\Statistics\ChartData.cs" />
+    <Compile Include="Models\Statistics\CustomerStatistics.cs" />
+    <Compile Include="Models\Statistics\LineChart.cs" />
+    <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
+    <Compile Include="Models\Statistics\StatisticTypes.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
     <Compile Include="Views\ViewModels\WorkPerClass.cs" />
@@ -348,7 +376,9 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\default_logo.svg" />
     <Content Include="Views\Visits\VisitStyle.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -406,6 +436,17 @@
     <Content Include="Views\Cities\Details.cshtml" />
     <Content Include="Views\Cities\Edit.cshtml" />
     <Content Include="Views\Cities\Index.cshtml" />
+    <Content Include="Views\Roles\Create.cshtml" />
+    <Content Include="Views\Roles\Delete.cshtml" />
+    <Content Include="Views\Roles\Details.cshtml" />
+    <Content Include="Views\Roles\Edit.cshtml" />
+    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Import\Import.cshtml" />
     <Content Include="Views\CustomerVisit\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
     <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
@@ -416,6 +457,9 @@
     <Content Include="Views\Visits\Index.cshtml" />
     <Content Include="Views\Visits\VisitDetails.cshtml" />
     <Content Include="Views\Visits\VisitCreate.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\Index.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentStepOptions.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_TreatmentSteps.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
     <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
@@ -424,6 +468,12 @@
     <Content Include="Views\Settings\Details.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
+    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\EditTreatment.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\CreateEditSteps.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\CreateTreatment.cshtml" />
     <Content Include="Views\Visits\_CustomerPicker.cshtml" />
     <Content Include="Views\Visits\_TreatmentForm.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
@@ -435,6 +485,7 @@
     <Content Include="Views\Statistics\WorkPerClass.cshtml" />
     <Content Include="Views\Statistics\WorkPerClassResponse.cshtml" />
     <Content Include="Views\Statistics\MyWork.cshtml" />
+    <Content Include="Views\Statistics\CustomerVisits.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -454,6 +505,20 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711300903518_InitialCreate.resx">
+      <DependentUpon>201711300903518_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711300955402_AddUserProperties.resx">
+      <DependentUpon>201711300955402_AddUserProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161001181_AddNewsUserProperties.resx">
+      <DependentUpon>201801161001181_AddNewsUserProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161107581_LeerMigration.resx">
+      <DependentUpon>201801161107581_LeerMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -468,7 +533,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>6241</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -63,6 +63,10 @@ namespace Salon.Controllers
             visitDetails.duration = visit.Duration;
             visitDetails.treatments = getVisitTreatments(visit);
             
+            foreach(Pictures p in visit.Pictures) {
+                visitDetails.images.Add(p.Photo);
+            }
+            
             return PartialView(visitDetails);
         }
 
@@ -135,12 +139,16 @@ namespace Salon.Controllers
             model.created = DateTime.Now;
             model.customer = customer;
             model.stylist = stylist;
-            model.availableTreatments = db.Treatments.ToList();
+            model.availableTreatments = sortTheGoddamnedListThxDaniel(db.Treatments.ToList());
             model.selectedTreatments = visitTreatments;
             model.teacher = new KeyValuePair<string, string>(teacher.Id, teacher.lastName);
             model.room = new KeyValuePair<int, string>(room.RoomId, room.Title);
             model.duration = duration;
             return View(model);
+        }
+
+        private List<Treatments> sortTheGoddamnedListThxDaniel(List<Treatments> fckingUnsorted) {
+            return fckingUnsorted.OrderBy(x => x.Title).ToList();
         }
 
         public ActionResult SaveVisit() {

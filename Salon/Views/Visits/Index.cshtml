@@ -55,7 +55,7 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <input type="text" id="inp_filterDate" class="form-control" on />
+                <input type="text" id="inp_filterDate" class="form-control"  />
             </div>
             <div class="col-sm-3">
                 <input type="text" id="inp_filterCustomer" class="form-control" />
@@ -89,7 +89,12 @@
                         @item.created
                     </td>
                     <td>
-                        @item.customer.FName @item.customer.LName
+                        @if (item.customer != null && item.customer.FName != null && item.customer.LName != null) {
+                            @item.customer.FName @item.customer.LName
+                        }else {
+                            <font>n/A</font>
+                        }
+
                     </td>
                     <td>
                         @if (item.stylist != null) {
@@ -179,6 +184,7 @@
     $("#inp_filterStylist").keyup(function (event) {
         filter();
     });
+
 
 
     /**

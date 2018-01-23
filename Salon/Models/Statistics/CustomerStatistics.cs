@@ -91,6 +91,41 @@ namespace Salon.Models.Statistics
             }
         }
 
+        // gets the treatments of the last visit of a customer
+        public List<string> GetLastVisit(int customerID)
+        {            
+            var lastVisitIds = from v in Visits
+                         where customerID == v.CustomerId
+                         orderby v.Created descending
+                         select v.VisitId;
+
+            int visitId = lastVisitIds.FirstOrDefault();
+
+            var lastTreatments = from vt in VisitTasks
+                                 join t in Treatments on vt.TreatmentId equals t.TreatmentId                                 
+                                 where vt.VisitId == visitId
+                                 select new { treatmentName = t.Title };
+
+            if (lastTreatments != null)
+            {
+                List<string> lt = new List<string>();
+                foreach (var item in lastTreatments)
+                {
+                    if (!lt.Contains(item.treatmentName))
+                    {
+                        lt.Add(item.treatmentName);
+                    }                    
+                }
+
+                return lt;
+            }
+            else
+            {
+                // if customer has no treatments
+                return null;
+            }
+        }
+
         public CustomerStatistics(SalonEntities conn)
         {
             dbref = conn;

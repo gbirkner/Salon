@@ -141,20 +141,22 @@
 
 
 
-<div class="modal fade" role="dialog" id="addTreatmentModal">
+<div class="modal fade" role="dialog" id="addTreatmentModal" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Behandlung ausw&auml;hlen</h4>
             </div>
-            <div class="modal-body">
-                <div class="list-group">
+            <div class="modal-body" style="max-height: 70vh; overflow-y: scroll">
+                <input type="text" id="thxDaniel" placeholder="Suche" class="form-control" style="width: 100%; margin-bottom: 5px; max-width: none;" />
+                <div class="list-group" id="availableTreatmentList">
                     @foreach (var t in Model.availableTreatments) {
                         <a class="list-group-item addTreatmentEntry" href="javascript:void(0)">
                             <input type="hidden" class="inp_addTreatmentId" value="@t.TreatmentId"/>
                             <input type="hidden" class="inp_addTreatmentName" value="@t.Title" />
-                            @t.Title
+                            <label class="title">@t.Title</label>
+                            
                         </a>
                     }
                 </div>
@@ -192,7 +194,6 @@
 <div class="row">
     <h3 class="col-sm-12">Bilder:</h3>
 </div>
-
 <div class="row">
     <div class="col-sm-12" id="picturePartial">
         @{
@@ -200,8 +201,31 @@
         }
     </div>
 </div>
-
-@section scripts{
+@section scripts{  
+        <script>
+            /****************************************** FUNCTION DECLARATIONS ********************************/
+            /**
+             Treatment form, sets listeners for the step-picker list in the treatment partial view
+            */
+            function visitTreatmentListeners() {
+                $("body").on('click', '.item_allTasks', function () {
+                        var stepId = $(this).data("stepid");
+                        var treatmentId = $(this).data("treatmentid");
+                        var ran = $(this).data("ran");
+                        if ($(this).hasClass('active')) {
+                            $(this).removeClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).addClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', true);
+                        } else {
+                            $(this).addClass('active');
+                            $('#grp_step_' + treatmentId + "_" + stepId + "_" + ran).removeClass("hidden");
+                            $('#inp_step_' + treatmentId + "_" + stepId + "_" + ran).prop('disabled', false);
+                        }
+                        calculateDuration();
+                  
+                }); //click
+            } //END visitTreatmentListener
+        </script>
 
     @Scripts.Render("~/Scripts/graphicsbuttons.js")
 
@@ -321,6 +345,22 @@
         }
 
         /************************************************ END FUNCTION DECLARATINOS *******************************/
+            function dankeDafuerDaniel() {
+                var search = $("#thxDaniel").val().toUpperCase();
+
+                var list = $("#availableTreatmentList");
+                var txt;
+
+                list.find(".title").each(function () {
+                    if ($(this).html().toUpperCase().indexOf(search) > -1) {
+                        $(this).parent().css("display", "");
+                    } else {
+                        $(this).parent().css("display", "none");
+                    }
+                });
+            }
+
+
 
         $(function () {
 
@@ -351,27 +391,40 @@
             });
             */
 
-            /**
-                * Load customer picker partial view
-                */
-            $.get($("#lnk_customerPicker").prop('href'), function (response) {
-                $('#customerPickerContainer').html(response);
-                $(".customerPickerEntry").each(function (e) {
-                    /**
-                        * switch customer function
-                        */
-                    $(this).on('click', function (event) {
-                        var id = $(this).find(".customerPickerId").html();
-                        id = id.trim();
-                        var oldId = $("#slc_customerId").val();
+                $("#thxDaniel").on('input', function (e) {
+                    dankeDafuerDaniel();
+                });
 
-                        if (oldId.length > 0) {
-                            var modal = $("#changeCustomerAlert");
-                            var con = $("#changeCustomerMessage");
-                            var msg = getSwitchCustomerMessage(oldId, id);
-                            if (msg == "ok") {
-                                changeCustomer(id, fName, lName, true);
-                                return;
+
+                /**
+                 * Load customer picker partial view
+                 */
+                $.get($("#lnk_customerPicker").prop('href'), function (response) {
+                    $('#customerPickerContainer').html(response);
+                    $(".customerPickerEntry").each(function (e) {
+                        /**
+                         * switch customer function
+                         */
+                        $(this).on('click', function (event) {
+                            var id = $(this).find(".customerPickerId").html();
+                            id = id.trim();
+                            var oldId = $("#slc_customerId").val();
+
+                            if (oldId.length > 0) {
+                                var modal = $("#changeCustomerAlert");
+                                var con = $("#changeCustomerMessage");
+                                var msg = getSwitchCustomerMessage(oldId, id);
+                                if (msg == "ok") {
+                                    changeCustomer(id, fName, lName, true);
+                                    return;
+                                }
+                                //alert(msg);
+                                con.html(msg);
+                                modal.modal();
+                            } else {
+                                var fName = $(this).find(".customerPickerFName").html();
+                                var lName = $(this).find(".customerPickerLName").html();
+                                changeCustomer(id, fName, lName, false);
                             }
                             //alert(msg);
                             con.html(msg);
@@ -422,11 +475,17 @@
                         $.ajax({
                             url: '@Url.Action("_TreatmentForm", "Visits")/' + id + "?sensitive=" + data
                         }).done(function (data) {
-                            $("#addTreatmentsContainer").append(
-                                "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
-                            switchTreatment(entryId);
-                            calculateDuration();
-                            visitTreatmentListeners();
+                            $.ajax({
+                                url: '@Url.Action("_TreatmentForm", "Visits")/' + id + "?sensitive=" + data
+                            }).done(function (data) {
+                                $("#addTreatmentsContainer").append(
+                                    "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
+                                switchTreatment(entryId);
+                                calculateDuration();
+                                //visitTreatmentListeners();
+                            });
+                            var tmp = entryId + 1;
+                            con.data("nextid", tmp);
                         });
                         var tmp = entryId + 1;
                         con.data("nextid", tmp);

@@ -17,7 +17,8 @@ namespace Salon.Models {
 
     }
 
-    public class VisitDetailViewModel {
+    public class VisitDetailViewModel
+    {
         [Key]
         public int visitId { get; set; }
         [Display(Name = "Datum")]
@@ -34,6 +35,11 @@ namespace Salon.Models {
         public DateTime modified { get; set; }
         [Display(Name = "Behandlungen")]
         public List<VisitTreatment> treatments { get; set; }
+        public List<byte[]> images { get; set; }
+
+        public VisitDetailViewModel() {
+            images = new List<byte[]>();
+        }
 
     }
 
