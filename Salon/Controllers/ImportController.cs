@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -62,7 +63,7 @@ namespace Salon.Controllers
             else if (!validImportTypes.Contains(model.CSVUpload.ContentType))
             {
                 ModelState.AddModelError("CSVUpload", "Please choose a CSV file.");
-    }
+            }
 
             if (ModelState.IsValid)
             {
@@ -135,7 +136,7 @@ namespace Salon.Controllers
                             }
                         }
                     }
-
+                    Export(users);
                     return Redirect("/users");
 
                 }
@@ -200,9 +201,31 @@ namespace Salon.Controllers
             return Text;
         }
 
-        private void Export(List<UserCSV> exportUserList, string fileName)
+        private void Export(List<UserCSV> exportUserList)
         {
 
+            string userExportCsv = GetCsvString(exportUserList);
+
+            // Return the file content with response body. 
+            Response.ContentType = "text/csv";
+            Response.AddHeader("Content-Disposition", "attachment;filename=Schuelerliste.csv");
+            Response.Write(userExportCsv);
+            Response.End();
+        }
+
+        private string GetCsvString(List<UserCSV> userExportCsvList)
+        {
+            StringBuilder csv = new StringBuilder();
+
+            csv.AppendLine("Klasse;Familienname;Vorname;Benutzername;Passwort");
+
+            foreach (UserCSV user in userExportCsvList)
+            {
+                csv.Append(user.Persist);
+                csv.AppendLine();
+            }
+
+            return csv.ToString();
         }
     }
 }
