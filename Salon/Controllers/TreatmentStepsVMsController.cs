@@ -44,6 +44,11 @@ namespace Salon.Controllers
             return PartialView("_TreatmentStepOptions", db.StepOptions.Where( sid => sid.StepId == id).ToList());
         }
 
+        public ActionResult Steps()
+        {
+            return PartialView("_Steps", db.Steps.ToList());
+        }
+
         // GET: Treatment/Create
         public ActionResult CreateTreatment()
         {

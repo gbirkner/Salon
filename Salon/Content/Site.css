@@ -92,3 +92,18 @@ textarea {
 #treatments .manyButtons .btn {
     margin-bottom: 5px;
 }
+#treatments .addStepContainer{
+    position: relative;
+}
+#treatments .addStepContainer form-group{
+    padding-right: 32px;
+}
+#treatments .add_step{
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+}

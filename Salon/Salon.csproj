@@ -486,6 +486,7 @@
     <Content Include="Views\Statistics\WorkPerClassResponse.cshtml" />
     <Content Include="Views\Statistics\MyWork.cshtml" />
     <Content Include="Views\Statistics\CustomerVisits.cshtml" />
+    <Content Include="Views\TreatmentStepsVMs\_Steps.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
