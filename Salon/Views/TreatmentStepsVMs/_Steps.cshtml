@@ -8,10 +8,11 @@
         <div class="modal-body">
             @foreach (var s in Model)
             {
-                <a class="list-group-item addStepEntry" href="javascript:void(0)">
-                    <input type="hidden" class="inp_addStepId" value="@s.StepId" />
-                    <input type="hidden" class="inp_addStepName" value="@s.Title" />
-                    <label class="title">@s.Title</label>
+                <a class="list-group-item" id="addStepEntry" href="javascript:void(0)" 
+                   data-description="@s.Description"
+                   data-title="@s.Title"
+                   data-step="@s.StepId">
+                    @s.Title
                 </a>
             }
         </div>
