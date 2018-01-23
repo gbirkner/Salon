@@ -1,31 +1,44 @@
 ﻿@model List<Salon.Models.Pictures>
 
 <div class="btn-group">
-    <button id="frontViewButton" class="btn btn-primary">Vorne</button>
-    <button id="backViewButton" class="btn btn-default">Hinten</button>
-    <button id="sideViewButton" class="btn btn-default">Seite</button>
+    <button id="dreieckViewButton" class="btn btn-primary">Dreieck</button>
+    <button id="ovalViewButton"    class="btn btn-default">Oval</button>
+    <button id="rundViewButton"    class="btn btn-default">Rund</button>
+    <button id="viereckViewButton" class="btn btn-default">Viereck</button>
+    <button id="schmalViewButton"  class="btn btn-default">Schmal</button>
+    <button id="seiteViewButton"   class="btn btn-default">Seite</button>
 </div>
 
 <div class="btn-group">
-    <button id="modeButton" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Freihand</button>
+    <button id="modeButton"  class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Freihand</button>
     <button id="resetButton" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span> Löschen</button>
-    <button id="undoButton" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Schritt zurück</button>
+    <button id="undoButton"  class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span> Schritt zurück</button>
 </div>
 
-<img id="sketchBgFront" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[0].Photo)" />
-<img id="sketchBgBack" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[1].Photo)" />
-<img id="sketchBgSide" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[2].Photo)" />
+<img id="sketchBgDreieck" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[0].Photo)" />
+<img id="sketchBgOval"    style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[1].Photo)" />
+<img id="sketchBgRund"    style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[2].Photo)" />
+<img id="sketchBgViereck" style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[3].Photo)" />
+<img id="sketchBgSchmal"  style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[4].Photo)" />
+<img id="sketchBgSeite"   style="display: none;" src="data:image;base64,@System.Convert.ToBase64String(Model[5].Photo)" />
 
 @using (Html.BeginForm("AddSketches", "Pictures", FormMethod.Post))
 {
-    <input type="hidden" id="sketchDataFront" name="sketchDataFront" />
-    <input type="hidden" id="sketchDataBack" name="sketchDataBack" />
-    <input type="hidden" id="sketchDataSide" name="sketchDataSide" />
-    
+    <input type="hidden" id="sketchDataDreieck" name="sketchDataDreieck" />
+    <input type="hidden" id="sketchDataOval"    name="sketchDataOval" />
+    <input type="hidden" id="sketchDataRund"    name="sketchDataRund" />
+    <input type="hidden" id="sketchDataViereck" name="sketchDataViereck" />
+    <input type="hidden" id="sketchDataSchmal"  name="sketchDataSchmal" />
+    <input type="hidden" id="sketchDataSeite"   name="sketchDataSeite" />
+
+
     <div style="position: relative;">
-        <canvas id="sketchCanvasFront" width="500" height="500" style="z-index: 0; display: block"></canvas>
-        <canvas id="sketchCanvasBack" width="500" height="500" style="z-index: 0; display: none"></canvas>
-        <canvas id="sketchCanvasSide" width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasDreieck" width="500" height="500" style="z-index: 0; display: block"></canvas>
+        <canvas id="sketchCanvasOval"    width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasRund"    width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasViereck" width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasSchmal"  width="500" height="500" style="z-index: 0; display: none"></canvas>
+        <canvas id="sketchCanvasSeite"   width="500" height="500" style="z-index: 0; display: none"></canvas>
         <canvas id="tempCanvas" width="500" height="500" style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
     </div>
 
@@ -33,9 +46,12 @@
 
     <label for="#descriptionFront">Beschreibung:</label>
 
-    <input type="text" id="descriptionFront" class="form-control" name="descriptionFront" style="display: block;" />
-    <input type="text" id="descriptionBack" class="form-control" name="descriptionBack" style="display: none" />
-    <input type="text" id="descriptionSide" class="form-control" name="descriptionSide" style="display: none" />
+    <input type="text" id="descriptionDreieck" class="form-control" name="descriptionDreieck" style="display: block;" />
+    <input type="text" id="descriptionOval"    class="form-control" name="descriptionOval"    style="display: none" />
+    <input type="text" id="descriptionRund"    class="form-control" name="descriptionRund"    style="display: none" />
+    <input type="text" id="descriptionViereck" class="form-control" name="descriptionViereck" style="display: none" />
+    <input type="text" id="descriptionSchmal"  class="form-control" name="descriptionSchmal"  style="display: none" />
+    <input type="text" id="descriptionSeite"   class="form-control" name="descriptionSeite"   style="display: none" />
 
     <input type="submit" id="submitSketchButton" class="btn btn-primary" value="Fertig" />
 }

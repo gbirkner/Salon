@@ -27,10 +27,11 @@ $('#btnPhoto').on('click', function (e) {
 });
 
 // submit buttons
+/*
 $('#submitSketchButton').on('click', function (e) {
     $('#btn_quickSave').click();
 });
 
 $('#submitPhotoButton').on('click', function (e) {
     $('#btn_quickSave').click();
-});
+});*/

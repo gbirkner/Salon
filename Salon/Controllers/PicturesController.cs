@@ -57,6 +57,7 @@ namespace Salon.Controllers
                 {
                     pictures.Photo = new byte[Photo.ContentLength];
                     Photo.InputStream.Read(pictures.Photo, 0, Photo.ContentLength);
+                    pictures.VisitId = null;
                     db.Pictures.Add(pictures);
                     db.SaveChanges();
                     return RedirectToAction("Index");
@@ -144,7 +145,7 @@ namespace Salon.Controllers
         [HttpGet]
         public ActionResult DrawSketch()
         {
-            List<Pictures> pictures = db.Pictures.Where(e => e.PictureId >= 59 && e.PictureId <= 61).ToList();
+            List<Pictures> pictures = db.Pictures.Where(e => e.PictureId >= 6 && e.PictureId <= 11).ToList();
             return PartialView("DrawSketch", pictures);
         }
 
@@ -156,7 +157,7 @@ namespace Salon.Controllers
 
         // upload photo
         [HttpPost]
-        public void AddPhoto(HttpPostedFileBase Photo, [Bind(Include = "PictureId,Description,visitId")] Pictures pictures)
+        public ActionResult AddPhoto(HttpPostedFileBase Photo, [Bind(Include = "PictureId,Description,visitId")] Pictures pictures)
         {
             if (ModelState.IsValid)
             {
@@ -170,63 +171,116 @@ namespace Salon.Controllers
                     pictures.VisitId = visitId;
                     db.Pictures.Add(pictures);
                     db.SaveChanges();
+                    return RedirectToAction("VisitCreate", "Visits", new { id = visitId });
                 }
             }
 
             ViewBag.VisitId = new SelectList(db.Visits, "VisitId", "ModifiedBy", pictures.VisitId);
-            //return View(pictures);
+            return View(pictures);
         }
 
         // upload sketches
         [HttpPost]
         public ActionResult AddSketches()
         {
-            string imageDataFront = Request["sketchDataFront"];
-            string imageDataBack = Request["sketchDataBack"];
-            string imageDataSide = Request["sketchDataSide"];
+            string imageDataDreieck = Request["sketchDataDreieck"];
+            string imageDataOval = Request["sketchDataOval"];
+            string imageDataRund = Request["sketchDataRund"];
+            string imageDataViereck = Request["sketchDataViereck"];
+            string imageDataSchmal = Request["sketchDataSchmal"];
+            string imageDataSeite = Request["sketchDataSeite"];
 
-            string imageDescriptionFront = Request["descriptionFront"];
-            string imageDescriptionBack = Request["descriptionBack"];
-            string imageDescriptionSide = Request["descriptionSide"];
+            string imageDescriptionDreieck = Request["descriptionDreieck"];
+            string imageDescriptionOval = Request["descriptionOval"];
+            string imageDescriptionRund = Request["descriptionRund"];
+            string imageDescriptionViereck = Request["descriptionViereck"];
+            string imageDescriptionSchmal = Request["descriptionSchmal"];
+            string imageDescriptionSeite = Request["descriptionSeite"];
 
             string visitId = Request["sketchVisitId"];
 
             Pictures pictures;
             
-            if (!imageDataFront.Equals(""))
+            if (!imageDataDreieck.Equals(""))
             {
                 pictures = new Pictures();
-                pictures.Photo = Convert.FromBase64String(imageDataFront);
-                pictures.Description = imageDescriptionFront;
+                pictures.Photo = Convert.FromBase64String(imageDataDreieck);
+                pictures.Description = imageDescriptionDreieck;
                 pictures.isSketch = true;
                 pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }
 
-            if (!imageDataBack.Equals(""))
+            if (!imageDataOval.Equals(""))
             {
                 pictures = new Pictures();
-                pictures.Photo = Convert.FromBase64String(imageDataBack);
-                pictures.Description = imageDescriptionBack;
+                pictures.Photo = Convert.FromBase64String(imageDataOval);
+                pictures.Description = imageDescriptionOval;
                 pictures.isSketch = true;
                 pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }
 
-            if (!imageDataSide.Equals(""))
+            if (!imageDataRund.Equals(""))
             {
                 pictures = new Pictures();
-                pictures.Photo = Convert.FromBase64String(imageDataSide);
-                pictures.Description = imageDescriptionSide;
+                pictures.Photo = Convert.FromBase64String(imageDataRund);
+                pictures.Description = imageDescriptionRund;
                 pictures.isSketch = true;
                 pictures.VisitId = Int32.Parse(visitId);
                 db.Pictures.Add(pictures);
                 db.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            if (!imageDataViereck.Equals(""))
+            {
+                pictures = new Pictures();
+                pictures.Photo = Convert.FromBase64String(imageDataViereck);
+                pictures.Description = imageDescriptionViereck;
+                pictures.isSketch = true;
+                pictures.VisitId = Int32.Parse(visitId);
+                db.Pictures.Add(pictures);
+                db.SaveChanges();
+            }
+
+            if (!imageDataSchmal.Equals(""))
+            {
+                pictures = new Pictures();
+                pictures.Photo = Convert.FromBase64String(imageDataSchmal);
+                pictures.Description = imageDescriptionSchmal;
+                pictures.isSketch = true;
+                pictures.VisitId = Int32.Parse(visitId);
+                db.Pictures.Add(pictures);
+                db.SaveChanges();
+            }
+
+            if (!imageDataSeite.Equals(""))
+            {
+                pictures = new Pictures();
+                pictures.Photo = Convert.FromBase64String(imageDataSeite);
+                pictures.Description = imageDescriptionSeite;
+                pictures.isSketch = true;
+                pictures.VisitId = Int32.Parse(visitId);
+                db.Pictures.Add(pictures);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("VisitCreate", "Visits", new { id = visitId });
+        }
+
+        // delete picture
+        public ActionResult DeletePicture(int? id)
+        {
+            Pictures pictures = db.Pictures.Find(id);
+
+            int visitId = pictures.VisitId.Value;
+
+            db.Pictures.Remove(pictures);
+            db.SaveChanges();
+
+            return RedirectToAction("VisitCreate", "Visits", new { id = visitId });
         }
     }
 }

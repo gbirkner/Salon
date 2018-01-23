@@ -47,15 +47,26 @@
 
 @if (Model != null && Model.Pictures != null)
 {
-    foreach (Salon.Models.Pictures pic in Model.Pictures)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => pic.Description)
-            </td>
-            <td>
-                <img src="data:image;base64,@System.Convert.ToBase64String(pic.Photo)" />
-            </td>
-        </tr>
-    }
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                @foreach (Salon.Models.Pictures pic in Model.Pictures)
+                {
+                    <tr>
+                        <td>
+                            <img src="data:image;base64,@System.Convert.ToBase64String(pic.Photo)" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pic.Description)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="location.href = '../../Pictures/DeletePicture/@Html.DisplayFor(modelItem => pic.PictureId)'">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
 }

@@ -2,60 +2,83 @@
 var tempMouseX, tempMouseY, mouseX, mouseY, mouseDown = 0;
 
 // get canvases and graphics contexts
-var tempCanvas = document.getElementById('tempCanvas');
+var tempCanvas        = document.getElementById('tempCanvas');
 var tempCanvasContext = tempCanvas.getContext('2d');
 
-var sketchCanvasFront = document.getElementById('sketchCanvasFront');
-var sketchCanvasFrontContext = sketchCanvasFront.getContext('2d');
+var sketchCanvasDreieck = document.getElementById('sketchCanvasDreieck');
+var sketchCanvasOval    = document.getElementById('sketchCanvasOval');
+var sketchCanvasRund    = document.getElementById('sketchCanvasRund');
+var sketchCanvasViereck = document.getElementById('sketchCanvasViereck');
+var sketchCanvasSchmal  = document.getElementById('sketchCanvasSchmal');
+var sketchCanvasSeite   = document.getElementById('sketchCanvasSeite');
 
-var sketchCanvasBack = document.getElementById('sketchCanvasBack');
-var sketchCanvasBackContext = sketchCanvasBack.getContext('2d');
-
-var sketchCanvasSide = document.getElementById('sketchCanvasSide');
-var sketchCanvasSideContext = sketchCanvasSide.getContext('2d');
+var sketchCanvasDreieckContext = sketchCanvasDreieck.getContext('2d');
+var sketchCanvasOvalContext    = sketchCanvasOval.getContext('2d');
+var sketchCanvasRundContext    = sketchCanvasRund.getContext('2d');
+var sketchCanvasViereckContext = sketchCanvasViereck.getContext('2d');
+var sketchCanvasSchmalContext  = sketchCanvasSchmal.getContext('2d');
+var sketchCanvasSeiteContext   = sketchCanvasSeite.getContext('2d');
 
 // graphics context currently drawn on
-var drawContext = sketchCanvasFrontContext;
+var drawContext = sketchCanvasDreieckContext;
 
 // buttons
-var modeButton = document.getElementById('modeButton');
-var frontViewButton = document.getElementById('frontViewButton');
-var backViewButton = document.getElementById('backViewButton');
-var sideViewButton = document.getElementById('sideViewButton');
-var resetButton = document.getElementById('resetButton');
-var undoButton = document.getElementById('undoButton');
-var submitButton = document.getElementById('submitButton');
+var dreieckViewButton = document.getElementById('dreieckViewButton');
+var ovalViewButton    = document.getElementById('ovalViewButton');
+var rundViewButton    = document.getElementById('rundViewButton');
+var viereckViewButton = document.getElementById('viereckViewButton');
+var schmalViewButton  = document.getElementById('schmalViewButton');
+var seiteViewButton   = document.getElementById('seiteViewButton');
+
+var modeButton   = document.getElementById('modeButton');
+var resetButton  = document.getElementById('resetButton');
+var undoButton   = document.getElementById('undoButton');
+var submitButton = document.getElementById('submitSketchButton');
 
 // backgrounds
-var sketchBgFront = document.getElementById('sketchBgFront');
-var sketchBgBack = document.getElementById('sketchBgBack');
-var sketchBgSide = document.getElementById('sketchBgSide');
+var sketchBgDreieck = document.getElementById('sketchBgDreieck');
+var sketchBgOval    = document.getElementById('sketchBgOval');
+var sketchBgRund    = document.getElementById('sketchBgRund');
+var sketchBgViereck = document.getElementById('sketchBgViereck');
+var sketchBgSchmal  = document.getElementById('sketchBgSchmal');
+var sketchBgSeite   = document.getElementById('sketchBgSeite');
 
 // submit images
-var sketchDataFront = document.getElementById('sketchDataFront');
-var sketchDataBack = document.getElementById('sketchDataBack');
-var sketchDataSide = document.getElementById('sketchDataSide');
+var sketchDataDreieck = document.getElementById('sketchDataDreieck');
+var sketchDataOval    = document.getElementById('sketchDataOval');
+var sketchDataRund    = document.getElementById('sketchDataRund');
+var sketchDataViereck = document.getElementById('sketchDataViereck');
+var sketchDataSchmal  = document.getElementById('sketchDataSchmal');
+var sketchDataSeite   = document.getElementById('sketchDataSeite');
 
 // description fields
-var descriptionFront = document.getElementById('descriptionFront');
-var descriptionBack = document.getElementById('descriptionBack');
-var descriptionSide = document.getElementById('descriptionSide');
+var descriptionDreieck = document.getElementById('descriptionDreieck');
+var descriptionOval    = document.getElementById('descriptionOval');
+var descriptionRund    = document.getElementById('descriptionRund');
+var descriptionViereck = document.getElementById('descriptionViereck');
+var descriptionSchmal  = document.getElementById('descriptionSchmal');
+var descriptionSeite   = document.getElementById('descriptionSeite');
 
-// drawing mode (1 = line, 2 = free)
+// drawing mode (1=line, 2=free)
 var drawMode = 2;
 
-// canvas view mode (1 = front, 2 = back, 3 = side)
+// canvas view mode (1=dreieck, 2=oval, 3=rund, 4=viereck, 5=schmal, 6=seite)
 var viewMode = 1;
 
 // canvas histories
-var sketchFrontHistory = [];
-var sketchFrontCounter = 0;
+var sketchDreieckHistory = [];
+var sketchOvalHistory    = [];
+var sketchRundHistory    = [];
+var sketchViereckHistory = [];
+var sketchSchmalHistory  = [];
+var sketchSeiteHistory   = [];
 
-var sketchBackHistory = [];
-var sketchBackCounter = 0;
-
-var sketchSideHistory = [];
-var sketchSideCounter = 0;
+var sketchDreieckCounter = 0;
+var sketchOvalCounter    = 0;
+var sketchRundCounter    = 0;
+var sketchViereckCounter = 0;
+var sketchSchmalCounter  = 0;
+var sketchSeiteCounter   = 0;
 
 // free draw mode history range
 var freeDrawFirstIndex = -1;
@@ -82,15 +105,27 @@ function mousePressed(e) {
         switch (viewMode) {
 
             case 1:
-                freeDrawFirstIndex = sketchFrontCounter;
+                freeDrawFirstIndex = sketchDreieckCounter;
                 break;
 
             case 2:
-                freeDrawFirstIndex = sketchBackCounter;
+                freeDrawFirstIndex = sketchOvalCounter;
                 break;
 
             case 3:
-                freeDrawFirstIndex = sketchSideCounter;
+                freeDrawFirstIndex = sketchRundCounter;
+                break;
+
+            case 4:
+                freeDrawFirstIndex = sketchViereckCounter;
+                break;
+
+            case 5:
+                freeDrawFirstIndex = sketchSchmalCounter;
+                break;
+
+            case 6:
+                freeDrawFirstIndex = sketchSeiteCounter;
                 break;
         }
     }
@@ -113,18 +148,33 @@ function mouseReleased() {
             switch (viewMode) {
 
                 case 1:
-                    sketchFrontHistory[sketchFrontCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
-                    sketchFrontCounter++;
+                    sketchDreieckHistory[sketchDreieckCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchDreieckCounter++;
                     break;
 
                 case 2:
-                    sketchBackHistory[sketchBackCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
-                    sketchBackCounter++;
+                    sketchOvalHistory[sketchOvalCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchOvalCounter++;
                     break;
 
                 case 3:
-                    sketchSideHistory[sketchSideCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
-                    sketchSideCounter++;
+                    sketchRundHistory[sketchRundCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchRundCounter++;
+                    break;
+
+                case 4:
+                    sketchViereckHistory[sketchViereckCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchViereckCounter++;
+                    break;
+
+                case 5:
+                    sketchSchmalHistory[sketchSchmalCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchSchmalCounter++;
+                    break;
+
+                case 6:
+                    sketchSeiteHistory[sketchSeiteCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, -1];
+                    sketchSeiteCounter++;
                     break;
             }
         }
@@ -159,18 +209,28 @@ function mouseMoved(e) {
             switch (viewMode) {
 
                 case 1:
-                    sketchFrontHistory[sketchFrontCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
-                    sketchFrontCounter++;
+                    sketchDreieckHistory[sketchDreieckCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchDreieckCounter++;
                     break;
 
                 case 2:
-                    sketchBackHistory[sketchBackCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
-                    sketchBackCounter++;
+                    sketchOvalHistory[sketchOvalCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchOvalCounter++;
                     break;
 
                 case 3:
-                    sketchSideHistory[sketchSideCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
-                    sketchSideCounter++;
+                    sketchRundHistory[sketchRundCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchRundCounter++;
+                    break;
+
+                case 4:
+                    sketchViereckHistory[sketchViereckCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchViereckCounter++;
+                    break;
+
+                case 5:
+                    sketchSchmalHistory[sketchSchmalCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchSchmalCounter++;
                     break;
             }
 
@@ -233,53 +293,74 @@ function modeButtonPressed(e) {
 // change view
 function viewButtonPressed(e) {
 
-    if (e.target == frontViewButton) {
+    sketchCanvasDreieck.style.display = 'none';
+    sketchCanvasOval.style.display    = 'none';
+    sketchCanvasRund.style.display    = 'none';
+    sketchCanvasViereck.style.display = 'none';
+    sketchCanvasSchmal.style.display  = 'none';
+    sketchCanvasSeite.style.display   = 'none';
+
+    descriptionDreieck.style.display = 'none';
+    descriptionOval.style.display    = 'none';
+    descriptionRund.style.display    = 'none';
+    descriptionViereck.style.display = 'none';
+    descriptionSchmal.style.display  = 'none';
+    descriptionSeite.style.display   = 'none';
+
+    dreieckViewButton.className = 'btn btn-default';
+    ovalViewButton.className    = 'btn btn-default';
+    rundViewButton.className    = 'btn btn-default';
+    viereckViewButton.className = 'btn btn-default';
+    schmalViewButton.className  = 'btn btn-default';
+    seiteViewButton.className   = 'btn btn-default';
+
+    if (e.target == dreieckViewButton) {
 
         viewMode = 1;
-        sketchCanvasFront.style.display = 'block';
-        sketchCanvasBack.style.display = 'none';
-        sketchCanvasSide.style.display = 'none';
-        drawContext = sketchCanvasFrontContext;
+        sketchCanvasDreieck.style.display = 'block';
+        drawContext = sketchCanvasDreieckContext;
+        descriptionDreieck.style.display = 'block';
+        dreieckViewButton.className = 'btn btn-primary';
 
-        descriptionFront.style.display = 'block';
-        descriptionBack.style.display = 'none';
-        descriptionSide.style.display = 'none';
-
-        frontViewButton.className = 'btn btn-primary';
-        backViewButton.className = 'btn btn-default';
-        sideViewButton.className = 'btn btn-default';
-
-    } else if (e.target == backViewButton) {
+    } else if (e.target == ovalViewButton) {
 
         viewMode = 2;
-        sketchCanvasFront.style.display = 'none';
-        sketchCanvasBack.style.display = 'block';
-        sketchCanvasSide.style.display = 'none';
-        drawContext = sketchCanvasBackContext;
+        sketchCanvasOval.style.display = 'block';
+        drawContext = sketchCanvasOvalContext;
+        descriptionOval.style.display = 'block';
+        ovalViewButton.className = 'btn btn-primary';
 
-        descriptionFront.style.display = 'none';
-        descriptionBack.style.display = 'block';
-        descriptionSide.style.display = 'none';
-
-        frontViewButton.className = 'btn btn-default';
-        backViewButton.className = 'btn btn-primary';
-        sideViewButton.className = 'btn btn-default';
-
-    } else if (e.target == sideViewButton) {
+    } else if (e.target == rundViewButton) {
 
         viewMode = 3;
-        sketchCanvasFront.style.display = 'none';
-        sketchCanvasBack.style.display = 'none';
-        sketchCanvasSide.style.display = 'block';
-        drawContext = sketchCanvasSideContext;
+        sketchCanvasRund.style.display = 'block';
+        drawContext = sketchCanvasRundContext;
+        descriptionRund.style.display = 'block';
+        rundViewButton.className = 'btn btn-primary';
 
-        descriptionFront.style.display = 'none';
-        descriptionBack.style.display = 'none';
-        descriptionSide.style.display = 'block';
+    } else if (e.target == viereckViewButton) {
 
-        frontViewButton.className = 'btn btn-default';
-        backViewButton.className = 'btn btn-default';
-        sideViewButton.className = 'btn btn-primary';
+        viewMode = 4;
+        sketchCanvasViereck.style.display = 'block';
+        drawContext = sketchCanvasViereckContext;
+        descriptionViereck.style.display = 'block';
+        viereckViewButton.className = 'btn btn-primary';
+
+    } else if (e.target == schmalViewButton) {
+
+        viewMode = 5;
+        sketchCanvasSchmal.style.display = 'block';
+        drawContext = sketchCanvasSchmalContext;
+        descriptionSchmal.style.display = 'block';
+        schmalViewButton.className = 'btn btn-primary';
+
+    } else if (e.target == seiteViewButton) {
+
+        viewMode = 6;
+        sketchCanvasSeite.style.display = 'block';
+        drawContext = sketchCanvasSeiteContext;
+        descriptionSeite.style.display = 'block';
+        seiteViewButton.className = 'btn btn-primary';
     }
 }
 
@@ -289,18 +370,33 @@ function resetCanvas() {
     switch (viewMode) {
 
         case 1:
-            sketchCanvasFrontContext.clearRect(0, 0, sketchCanvasFront.width, sketchCanvasFront.height);
-            sketchCanvasFrontContext.drawImage(sketchBgFront, 0, 0);
+            sketchCanvasDreieckContext.clearRect(0, 0, sketchCanvasDreieck.width, sketchCanvasDreieck.height);
+            sketchCanvasDreieckContext.drawImage(sketchBgDreieck, 0, 0);
             break;
 
         case 2:
-            sketchCanvasBackContext.clearRect(0, 0, sketchCanvasBack.width, sketchCanvasBack.height);
-            sketchCanvasBackContext.drawImage(sketchBgBack, 0, 0);
+            sketchCanvasOvalContext.clearRect(0, 0, sketchCanvasOval.width, sketchCanvasOval.height);
+            sketchCanvasOvalContext.drawImage(sketchBgOval, 0, 0);
             break;
 
         case 3:
-            sketchCanvasSideContext.clearRect(0, 0, sketchCanvasSide.width, sketchCanvasSide.height);
-            sketchCanvasSideContext.drawImage(sketchBgSide, 0, 0);
+            sketchCanvasRundContext.clearRect(0, 0, sketchCanvasRund.width, sketchCanvasRund.height);
+            sketchCanvasRundContext.drawImage(sketchBgRund, 0, 0);
+            break;
+
+        case 4:
+            sketchCanvasViereckContext.clearRect(0, 0, sketchCanvasViereck.width, sketchCanvasViereck.height);
+            sketchCanvasViereckContext.drawImage(sketchBgViereck, 0, 0);
+            break;
+
+        case 5:
+            sketchCanvasSchmalContext.clearRect(0, 0, sketchCanvasSchmal.width, sketchCanvasSchmal.height);
+            sketchCanvasSchmalContext.drawImage(sketchBgSchmal, 0, 0);
+            break;
+
+        case 6:
+            sketchCanvasSeiteContext.clearRect(0, 0, sketchCanvasSeite.width, sketchCanvasSeite.height);
+            sketchCanvasSeiteContext.drawImage(sketchBgSeite, 0, 0);
             break;
     }
 }
@@ -313,18 +409,33 @@ function resetButtonPressed(e) {
     switch (viewMode) {
 
         case 1:
-            sketchFrontCounter = 0;
-            sketchFrontHistory = [];
+            sketchDreieckCounter = 0;
+            sketchDreieckHistory = [];
             break;
 
         case 2:
-            sketchBackCounter = 0;
-            sketchBackHistory = [];
+            sketchOvalCounter = 0;
+            sketchOvalHistory = [];
             break;
 
         case 3:
-            sketchSideCounter = 0;
-            sketchSideHistory = [];
+            sketchRundCounter = 0;
+            sketchRundHistory = [];
+            break;
+
+        case 4:
+            sketchViereckCounter = 0;
+            sketchViereckHistory = [];
+            break;
+
+        case 5:
+            sketchSchmalCounter = 0;
+            sketchSchmalHistory = [];
+            break;
+
+        case 6:
+            sketchSeiteCounter = 0;
+            sketchSeiteHistory = [];
             break;
     }
 }
@@ -337,106 +448,211 @@ function undoButtonPressed(e) {
     switch (viewMode) {
 
         case 1:
-            if (sketchFrontCounter == 0)
+            if (sketchDreieckCounter == 0)
                 break;
 
-            sketchFrontCounter--;
+            sketchDreieckCounter--;
             
             // if last line is part of a free draw curve
-            if (sketchFrontHistory[sketchFrontCounter][4] >= 0) {
+            if (sketchDreieckHistory[sketchDreieckCounter][4] >= 0) {
 
-                var startIndex = sketchFrontHistory[sketchFrontCounter][4];
+                var startIndex = sketchDreieckHistory[sketchDreieckCounter][4];
 
-                while (sketchFrontHistory[sketchFrontCounter][4] == startIndex && sketchFrontCounter > 0) {
+                while (sketchDreieckHistory[sketchDreieckCounter][4] == startIndex && sketchDreieckCounter > 0) {
 
-                    sketchFrontCounter--;
+                    sketchDreieckCounter--;
 
-                    if (sketchFrontHistory[sketchFrontCounter][4] != startIndex) {
+                    if (sketchDreieckHistory[sketchDreieckCounter][4] != startIndex) {
 
-                        sketchFrontCounter++;
+                        sketchDreieckCounter++;
                         break;
                     }
                 }
             }
 
-            if (sketchFrontCounter == 0)
+            if (sketchDreieckCounter == 0)
                 break;
 
-            for (var i = 0; i < sketchFrontCounter; i++) {
-                var x1 = sketchFrontHistory[i][0];
-                var y1 = sketchFrontHistory[i][1];
-                var x2 = sketchFrontHistory[i][2];
-                var y2 = sketchFrontHistory[i][3];
+            for (var i = 0; i < sketchDreieckCounter; i++) {
+                var x1 = sketchDreieckHistory[i][0];
+                var y1 = sketchDreieckHistory[i][1];
+                var x2 = sketchDreieckHistory[i][2];
+                var y2 = sketchDreieckHistory[i][3];
                 drawLine(drawContext, x1, y1, x2, y2);
             }
             break;
 
         case 2:
-            if (sketchBackCounter == 0)
+            if (sketchOvalCounter == 0)
                 break;
 
-            sketchBackCounter--;
+            sketchOvalCounter--;
 
             // if last line is part of a free draw curve
-            if (sketchBackHistory[sketchBackCounter][4] >= 0) {
+            if (sketchOvalHistory[sketchOvalCounter][4] >= 0) {
 
-                var startIndex = sketchBackHistory[sketchBackCounter][4];
+                var startIndex = sketchOvalHistory[sketchOvalCounter][4];
 
-                while (sketchBackHistory[sketchBackCounter][4] == startIndex && sketchBackCounter > 0) {
+                while (sketchOvalHistory[sketchOvalCounter][4] == startIndex && sketchOvalCounter > 0) {
 
-                    sketchBackCounter--;
+                    sketchOvalCounter--;
 
-                    if (sketchBackHistory[sketchBackCounter][4] != startIndex) {
+                    if (sketchOvalHistory[sketchOvalCounter][4] != startIndex) {
 
-                        sketchBackCounter++;
+                        sketchOvalCounter++;
                         break;
                     }
                 }
             }
 
-            if (sketchBackCounter == 0)
+            if (sketchOvalCounter == 0)
                 break;
 
-            for (var i = 0; i < sketchBackCounter; i++) {
-                var x1 = sketchBackHistory[i][0];
-                var y1 = sketchBackHistory[i][1];
-                var x2 = sketchBackHistory[i][2];
-                var y2 = sketchBackHistory[i][3];
+            for (var i = 0; i < sketchOvalCounter; i++) {
+                var x1 = sketchOvalHistory[i][0];
+                var y1 = sketchOvalHistory[i][1];
+                var x2 = sketchOvalHistory[i][2];
+                var y2 = sketchOvalHistory[i][3];
                 drawLine(drawContext, x1, y1, x2, y2);
             }
             break;
 
         case 3:
-            if (sketchSideCounter == 0)
+            if (sketchRundCounter == 0)
                 break;
 
-            sketchSideCounter--;
+            sketchRundCounter--;
 
             // if last line is part of a free draw curve
-            if (sketchSideHistory[sketchSideCounter][4] >= 0) {
+            if (sketchRundHistory[sketchRundCounter][4] >= 0) {
 
-                var startIndex = sketchSideHistory[sketchSideCounter][4];
+                var startIndex = sketchRundHistory[sketchRundCounter][4];
 
-                while (sketchSideHistory[sketchSideCounter][4] == startIndex && sketchSideCounter > 0) {
+                while (sketchRundHistory[sketchRundCounter][4] == startIndex && sketchRundCounter > 0) {
 
-                    sketchSideCounter--;
+                    sketchRundCounter--;
 
-                    if (sketchSideHistory[sketchSideCounter][4] != startIndex) {
+                    if (sketchRundHistory[sketchRundCounter][4] != startIndex) {
 
-                        sketchSideCounter++;
+                        sketchRundCounter++;
                         break;
                     }
                 }
             }
 
-            if (sketchSideCounter == 0)
+            if (sketchRundCounter == 0)
                 break;
 
-            for (var i = 0; i < sketchSideCounter; i++) {
-                var x1 = sketchSideHistory[i][0];
-                var y1 = sketchSideHistory[i][1];
-                var x2 = sketchSideHistory[i][2];
-                var y2 = sketchSideHistory[i][3];
+            for (var i = 0; i < sketchRundCounter; i++) {
+                var x1 = sketchRundHistory[i][0];
+                var y1 = sketchRundHistory[i][1];
+                var x2 = sketchRundHistory[i][2];
+                var y2 = sketchRundHistory[i][3];
+                drawLine(drawContext, x1, y1, x2, y2);
+            }
+            break;
+
+        case 4:
+            if (sketchViereckCounter == 0)
+                break;
+
+            sketchViereckCounter--;
+
+            // if last line is part of a free draw curve
+            if (sketchViereckHistory[sketchViereckCounter][4] >= 0) {
+
+                var startIndex = sketchViereckHistory[sketchViereckCounter][4];
+
+                while (sketchViereckHistory[sketchViereckCounter][4] == startIndex && sketchViereckCounter > 0) {
+
+                    sketchViereckCounter--;
+
+                    if (sketchViereckHistory[sketchViereckCounter][4] != startIndex) {
+
+                        sketchViereckCounter++;
+                        break;
+                    }
+                }
+            }
+
+            if (sketchViereckCounter == 0)
+                break;
+
+            for (var i = 0; i < sketchViereckCounter; i++) {
+                var x1 = sketchViereckHistory[i][0];
+                var y1 = sketchViereckHistory[i][1];
+                var x2 = sketchViereckHistory[i][2];
+                var y2 = sketchViereckHistory[i][3];
+                drawLine(drawContext, x1, y1, x2, y2);
+            }
+            break;
+
+        case 5:
+            if (sketchSchmalCounter == 0)
+                break;
+
+            sketchSchmalCounter--;
+
+            // if last line is part of a free draw curve
+            if (sketchSchmalHistory[sketchSchmalCounter][4] >= 0) {
+
+                var startIndex = sketchSchmalHistory[sketchSchmalCounter][4];
+
+                while (sketchSchmalHistory[sketchSchmalCounter][4] == startIndex && sketchSchmalCounter > 0) {
+
+                    sketchSchmalCounter--;
+
+                    if (sketchSchmalHistory[sketchSchmalCounter][4] != startIndex) {
+
+                        sketchSchmalCounter++;
+                        break;
+                    }
+                }
+            }
+
+            if (sketchSchmalCounter == 0)
+                break;
+
+            for (var i = 0; i < sketchSchmalCounter; i++) {
+                var x1 = sketchSchmalHistory[i][0];
+                var y1 = sketchSchmalHistory[i][1];
+                var x2 = sketchSchmalHistory[i][2];
+                var y2 = sketchSchmalHistory[i][3];
+                drawLine(drawContext, x1, y1, x2, y2);
+            }
+            break;
+
+        case 6:
+            if (sketchSeiteCounter == 0)
+                break;
+
+            sketchSeiteCounter--;
+
+            // if last line is part of a free draw curve
+            if (sketchSeiteHistory[sketchSeiteCounter][4] >= 0) {
+
+                var startIndex = sketchSeiteHistory[sketchSeiteCounter][4];
+
+                while (sketchSeiteHistory[sketchSeiteCounter][4] == startIndex && sketchSeiteCounter > 0) {
+
+                    sketchSeiteCounter--;
+
+                    if (sketchSeiteHistory[sketchSeiteCounter][4] != startIndex) {
+
+                        sketchSeiteCounter++;
+                        break;
+                    }
+                }
+            }
+
+            if (sketchSeiteCounter == 0)
+                break;
+
+            for (var i = 0; i < sketchSeiteCounter; i++) {
+                var x1 = sketchSeiteHistory[i][0];
+                var y1 = sketchSeiteHistory[i][1];
+                var x2 = sketchSeiteHistory[i][2];
+                var y2 = sketchSeiteHistory[i][3];
                 drawLine(drawContext, x1, y1, x2, y2);
             }
             break;
@@ -446,38 +662,46 @@ function undoButtonPressed(e) {
 // submit sketches
 function submitButtonPressed(e) {
 
-    // front view
-    if (sketchFrontCounter > 0) {
+    if (sketchDreieckCounter > 0)
+        sketchDataDreieck.value = sketchCanvasDreieck.toDataURL('image/png').replace('data:image/png;base64,', '');
 
-        sketchDataFront.value = sketchCanvasFront.toDataURL('image/png').replace('data:image/png;base64,', '');
-    }
+    if (sketchOvalCounter > 0)
+        sketchDataOval.value = sketchCanvasOval.toDataURL('image/png').replace('data:image/png;base64,', '');
 
-    // back view
-    if (sketchBackCounter > 0) {
+    if (sketchRundCounter > 0)
+        sketchDataRund.value = sketchCanvasRund.toDataURL('image/png').replace('data:image/png;base64,', '');
 
-        sketchDataBack.value = sketchCanvasBack.toDataURL('image/png').replace('data:image/png;base64,', '');
-    }
+    if (sketchViereckCounter > 0)
+        sketchDataViereck.value = sketchCanvasViereck.toDataURL('image/png').replace('data:image/png;base64,', '');
 
-    // side view
-    if (sketchSideCounter > 0) {
+    if (sketchSchmalCounter > 0)
+        sketchDataSchmal.value = sketchCanvasSchmal.toDataURL('image/png').replace('data:image/png;base64,', '');
 
-        sketchDataSide.value = sketchCanvasSide.toDataURL('image/png').replace('data:image/png;base64,', '');
-    }
+    if (sketchSeiteCounter > 0)
+        sketchDataSeite.value = sketchCanvasSeite.toDataURL('image/png').replace('data:image/png;base64,', '');
 }
 
 // set canvas backgrounds
-sketchCanvasFrontContext.drawImage(sketchBgFront, 0, 0);
-sketchCanvasBackContext.drawImage(sketchBgBack, 0, 0);
-sketchCanvasSideContext.drawImage(sketchBgSide, 0, 0);
+sketchCanvasDreieckContext.drawImage(sketchBgDreieck, 0, 0);
+sketchCanvasOvalContext.drawImage(sketchBgOval, 0, 0);
+sketchCanvasRundContext.drawImage(sketchBgRund, 0, 0);
+sketchCanvasViereckContext.drawImage(sketchBgViereck, 0, 0);
+sketchCanvasSchmalContext.drawImage(sketchBgSchmal, 0, 0);
+sketchCanvasSeiteContext.drawImage(sketchBgSeite, 0, 0);
 
 // add event listeners
+dreieckViewButton.addEventListener('click', viewButtonPressed);
+ovalViewButton.addEventListener('click', viewButtonPressed);
+rundViewButton.addEventListener('click', viewButtonPressed);
+viereckViewButton.addEventListener('click', viewButtonPressed);
+schmalViewButton.addEventListener('click', viewButtonPressed);
+seiteViewButton.addEventListener('click', viewButtonPressed);
+
 tempCanvas.addEventListener('mousedown', mousePressed);
 tempCanvas.addEventListener('mousemove', mouseMoved);
 window.addEventListener('mouseup', mouseReleased);
+
 modeButton.addEventListener('click', modeButtonPressed);
-frontViewButton.addEventListener('click', viewButtonPressed);
-backViewButton.addEventListener('click', viewButtonPressed);
-sideViewButton.addEventListener('click', viewButtonPressed);
 resetButton.addEventListener('click', resetButtonPressed);
 undoButton.addEventListener('click', undoButtonPressed);
 submitButton.addEventListener('click', submitButtonPressed);
