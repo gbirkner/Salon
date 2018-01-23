@@ -94,7 +94,7 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-@*Modale Partialview für das zurücksetzen des Passworts*@
+@*Modal partial view to reset the password*@
 <div class="modal fade" role="dialog" id="ResetPassword">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -111,7 +111,9 @@
 
 @section scripts{
     <script>
-        $("#btnResetPassword").on('click', function (e) {
+        $("#btnResetPassword").click(function (e) {  //on('click', function (e) {
+            e.preventDefault();
+            alert("amz");
             $.get("/Users/_ResetPassword?id=" + $("#UserID").val(), function (response) {
                 $("#ResetPasswordBody").html(response);
             }) 

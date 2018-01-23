@@ -14,6 +14,7 @@ using Microsoft.Owin.Security.DataProtection;
 
 namespace Salon.Controllers
 {
+    [Authorize(Roles ="Admin, Lehrer")]
     public class UsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -145,16 +146,27 @@ namespace Salon.Controllers
                 return HttpNotFound();
             }
 
-            var userRoles = UserManager.FindById(user.Id).Roles.ToList();
-            if (userRoles != null && userRoles.Count() > 0)
-            {
-                ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name", userRoles != null ? userRoles[0].RoleId : null);
-            }
-            else
-                ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name");
+            bool AllowEdit;
+            AllowEdit = User.IsInRole("Admin");
+            if (!AllowEdit)
+                AllowEdit = User.IsInRole("Lehrer") && user.Roles.Where(x => x.RoleId == "1").Count() == 1;
 
+            if (AllowEdit)
+            {
+                var userRoles = UserManager.FindById(user.Id).Roles.ToList();
+                if (userRoles != null && userRoles.Count() > 0)
+                {
+                    ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name", userRoles != null ? userRoles[0].RoleId : null);
+                }
+                else
+                    ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name");
+
+            Response.AddHeader("auth", "1");
             return View(user);
         }
+            else
+                return PartialView("_NotAuthorized");
+    }
 
         //
         // POST: /Users/Edit/5
