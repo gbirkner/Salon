@@ -1,0 +1,145 @@
+﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerClassViewModel>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
+
+@{
+	ViewBag.Title = "Work per student";
+}
+
+<link rel="stylesheet" href="~/Content/customerstat.css" />
+<style>
+    /* The ALERT message box */
+    .alert {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #57ab26; /* Green */
+        color: white;
+        margin-bottom: 15px;
+        opacity: 1;
+        transition: opacity 0.6s; /* 600ms to fade out */
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* When moving the mouse over the close button */
+        .closebtn:hover {
+            color: black;
+        }
+</style>
+
+<!-- div to show alerts for ajax responses -->
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    Die Auswertung wurde erfolgreich unter "Downloads" heruntergeladen.
+</div>
+
+<h2>Arbeit nach Klasse</h2>
+
+<div id="header" style="margin-top: 20px;">    
+    <button style="display: inline-block; width: 150px; height: 40px;" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#filter">Filter</button> @*Filter button, that collapses the div beyond*@
+    <button style="margin-left: 10px; width: 150px; height: 40px; display: inline-block; clear: both" class="btn btn-primary" onclick="changeClass();">Anzeigen</button> @*Show data*@
+    <button style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Statistics", new {name = "WorkPerClass"})'">Download &#x21e9</button> @*Download button*@
+</div>
+<div id="filter" class="collapse"> @*div that collapses on button click*@
+    <div style="margin: 20px 0px 0px 0px; display: inline-block; width: 80%">
+        <text style="width: 160px; display: inline-block">Klasse</text>
+        <text style="width: 160px; display: inline-block">Lehrer</text>
+        <text style="width: 160px; display: inline-block">Raum</text>
+        <text style="display:inline-block">Sortieren nach</text>
+        <br />
+        <select class="form-control" style="width: 150px; height:40px; display: inline-block" id="classSelector"> @*Selector Class*@
+            @foreach (var item in Model.First().GetClasses())
+            {
+                <option>@item</option>
+            }
+        </select>
+
+        <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="teacherSelector"> @*Selector Teacher*@
+            @foreach (var item in Model.First().GetTeachers())
+            {
+                <option>@item.Text</option>}
+        </select>
+
+        <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="roomSelector"> @*Selector Room*@
+            @foreach (var item in Model.First().GetRooms())
+            {
+                <option>@item.Text</option>}
+        </select>
+
+        <select class="form-control" style="width: 180px; height:40px; display: inline-block; margin-left: 10px;" id="sortSelector"> @*Selector Sortoptions*@
+            <option>Datum aufsteigend</option>
+            <option>Datum absteigend</option>
+            <option>Schüler aufsteigend</option>
+            <option>Schüler absteigend</option>
+        </select>
+    </div>
+</div>
+
+<div id="workTable" style="display: none; overflow: auto; height: 40%; margin-top: 20px;"> @*Placeholder*@
+
+</div>
+
+@*Shows if the download was succesfull*@
+@if (ViewBag.Downloaded == true) 
+{
+    if (ViewBag.Success == true)
+    {
+	    <script type="text/javascript">
+	    		window.onload = function () {
+	    		    $(".alert").css('opacity', '1.0');
+	    		    $(".alert").show();
+	    		};
+	    </script>
+    }
+    else
+    {
+        string message = "Die Datei konnte nicht heruntergeladen werden!\r\n" + ViewBag.Message;
+    }
+}
+
+<script>
+	function changeClass() {
+		$.ajax({
+		    url: "/Statistics/workperclass?cl=" + $("#classSelector").val() + "&sort=" + $("#sortSelector").val() + "&teacher=" + $("#teacherSelector").val() + "&room=" + $("#roomSelector").val(),
+			type: "get",
+			success: function (result) {
+				$("#workTable").html(result);
+				$("#workTable").show();
+			}
+		}); @*Calls method in controller and passes the parameters*@
+	}
+</script>
+
+<!-- script to fade out alert -->
+<script>
+    // Get all elements with class="closebtn"
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    // Loop through all close buttons
+    for (i = 0; i < close.length; i++) {
+        // When someone clicks on a close button
+        close[i].onclick = function () {
+
+            // Get the parent of <span class="closebtn"> (<div class="alert">)
+            var div = this.parentElement;
+
+            // Set the opacity of div to 0 (transparent)
+            div.style.opacity = "0";
+
+            // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+            setTimeout(function () { div.style.display = "none"; }, 600);
+        }
+    }
+</script>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Salon.Models.CustomerPicker>
+
+@{
+    ViewBag.Title = "_CustomerPicker";
+}
+
+<div id="customerPicker" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Kunden Auswahl</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <label class="col-sm-4" for="inp_fName">Vorname:</label>
+                    <label class="col-sm-4" for="inp_lName">Nachname:</label>
+                    <div class="col-sm-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="text" id="inp_fName" class="form-control" />
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" id="inp_lName" class="form-control" />
+                    </div>
+                    <div class="col-sm-4">
+                        <!--<button type="button" class="btn btn-primary">
+                            Erstellen
+                        </button>--->
+                    </div>
+                </div>
+
+                <div>
+                    <hr />
+                    <h4>Bestehenden Kunden ausw&auml;len:</h4>
+                    <div id="customerSelectModalCustomerList" class="list-group" style="max-height: 60vh; overflow-y: scroll;">
+                        @foreach(var c in Model) {
+                            <a class="list-group-item customerPickerEntry">
+                                <font class="customerPickerId" style="display: none;">
+                                    @c.customerId
+                                </font>
+                                <font class="customerPickerFName">
+                                    @c.fName
+                                </font>
+                                <font class="customerPickerLName">
+                                    @c.lName
+                                </font>
+                            </a>
+                        }
+                    </div>
+
+                    <div id="customerPickerSelected" style="display: none;">
+                        <font id="customerPickerSelectedId"></font>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .customerPickerEntry{
+        cursor: pointer;
+    }
+
+</style>
+
+@section scripts{
+    <script type="text/javascript">
+        
+    </script>    
+}
+
