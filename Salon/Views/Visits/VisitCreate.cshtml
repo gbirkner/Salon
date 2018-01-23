@@ -191,6 +191,12 @@
 
 </div>
 
+<hr />
+
+<div class="alert alert-danger">
+    <span class="glyphicon glyphicon-warning-sign"></span> Bevor Bilder hinzugefügt oder gelöscht werden, bitte Änderungen abspeichern!
+</div>
+
 <div class="row">
     <h3 class="col-sm-12">Bilder:</h3>
 </div>
@@ -201,8 +207,10 @@
         }
     </div>
 </div>
+
 @section scripts{
     <script>
+
             /****************************************** FUNCTION DECLARATIONS ********************************/
             /**
              Treatment form, sets listeners for the step-picker list in the treatment partial view
@@ -442,6 +450,9 @@
 
             }); //END
     </script>
+
+    @Scripts.Render("~/Scripts/graphicsbuttons.js");
+
     @if (Model.customer == null) {
         <script>
             $(function () {

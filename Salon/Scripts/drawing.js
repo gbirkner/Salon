@@ -232,6 +232,11 @@ function mouseMoved(e) {
                     sketchSchmalHistory[sketchSchmalCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
                     sketchSchmalCounter++;
                     break;
+
+                case 6:
+                    sketchSeiteHistory[sketchSeiteCounter] = [tempMouseX, tempMouseY, mouseX, mouseY, freeDrawFirstIndex];
+                    sketchSeiteCounter++;
+                    break;
             }
 
             getTempMousePos(e);
