@@ -1,0 +1,74 @@
+﻿@model Salon.Models.PicturesVM
+
+<button type="button" id="btnSketch" class="btn btn-primary" value="@Model.visitId"><span class="glyphicon glyphicon-pencil"></span> Sketch hinzufügen</button>
+<button type="button" id="btnPhoto" class="btn btn-primary" value="@Model.visitId"><span class="glyphicon glyphicon-picture"></span> Foto hinzufügen</button>
+
+<hr />
+
+<div class="modal fade" role="dialog" id="addSketchModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sketch hinzufügen</h4>
+            </div>
+            <div class="modal-body" id="addSketchModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="addPhotoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Foto hinzufügen</h4>
+            </div>
+            <div class="modal-body" id="addPhotoModalBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" role="dialog" id="warningModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bilder hinzufügen</h4>
+            </div>
+            <div class="modal-body">
+                <div class='alert alert-danger'><strong>Speichern!</strong> Bevor Bilder hinzugefügt werden können, muss der Besuch gespeichert werden.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Pictures != null)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table">
+                @foreach (Salon.Models.Pictures pic in Model.Pictures)
+                {
+                    <tr>
+                        <td>
+                            <img src="data:image;base64,@System.Convert.ToBase64String(pic.Photo)" style="width: 30vh; height: 30vh;"/>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pic.Description)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="location.href = '../../Pictures/DeletePicture/@Html.DisplayFor(modelItem => pic.PictureId)'">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+}

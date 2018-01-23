@@ -17,6 +17,7 @@ namespace Salon.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private SalonEntities db = new SalonEntities();
 
         public AccountController()
         {
@@ -58,7 +59,25 @@ namespace Salon.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+
+            var model = new LoginViewModel();
+
+            model.Rooms = db.Rooms.ToList().Select(c => new SelectListItem {
+                Text = c.Title,
+                Value = c.RoomId.ToString(),
+            }).ToList();
+
+            var users = from u in db.AspNetUsers
+                        where u.AspNetRoles.Any(r => r.Name == "Lehrer")
+                        select u;
+
+            model.Teachers = users.ToList().Select(c => new SelectListItem
+            {
+                Text = c.UserName,
+                Value = c.Id.ToString(),
+            }).ToList();
+
+            return View(model);
         }
 
         //
@@ -75,11 +94,55 @@ namespace Salon.Controllers
 
             // Anmeldefehler werden bezüglich einer Kontosperre nicht gezählt.
             // Wenn Sie aktivieren möchten, dass Kennwortfehler eine Sperre auslösen, ändern Sie in "shouldLockout: true".
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+
+            var user = db.AspNetUsers.Where(a => a.UserName.Equals(model.UserName)).FirstOrDefault();
+            if (user != null)
+            {
+                if (user.entryDate != null && user.resignationDate != null)
+                {
+                    if (user.entryDate > DateTime.Now && user.resignationDate < DateTime.Now)
+                    {
+                        ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzuloggen.");
+                        return View(model);
+                    }
+                }
+            }
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+            model.Rooms = db.Rooms.ToList().Select(c => new SelectListItem
+            {
+                Text = c.Title,
+                Value = c.RoomId.ToString(),
+            }).ToList();
+
+            var users = from u in db.AspNetUsers
+                        where u.AspNetRoles.Any(r => r.Name == "Lehrer")
+                        select u;
+
+            model.Teachers = users.ToList().Select(c => new SelectListItem
+            {
+                Text = c.UserName,
+                Value = c.Id.ToString(),
+            }).ToList();
+
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    Session["Room"] = model.Room;
+                    Session["Teacher"] = model.Teacher;
+                    if (user.ChangedPassword == null || user.ChangedPassword == false)
+                    {
+                        string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+                        return Redirect(callbackUrl);
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -136,7 +199,7 @@ namespace Salon.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
             return View();
@@ -145,13 +208,13 @@ namespace Salon.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -202,8 +265,12 @@ namespace Salon.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                // search for user by username first
+                var user = await UserManager.FindByNameAsync(model.UserName);
+
+                // check email address
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id))
+                    || (await UserManager.GetEmailAsync(user.Id)) != model.Email)
                 {
                     // Nicht anzeigen, dass der Benutzer nicht vorhanden ist oder nicht bestätigt wurde.
                     return View("ForgotPasswordConfirmation");
@@ -248,7 +315,7 @@ namespace Salon.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.Username);
             if (user == null)
             {
                 // Nicht anzeigen, dass der Benutzer nicht vorhanden ist.
@@ -257,7 +324,15 @@ namespace Salon.Controllers
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+                var resulty = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
+                if(resulty.HasFlag(SignInStatus.Success))
+                {
+                    //Benutzer hat das Passwort geändert
+                    user.ChangedPassword = true;
+                    UserManager.Update(user);
+
+                    return RedirectToAction("ResetPasswordConfirmation", "Account");
+                }
             }
             AddErrors(result);
             return View();

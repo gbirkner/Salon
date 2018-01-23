@@ -1,14 +1,14 @@
-﻿@model IEnumerable<Salon.Models.TreatmentsVM>
+﻿@model IEnumerable<Salon.Models.Treatments>
 
 @{
     ViewBag.Title = "Index";
 }
 <div id="treatments">
-    <h2>Index</h2>
+    <h2>Behandlungen</h2>
     <div class="inline-text title">
-        <p>@Html.DisplayNameFor(model => model.Title)</p>
-        <p>@Html.DisplayNameFor(model => model.Description)</p>
-        <p>@Html.DisplayNameFor(model => model.isActive)</p>
+        <p>Titel</p>
+        <p>Beschreibung</p>
+        <p>Aktiv</p>
         <p></p>
     </div>
     <div class="panel-group" id="accordion">
@@ -21,7 +21,12 @@
                             <p>@Html.DisplayFor(modelItem => item.Title)</p>
                             <p>@Html.DisplayFor(modelItem => item.Description)</p>
                             <p>@Html.DisplayFor(modelItem => item.isActive)</p>
-                            <p>@Html.ActionLink("View Steps", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId })</p>
+                            <p class="manyButtons">
+                                @Html.ActionLink("Behandlung bearbeiten", "EditTreatment", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "treatment-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
+                                @Html.ActionLink("Arbeitsschritte bearbeiten", "CreateEditSteps", "TreatmentStepsVms", new { id = item.TreatmentId }, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Arbeitsschritte anzeigen", "TreatmentSteps", new { id = item.TreatmentId }, new { @class = "steps-viewdetail btn btn-default", data_toggle = "collapse", data_target = "#collapse-" + item.TreatmentId, data_parent = "#accordion" })
+                                @*<a href="javascript:void(0)" class="btn btn-danger" id="deleteTreatment">&times;</a>*@
+                            </p>
                         </div>
                 </div>
                 <div id="collapse-@Html.DisplayFor(modelItem => item.TreatmentId)" class="panel-collapse collapse">
@@ -32,12 +37,27 @@
         }
 
     </div>
+    <div class="special">
+        @Html.ActionLink("Behandlung erstellen", "CreateTreatment", "TreatmentStepsVms", null, new { @class = "treatmentAdd-viewdetail btn btn-default", data_toggle = "modal", data_target = "#myModal" })
+    </div>
+    <div id="myModal" class="modal fade special-edit" role="dialog">
+        <div class="modal-dialog">
+        </div>
+    </div>
 </div>
-
 @section scripts
 {
     <script>
         $(function () {
+            $('.treatmentAdd-viewdetail, .treatment-viewdetail').on('click', function (e) {
+                e.preventDefault();
+                $that = $(this);
+
+                $.get($that.prop('href'), function (response) {
+                    $('.modal-dialog').html(response)
+                });
+            });
+
             $('.steps-viewdetail').on('click', function (e) {
                 $that = $(this);
                 
@@ -50,14 +70,18 @@
 
             $('body').on('click', '.options-viewdetail', function (e) {
                 e.preventDefault();
-                console.log('test')
                 $that = $(this);
 
                 $.get($that.prop('href'), function (response) {
                     $that.closest('.panel').find('.panel-body').html(response)
                 });
             });
-        });
+
+            //delete treatment
+            $('body').on('click', '#deleteTreatment', function () {
+                $(this).closest('.panel').remove();
+            });
+         });
     </script>
 }
 

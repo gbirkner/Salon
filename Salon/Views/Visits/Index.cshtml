@@ -4,45 +4,69 @@
     ViewBag.Title = "Index";
 }
 
+<link rel="stylesheet" href="~/Views/Visits/VisitStyle.css" />
+
+<style>
+#visitTableContainer{
+    height: 75vh;
+    overflow-y: scroll;
+}
+</style>
+
+@if(ViewBag.success == true) {
+    <div class="alert alert-success alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-floppy-saved"></span> 
+        Der Besuch wurde erfolgreich gespeichert!
+    </div>
+} else if (ViewBag.success == false) {
+    <div class="alert alert-danger alert-dismissable fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        Der Besuch konnte nicht gespeichert werden!
+    </div>
+}
+
 <h2>Besuche</h2>
 
+<a class="btn btn-success" href="@Url.Action("VisitCreate", "Visits")"
+   >Besuch anlegen</a>
+
 <div class="row">
-    <div class="col-sm-7">
-        <div id="filterContainer">
-            <div class="row">
-                <div class="col-sm-3">
-                    <label for="inp_filterDate">
-                        @Html.DisplayNameFor(x => x.created)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                    <label for="inp_filterCustomer">
-                        @Html.DisplayNameFor(x => x.customer)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                    <label for="inp_filterStylist">
-                        @Html.DisplayNameFor(x => x.stylist)
-                    </label>
-                </div>
-                <div class="col-sm-3">
-                </div>
+    <div class="col-sm-7" id="visitTableContainer">
+        <div class="row">
+            <div class="col-sm-3">
+                <label for="inp_filterDate">
+                    @Html.DisplayNameFor(x => x.created)
+                </label>
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterDate" class="form-control" />
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterCustomer" class="form-control" />
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" id="inp_filterStylist" class="form-control" />
-                </div>
-                <div class="col-sm-3">
-                    <button type="button" class="btn btn-primary" id="btn_filter">
-                        <span class="glyphicon glyphicon-search"></span> Suche
-                    </button>
-                </div>
+            <div class="col-sm-3">
+                <label for="inp_filterCustomer">
+                    @Html.DisplayNameFor(x => x.customer)
+                </label>
+            </div>
+            <div class="col-sm-3">
+                <label for="inp_filterStylist">
+                    @Html.DisplayNameFor(x => x.stylist)
+                </label>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterDate" class="form-control"  />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterCustomer" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="inp_filterStylist" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-primary" id="btn_filter">
+                    <span class="glyphicon glyphicon-search"></span> Suche
+                </button>
             </div>
         </div>
             
@@ -65,10 +89,17 @@
                         @item.created
                     </td>
                     <td>
-                        @item.customer.FName @item.customer.LName
+                        @if (item.customer != null && item.customer.FName != null && item.customer.LName != null) {
+                            @item.customer.FName @item.customer.LName
+                        }else {
+                            <font>n/A</font>
+                        }
+
                     </td>
                     <td>
-                        @*@item.stylist.UserName*@
+                        @if (item.stylist != null) {
+                            @item.stylist.UserName
+                        }
                     </td>
                     <td>
                         @Html.ActionLink("Details", "VisitDetails", new { id = item.visitId }, new { @class = "visitRow" })
@@ -100,8 +131,10 @@
             </li>
         </ul> 
     </div>
-    <div class="col-sm-5" id="VisitTableContainer">
+    <div class="col-sm-5">
+        <div id="VisitTableContainer">
 
+        </div>
     </div>
 </div>
 
@@ -131,13 +164,26 @@
                 e.preventDefault();
             });
         });
+
+        
     });
 
-    
+    // ====================================== EVENT LISTENERS ======================= //
     $("#btn_filter").on('click', function (e) {
         filter();
     });
 
+    $("#inp_filterDate").keyup(function (event) {
+        filter();
+    });
+
+    $("#inp_filterCustomer").keyup(function (event) {
+         filter();
+    });
+
+    $("#inp_filterStylist").keyup(function (event) {
+        filter();
+    });
 
 
 

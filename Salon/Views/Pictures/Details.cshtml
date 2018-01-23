@@ -1,0 +1,50 @@
+﻿@model Salon.Models.Pictures
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pictures</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+
+        <dd>
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.Photo)" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isSketch)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isSketch)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Visits.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Visits.ModifiedBy)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PictureId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

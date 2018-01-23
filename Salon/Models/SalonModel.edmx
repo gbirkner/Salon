@@ -4,7 +4,21 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Während der Generierung sind Fehler aufgetreten:
+Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.-->
+        <EntityType Name="_MigBackup">
+          <Key>
+            <PropertyRef Name="migid" />
+            <PropertyRef Name="ContextKey" />
+            <PropertyRef Name="Model" />
+            <PropertyRef Name="ProductVersion" />
+          </Key>
+          <Property Name="migid" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -216,17 +230,6 @@
           <Property Name="TreatmenPosition" Type="int" Nullable="false" />
           <Property Name="StepOptionId" Type="int" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
-        </EntityType>
-        <!--Während der Generierung sind Fehler aufgetreten:
-Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.-->
-        <EntityType Name="vCustomers">
-          <Key>
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="isActive" />
-          </Key>
-          <Property Name="Fullname" Type="nvarchar" MaxLength="511" />
-          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="fk_cities_countries">
           <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
@@ -566,9 +569,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           <Parameter Name="description" Type="nvarchar" Mode="In" />
           <Parameter Name="isSensitive" Type="bit" Mode="In" />
         </Function>
-        <Function Name="isCityDeletable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="CityId" Type="int" Mode="In" />
-        </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -590,12 +590,13 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visits" EntityType="Self.Visits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="vCustomers" EntityType="Self.vCustomers" store:Type="Views" store:Schema="dbo">
+          <EntitySet Name="_MigBackup" EntityType="Self._MigBackup" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vCustomers].[Fullname] AS [Fullname], 
-    [vCustomers].[CustomerId] AS [CustomerId], 
-    [vCustomers].[isActive] AS [isActive]
-    FROM [dbo].[vCustomers] AS [vCustomers]</DefiningQuery>
+    [_MigBackup].[migid] AS [migid], 
+    [_MigBackup].[ContextKey] AS [ContextKey], 
+    [_MigBackup].[Model] AS [Model], 
+    [_MigBackup].[ProductVersion] AS [ProductVersion]
+    FROM [dbo].[_MigBackup] AS [_MigBackup]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="fk_cities_countries" Association="Self.fk_cities_countries">
             <End Role="Countries" EntitySet="Countries" />
@@ -690,7 +691,8 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -942,14 +944,17 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           <NavigationProperty Name="TreatmentSteps" Relationship="Self.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" FromRole="VisitTasks" ToRole="TreatmentSteps" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="VisitTasks" ToRole="Visits" />
         </EntityType>
-        <EntityType Name="vCustomers">
+        <EntityType Name="C_MigBackup">
           <Key>
-            <PropertyRef Name="CustomerId" />
-            <PropertyRef Name="isActive" />
+            <PropertyRef Name="migid" />
+            <PropertyRef Name="ContextKey" />
+            <PropertyRef Name="Model" />
+            <PropertyRef Name="ProductVersion" />
           </Key>
-          <Property Name="Fullname" Type="String" MaxLength="511" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="migid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -1249,7 +1254,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" />
           <EntitySet Name="Visits" EntityType="Self.Visits" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" />
-          <EntitySet Name="vCustomers" EntityType="Self.vCustomers" />
+          <EntitySet Name="C_MigBackup" EntityType="Self.C_MigBackup" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -1340,30 +1345,30 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           </AssociationSet>
           <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetClasses" ReturnType="Collection(String)" />
-          <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork_Result)">
-          <Parameter Name="studentId" Mode="In" Type="String" />
+          <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
+          <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
+            <Parameter Name="studentId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms_Result)" />
-          <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment_Result)">
-          <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
+          <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
+            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetTeachers" ReturnType="Collection(String)" />
-          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass_Result)">
+          <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
+          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
             <Parameter Name="class" Mode="In" Type="String" />
             <Parameter Name="teacherFirst" Mode="In" Type="String" />
             <Parameter Name="teacherLast" Mode="In" Type="String" />
@@ -1374,42 +1379,45 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
             <Parameter Name="description" Mode="In" Type="String" />
             <Parameter Name="isSensitive" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="isCityDeletable" ReturnType="Collection(Int32)">
-            <Parameter Name="CityId" Mode="In" Type="Int32" />
-          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="GetMyWork_Result">
-          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
-          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="Date" Nullable="true" />
-          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetRooms_Result">
-          <Property Type="Int32" Name="RoomId" Nullable="false" />
-          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetStepsPerTreatment_Result">
-          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
-        </ComplexType>
-        <ComplexType Name="GetWorkPerClass_Result">
-          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
-          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="Date" Nullable="true" />
-          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
-        </ComplexType>
         <ComplexType Name="insSteps_Result">
           <Property Type="Int32" Name="StepId" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
           <Property Type="Boolean" Name="isSensitive" Nullable="false" />
           <Property Type="Boolean" Name="isActive" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetClasses">
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetMyWork">
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetRooms">
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetStepsPerTreatment">
+          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="GetTeachers">
+          <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
+        </ComplexType>
+        <ComplexType Name="GetWorkPerClass">
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1637,12 +1645,13 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vCustomers">
-            <EntityTypeMapping TypeName="SalonModel.vCustomers">
-              <MappingFragment StoreEntitySet="vCustomers">
-                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <EntitySetMapping Name="C_MigBackup">
+            <EntityTypeMapping TypeName="SalonModel.C_MigBackup">
+              <MappingFragment StoreEntitySet="_MigBackup">
+                <ScalarProperty Name="migid" ColumnName="migid" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1662,10 +1671,16 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           <FunctionImportMapping FunctionImportName="DeleteCustomerByID" FunctionName="SalonModel.Store.DeleteCustomerByID" />
           <FunctionImportMapping FunctionImportName="DeleteUserByDays" FunctionName="SalonModel.Store.DeleteUserByDays" />
           <FunctionImportMapping FunctionImportName="DeleteUserByID" FunctionName="SalonModel.Store.DeleteUserByID" />
-          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" />
+          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetClasses">
+                <ScalarProperty Name="Class" ColumnName="Class" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetMyWork" FunctionName="SalonModel.Store.GetMyWork">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetMyWork_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetMyWork">
                 <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
                 <ScalarProperty Name="StudentName" ColumnName="StudentName" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
@@ -1678,7 +1693,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetRooms" FunctionName="SalonModel.Store.GetRooms">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetRooms_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetRooms">
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </ComplexTypeMapping>
@@ -1686,16 +1701,22 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetStepsPerTreatment" FunctionName="SalonModel.Store.GetStepsPerTreatment">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment">
                 <ScalarProperty Name="Step" ColumnName="Step" />
                 <ScalarProperty Name="StepDescription" ColumnName="StepDescription" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers" />
+          <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetTeachers">
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
                 <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
                 <ScalarProperty Name="StudentName" ColumnName="StudentName" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
@@ -1717,7 +1738,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo.vCustomers' ist kein Primärschlüss
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="isCityDeletable" FunctionName="SalonModel.Store.isCityDeletable" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
