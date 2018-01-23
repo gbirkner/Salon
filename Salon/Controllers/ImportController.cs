@@ -195,7 +195,14 @@ namespace Salon.Controllers
             Text = Text.Replace("ö", "oe");
             Text = Text.Replace("ß", "ss");
             Text = Text.Replace(" ", "");
+            Text = Text.Replace("é", "e");
+            Text = Text.Replace("è", "e");
             return Text;
+        }
+
+        private void Export(List<UserCSV> exportUserList, string fileName)
+        {
+
         }
     }
 }
