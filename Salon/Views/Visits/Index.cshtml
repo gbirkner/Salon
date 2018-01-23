@@ -89,7 +89,12 @@
                         @item.created
                     </td>
                     <td>
-                        @item.customer.FName @item.customer.LName
+                        @if (item.customer != null && item.customer.FName != null && item.customer.LName != null) {
+                            @item.customer.FName @item.customer.LName
+                        }else {
+                            <font>n/A</font>
+                        }
+
                     </td>
                     <td>
                         @if (item.stylist != null) {
