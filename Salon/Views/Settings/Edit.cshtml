@@ -17,14 +17,14 @@
         <hr />
         <h4>Benutzer</h4>
         <div class="form-group">
-            @Html.Label("User, die seit x Tagen keine Besuche mehr haben werden automatisch anonymisiert:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
+            @Html.Label("Benutzer, die seit x Tagen nicht mehr anwesend sind, werden automatisch anonymisiert:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
             <div class="col-md-4" style="text-align:right">
                 @Html.EditorFor(model => model.AnonymizeUserByDays, new { htmlAttributes = new { @class = "form-control", @id = "AnonymizeUserByDays", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.AnonymizeUserByDays, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("User, die seit x Tagen keine Besuche mehr haben werden automatisch gelöscht:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
+            @Html.Label("Benutzer, die seit x Tagen nicht mehr anwesend sind, werden automatisch gelöscht:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
             <div class="col-md-4" style="text-align:right">
                 @Html.EditorFor(model => model.DeleteUserByDays, new { htmlAttributes = new { @class = "form-control", @id = "DeleteUserByDays", @type = "number" }  })
                 @Html.ValidationMessageFor(model => model.DeleteUserByDays, "", new { @class = "text-danger" })
@@ -34,14 +34,14 @@
         <hr />
         <h4>Kunden</h4>
         <div class="form-group">
-            @Html.Label("Kunden, die seit x Tagen keine Besuche mehr haben werden automatisch gelöscht:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
+            @Html.Label("Kunden, die seit x Tagen keine Besuche mehr haben werden automatisch anonymisiert:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
             <div class="col-md-4" style="text-align:right">
                 @Html.EditorFor(model => model.AnonymizeCustomerByDays, new { htmlAttributes = new { @class = "form-control", @type = "number"} })
                 @Html.ValidationMessageFor(model => model.AnonymizeCustomerByDays, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("Kunden, die seit x Tagen keine Besuche mehr haben werden automatisch anonymisiert:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
+            @Html.Label("Kunden, die seit x Tagen keine Besuche mehr haben werden automatisch gelöscht:", htmlAttributes: new { @class = "control-label col-md-8", @style = "text-align:left" })
             <div class="col-md-4">
                 @Html.EditorFor(model => model.DeleteCustomerByDays, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                 @Html.ValidationMessageFor(model => model.DeleteCustomerByDays, "", new { @class = "text-danger" })
