@@ -94,8 +94,9 @@
                     @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
                     @Html.ActionLink("Besuche", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
-                    @Html.ActionLink("Kontaktdaten", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.CustomerId })
+                    @Html.ActionLink("Kontaktdaten", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.CustomerId }) |
+                    @Html.ActionLink("Anonymisieren", "Anonymisieren", new { id = item.CustomerId })*@
 
                 </td>
             </tr>

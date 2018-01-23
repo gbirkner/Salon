@@ -33,6 +33,8 @@ namespace Salon.Models
         [Required]
         public string Country { get; set; }
 
+        public bool IsDeletable { get; set; }
+
 
 
         public virtual Countries Countries { get; set; }

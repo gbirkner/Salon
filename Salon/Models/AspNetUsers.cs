@@ -44,6 +44,8 @@ namespace Salon.Models
         public string Class { get; set; }
         public Nullable<System.DateTime> entryDate { get; set; }
         public Nullable<System.DateTime> resignationDate { get; set; }
+        public string studentNumber { get; set; }
+        public Nullable<bool> ChangedPassword { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }

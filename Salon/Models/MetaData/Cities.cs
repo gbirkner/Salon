@@ -38,6 +38,7 @@ namespace Salon.Models
     [MetadataType(typeof(CitiesMetaData))]
     public partial class Cities
     {
+     
 
     }
 

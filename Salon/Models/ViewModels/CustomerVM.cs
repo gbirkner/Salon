@@ -104,6 +104,7 @@ namespace Salon.Models
         public virtual List<Countries> Countries { get; set; }
 
 
+
         public List<Genders> fillGender()
         {
             List<Genders> genderList = new List<Genders>();

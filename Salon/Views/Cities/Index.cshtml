@@ -52,8 +52,14 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.CityId }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.CityId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.CityId })
+                        @Html.ActionLink("Details", "Details", new { id = item.CityId }) 
+                        
+                       @* @if (item.IsDeletable == "1") {*@
+
+                            <span> | </span>
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CityId }, new { @class = "del" })
+                        @*}*@
+                        
                     </td>
                 </tr>
             }
@@ -96,6 +102,24 @@
                 e.preventDefault();
             });
         });
+
+
+        $(".del").on('click', function (e) {
+            e.preventDefault();
+            CheckDelete()
+        });
+
+        @*function CheckDelete(cid) {
+
+            var link = '@Url.Action("CheckDelete", "Cities")' + "?cid=" + cid;
+
+            var ok = $.ajax({
+                url: link,
+                async: false,
+            }).responseText;
+
+            alert(ok);
+        }*@
 
 
     </script>

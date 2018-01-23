@@ -46,6 +46,7 @@ namespace Salon.Models
         public virtual DbSet<TreatmentSteps> TreatmentSteps { get; set; }
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
+        public virtual DbSet<vCustomers> vCustomers { get; set; }
     
         public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
         {
@@ -174,25 +175,13 @@ namespace Salon.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<insSteps_Result>("insSteps", titleParameter, descriptionParameter, isSensitiveParameter);
         }
     
-        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        public virtual ObjectResult<Nullable<int>> isCityDeletable(Nullable<int> cityId)
         {
-            var diagramnameParameter = diagramname != null ?
-                new ObjectParameter("diagramname", diagramname) :
-                new ObjectParameter("diagramname", typeof(string));
+            var cityIdParameter = cityId.HasValue ?
+                new ObjectParameter("CityId", cityId) :
+                new ObjectParameter("CityId", typeof(int));
     
-            var owner_idParameter = owner_id.HasValue ?
-                new ObjectParameter("owner_id", owner_id) :
-                new ObjectParameter("owner_id", typeof(int));
-    
-            var versionParameter = version.HasValue ?
-                new ObjectParameter("version", version) :
-                new ObjectParameter("version", typeof(int));
-    
-            var definitionParameter = definition != null ?
-                new ObjectParameter("definition", definition) :
-                new ObjectParameter("definition", typeof(byte[]));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("isCityDeletable", cityIdParameter);
         }
     }
 }

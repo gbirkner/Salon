@@ -124,6 +124,7 @@ namespace Salon.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Cities cities = db.Cities.Find(id);
+            
             if (cities == null)
             {
                 return HttpNotFound();

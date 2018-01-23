@@ -23,6 +23,13 @@ namespace Salon.Controllers
         }
 
 
+        public ActionResult Anonymisieren(int id)
+        {
+            db.AnonymizeCustomerByID(id);
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Anonymize(int id)
         {
 

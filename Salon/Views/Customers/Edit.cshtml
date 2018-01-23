@@ -143,6 +143,13 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Save" class="btn btn-default" />
+
+                    <div style="float: right;">
+                        @Html.ActionLink("Delete", "Delete", new { id = Model.CustomerId }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Anonymisieren", "Anonymisieren", new { id = Model.CustomerId }, new { @class = "btn btn-primary" })
+                    </div>
+                    
+
                 </div>
             </div>
         </div>
