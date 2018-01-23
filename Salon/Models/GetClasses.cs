@@ -11,9 +11,8 @@ namespace Salon.Models
 {
     using System;
     
-    public partial class GetStepsPerTreatment_Result
+    public partial class GetClasses
     {
-        public string Step { get; set; }
-        public string StepDescription { get; set; }
+        public string Class { get; set; }
     }
 }

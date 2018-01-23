@@ -103,40 +103,40 @@ namespace Salon.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteUserByID", customerIDParameter);
         }
     
-        public virtual ObjectResult<string> GetClasses()
+        public virtual ObjectResult<GetClasses> GetClasses()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetClasses");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetClasses>("GetClasses");
         }
     
-        public virtual ObjectResult<GetMyWork_Result> GetMyWork(string studentId)
+        public virtual ObjectResult<GetMyWork> GetMyWork(string studentId)
         {
             var studentIdParameter = studentId != null ?
                 new ObjectParameter("studentId", studentId) :
                 new ObjectParameter("studentId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMyWork_Result>("GetMyWork", studentIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetMyWork>("GetMyWork", studentIdParameter);
         }
     
-        public virtual ObjectResult<GetRooms_Result> GetRooms()
+        public virtual ObjectResult<GetRooms> GetRooms()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRooms_Result>("GetRooms");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRooms>("GetRooms");
         }
     
-        public virtual ObjectResult<GetStepsPerTreatment_Result> GetStepsPerTreatment(Nullable<int> treatmentId)
+        public virtual ObjectResult<GetStepsPerTreatment> GetStepsPerTreatment(Nullable<int> treatmentId)
         {
             var treatmentIdParameter = treatmentId.HasValue ?
                 new ObjectParameter("treatmentId", treatmentId) :
                 new ObjectParameter("treatmentId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStepsPerTreatment_Result>("GetStepsPerTreatment", treatmentIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStepsPerTreatment>("GetStepsPerTreatment", treatmentIdParameter);
         }
     
-        public virtual ObjectResult<string> GetTeachers()
+        public virtual ObjectResult<GetTeachers> GetTeachers()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetTeachers");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTeachers>("GetTeachers");
         }
     
-        public virtual ObjectResult<GetWorkPerClass_Result> GetWorkPerClass(string @class, string teacherFirst, string teacherLast, string room)
+        public virtual ObjectResult<GetWorkPerClass> GetWorkPerClass(string @class, string teacherFirst, string teacherLast, string room)
         {
             var classParameter = @class != null ?
                 new ObjectParameter("class", @class) :
@@ -154,7 +154,7 @@ namespace Salon.Models
                 new ObjectParameter("room", room) :
                 new ObjectParameter("room", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass_Result>("GetWorkPerClass", classParameter, teacherFirstParameter, teacherLastParameter, roomParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetWorkPerClass>("GetWorkPerClass", classParameter, teacherFirstParameter, teacherLastParameter, roomParameter);
         }
     
         public virtual ObjectResult<insSteps_Result> insSteps(string title, string description, Nullable<bool> isSensitive)

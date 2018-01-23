@@ -11,9 +11,14 @@ namespace Salon.Models
 {
     using System;
     
-    public partial class GetRooms_Result
+    public partial class GetWorkPerClass
     {
-        public int RoomId { get; set; }
-        public string Title { get; set; }
+        public int TreatmentId { get; set; }
+        public string StudentName { get; set; }
+        public string TeacherName { get; set; }
+        public string Class { get; set; }
+        public string Treatement { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
+        public string Room { get; set; }
     }
 }

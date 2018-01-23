@@ -240,16 +240,22 @@
     <Compile Include="Models\Genders.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetMyWork_Result.cs">
+    <Compile Include="Models\GetClasses.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetRooms_Result.cs">
+    <Compile Include="Models\GetMyWork.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetStepsPerTreatment_Result.cs">
+    <Compile Include="Models\GetRooms.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetWorkPerClass_Result.cs">
+    <Compile Include="Models\GetStepsPerTreatment.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetTeachers.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetWorkPerClass.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\insSteps_Result.cs">

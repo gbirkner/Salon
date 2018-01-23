@@ -1324,16 +1324,16 @@
           <FunctionImport Name="DeleteUserByID">
             <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetClasses" ReturnType="Collection(String)" />
-          <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork_Result)">
+          <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
+          <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
             <Parameter Name="studentId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms_Result)" />
-          <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment_Result)">
+          <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
+          <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
             <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetTeachers" ReturnType="Collection(String)" />
-          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass_Result)">
+          <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
+          <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
             <Parameter Name="class" Mode="In" Type="String" />
             <Parameter Name="teacherFirst" Mode="In" Type="String" />
             <Parameter Name="teacherLast" Mode="In" Type="String" />
@@ -1345,38 +1345,44 @@
             <Parameter Name="isSensitive" Mode="In" Type="Boolean" />
           </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="GetMyWork_Result">
-          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
-          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="Date" Nullable="true" />
-          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetRooms_Result">
-          <Property Type="Int32" Name="RoomId" Nullable="false" />
-          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetStepsPerTreatment_Result">
-          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
-        </ComplexType>
-        <ComplexType Name="GetWorkPerClass_Result">
-          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
-          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
-          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
-          <Property Type="DateTime" Name="Date" Nullable="true" />
-          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
-        </ComplexType>
         <ComplexType Name="insSteps_Result">
           <Property Type="Int32" Name="StepId" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
           <Property Type="Boolean" Name="isSensitive" Nullable="false" />
           <Property Type="Boolean" Name="isActive" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetClasses">
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetMyWork">
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetRooms">
+          <Property Type="Int32" Name="RoomId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetStepsPerTreatment">
+          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="GetTeachers">
+          <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
+        </ComplexType>
+        <ComplexType Name="GetWorkPerClass">
+          <Property Type="Int32" Name="TreatmentId" Nullable="false" />
+          <Property Type="String" Name="StudentName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="TeacherName" Nullable="false" MaxLength="201" />
+          <Property Type="String" Name="Class" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1620,10 +1626,16 @@
           <FunctionImportMapping FunctionImportName="DeleteCustomerByID" FunctionName="SalonModel.Store.DeleteCustomerByID" />
           <FunctionImportMapping FunctionImportName="DeleteUserByDays" FunctionName="SalonModel.Store.DeleteUserByDays" />
           <FunctionImportMapping FunctionImportName="DeleteUserByID" FunctionName="SalonModel.Store.DeleteUserByID" />
-          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" />
+          <FunctionImportMapping FunctionImportName="GetClasses" FunctionName="SalonModel.Store.GetClasses" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetClasses">
+                <ScalarProperty Name="Class" ColumnName="Class" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetMyWork" FunctionName="SalonModel.Store.GetMyWork">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetMyWork_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetMyWork">
                 <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
                 <ScalarProperty Name="StudentName" ColumnName="StudentName" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
@@ -1636,7 +1648,7 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetRooms" FunctionName="SalonModel.Store.GetRooms">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetRooms_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetRooms">
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </ComplexTypeMapping>
@@ -1644,16 +1656,22 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetStepsPerTreatment" FunctionName="SalonModel.Store.GetStepsPerTreatment">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetStepsPerTreatment">
                 <ScalarProperty Name="Step" ColumnName="Step" />
                 <ScalarProperty Name="StepDescription" ColumnName="StepDescription" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers" />
+          <FunctionImportMapping FunctionImportName="GetTeachers" FunctionName="SalonModel.Store.GetTeachers" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SalonModel.GetTeachers">
+                <ScalarProperty Name="Teacher" ColumnName="Teacher" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetWorkPerClass" FunctionName="SalonModel.Store.GetWorkPerClass">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass_Result">
+              <ComplexTypeMapping TypeName="SalonModel.GetWorkPerClass">
                 <ScalarProperty Name="TreatmentId" ColumnName="TreatmentId" />
                 <ScalarProperty Name="StudentName" ColumnName="StudentName" />
                 <ScalarProperty Name="TeacherName" ColumnName="TeacherName" />
