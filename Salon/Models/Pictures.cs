@@ -17,7 +17,7 @@ namespace Salon.Models
         public int PictureId { get; set; }
         public byte[] Photo { get; set; }
         public bool isSketch { get; set; }
-        public int VisitId { get; set; }
+        public Nullable<int> VisitId { get; set; }
         public string Description { get; set; }
     
         public virtual Visits Visits { get; set; }

@@ -9,6 +9,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.DataProtection;
 
 namespace Salon.Controllers
 {
@@ -57,6 +59,29 @@ namespace Salon.Controllers
             //Get the list of Roles
             ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Id", "Name");
             return View();
+        }
+
+        public ActionResult _ResetPassword(string id)
+        {
+            ApplicationUser user = UserManager.FindById(id);
+            if (user != null)
+            {
+                string NewPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+                ViewBag.NewPassword = NewPassword;
+
+                var provider = new DpapiDataProtectionProvider("Salon");
+                UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("Import"));
+
+                string resetToken = UserManager.GeneratePasswordResetToken(user.Id);
+                IdentityResult passwordChangeResult = UserManager.ResetPassword(user.Id, resetToken, NewPassword);
+
+                user.ChangedPassword = false;
+                UserManager.Update(user);
+
+                if (passwordChangeResult == IdentityResult.Success)
+                    return PartialView("_ResetPasswordSuccess");
+            }
+            return PartialView("_ResetPasswordFailure");
         }
 
         //
@@ -121,7 +146,12 @@ namespace Salon.Controllers
             }
 
             var userRoles = UserManager.FindById(user.Id).Roles.ToList();
-            ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name", userRoles != null ? userRoles[0].RoleId : null);
+            if (userRoles != null && userRoles.Count() > 0)
+            {
+                ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name", userRoles != null ? userRoles[0].RoleId : null);
+            }
+            else
+                ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name");
 
             return View(user);
         }
