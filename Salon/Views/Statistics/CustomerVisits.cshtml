@@ -1,0 +1,32 @@
+﻿@model List<string>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CustomerVisits</title>
+</head>
+<body>
+    <div>        
+        @if (Model.Any())
+        {
+            <table class="table">
+                <tr>
+                    <th>Behandlung</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item</td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>Für diesen Benutzer gibt es noch keine Behandlungen</p>
+        }        
+    </div>
+</body>
+</html>

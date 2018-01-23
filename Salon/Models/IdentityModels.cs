@@ -55,5 +55,11 @@ namespace Salon.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Salon.Models.CustomerViewModel> CustomerViewModels { get; set; }
+
+        /*public System.Data.Entity.DbSet<Salon.Models.CustomerViewModel> CustomerViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<Salon.Models.VisitViewModel> VisitViewModels { get; set; }*/
     }
 }

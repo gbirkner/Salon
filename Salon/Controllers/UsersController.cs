@@ -120,8 +120,8 @@ namespace Salon.Controllers
                 return HttpNotFound();
             }
 
-            var userRoles = await UserManager.GetRolesAsync(user.Id);
-            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Id", "Name");
+            var userRoles = UserManager.FindById(user.Id).Roles.ToList();
+            ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name", userRoles != null ? userRoles[0].RoleId : null);
 
             return View(user);
         }

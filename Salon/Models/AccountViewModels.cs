@@ -129,9 +129,8 @@ namespace Salon.Models
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "E-Mail")]
-        public string Email { get; set; }
+        [Display(Name = "Benutzername")]
+        public string Username { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]

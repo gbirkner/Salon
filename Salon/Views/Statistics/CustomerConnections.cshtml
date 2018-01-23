@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Salon.Models.Statistics.CustomerConnections>
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <div>
+        @if (Model.FirstOrDefault() != null)
+        {
+            <table class="table" id="ajax-table-response">
+                <tr>
+                    <th>Kontakt-Typ</th>
+                    <th>Daten</th>
+                    <th>Zusatzinformationen</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ConnectionType</td>
+                        <td>@item.ConnectionValue</td>
+                        <td>@item.ConnectionDescription</td>
+                    </tr>
+                }                                
+            </table>
+        }
+        else
+        {
+            <p>Für diesen Kunden sind keine Kontaktinformationen vorhanden</p>
+        }
+    </div>
+</body>
+</html>
