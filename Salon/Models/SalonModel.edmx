@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -158,7 +158,7 @@
           <Property Name="StepOptionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StepId" Type="int" Nullable="false" />
           <Property Name="Position" Type="int" Nullable="false" />
-          <Property Name="Option" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Option" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="isActive" Type="bit" Nullable="false" />
         </EntityType>
@@ -669,7 +669,8 @@
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -844,7 +845,7 @@
           <Property Name="StepOptionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StepId" Type="Int32" Nullable="false" />
           <Property Name="Position" Type="Int32" Nullable="false" />
-          <Property Name="Option" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Option" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Steps" Relationship="Self.FK_dbo_StepOptions_dbo_Steps_StepId" FromRole="StepOptions" ToRole="Steps" />
@@ -1309,27 +1310,27 @@
           </AssociationSet>
           <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteCustomerByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteUserByID">
-          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
           <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
-          <Parameter Name="studentId" Mode="In" Type="String" />
+            <Parameter Name="studentId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
           <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
-          <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
           <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
@@ -1367,6 +1368,10 @@
           <Property Type="Int32" Name="RoomId" Nullable="false" />
           <Property Type="String" Name="Title" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <ComplexType Name="GetStepsPerTreatment">
+          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
+        </ComplexType>
         <ComplexType Name="GetTeachers">
           <Property Type="String" Name="Teacher" Nullable="true" MaxLength="201" />
         </ComplexType>
@@ -1378,10 +1383,6 @@
           <Property Type="String" Name="Treatement" Nullable="false" MaxLength="100" />
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
-        </ComplexType>
-        <ComplexType Name="GetStepsPerTreatment">
-          <Property Type="String" Name="Step" Nullable="false" MaxLength="100" />
-          <Property Type="String" Name="StepDescription" Nullable="true" MaxLength="500" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1709,7 +1710,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

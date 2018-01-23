@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Salon.Models.StepOptions>
+
+<div class="inline-text title">
+    <p>@Html.DisplayNameFor(model => model.Position)</p>
+    <p>@Html.DisplayNameFor(model => model.Option)</p>
+    <p>@Html.DisplayNameFor(model => model.Description)</p>
+</div>
+
+@foreach (var item in Model)
+{
+    if (item.isActive)
+    {
+        <div class="panel">
+            <div class="panel-heading panel-default">
+                <div class="inline-text">
+                    <p>@Html.DisplayFor(modelItem => item.Position)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Option)</p>
+                    <p>@Html.DisplayFor(modelItem => item.Description)</p>
+                </div>
+            </div>
+        </div>
+    }
+}
+

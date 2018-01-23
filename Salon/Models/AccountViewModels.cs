@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Salon.Models
@@ -49,9 +50,8 @@ namespace Salon.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "E-Mail")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -60,10 +60,32 @@ namespace Salon.Models
 
         [Display(Name = "Speichern?")]
         public bool RememberMe { get; set; }
+
+        [Display(Name = "Raum")]
+        public string Room { get; set; }
+
+        [Display(Name = "Lehrer")]
+        public string Teacher { get; set; }
+
+        [Display(Name = "Eintrittsdatum")]
+        public DateTime entryDate { get; set; }
+
+        [Display(Name = "Austrittdatum")]
+        public DateTime resignationDate { get; set; }
+
+        // This property will hold all available rooms for selection
+        public IEnumerable<System.Web.Mvc.SelectListItem> Rooms { get; set; }
+
+        // This property will hold all available teachers for selection
+        public IEnumerable<System.Web.Mvc.SelectListItem> Teachers { get; set; }
     }
 
     public class RegisterViewModel
     {
+        [Required]
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "E-Mail")]
@@ -79,14 +101,36 @@ namespace Salon.Models
         [Display(Name = "Kennwort bestätigen")]
         [Compare("Password", ErrorMessage = "Das Kennwort entspricht nicht dem Bestätigungskennwort.")]
         public string ConfirmPassword { get; set; }
-    }
 
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Vorname")]
+        public string firstName { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Nachname")]
+        public string lastName { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 3)]
+        [Display(Name = "Klasse")]
+        public string Class { get; set; }
+
+        [Required]
+        [Display(Name = "Eintrittsdatum")]
+        public DateTime entryDate { get; set; }
+
+        [Required]
+        [Display(Name = "Austrittdatum")]
+        public DateTime resignationDate { get; set; }
+    }
     public class ResetPasswordViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "E-Mail")]
-        public string Email { get; set; }
+        [Display(Name = "Benutzername")]
+        public string Username { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "\"{0}\" muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
@@ -108,5 +152,9 @@ namespace Salon.Models
         [EmailAddress]
         [Display(Name = "E-Mail")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Benutzername")]
+        public string UserName { get; set; }
     }
 }

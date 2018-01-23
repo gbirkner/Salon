@@ -15,10 +15,10 @@
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
                     <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -26,6 +26,20 @@
                     <div class="col-md-10">
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Teacher, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.Teacher, Model.Teachers, "No Teacher", new { @class = "form-control" })
+                        @*@Html.DropDownList("Teacher", ViewBag.Teacher as IEnumerable<SelectListItem>, "No Teacher", new { @class = "form-control" })*@
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Room, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.Room, Model.Rooms, "No Room", new { @class = "form-control" })
+                        @*@Html.DropDownList("Room", ViewBag.Room as IEnumerable<SelectListItem>, "No Room", new { @class = "form-control" })*@
                     </div>
                 </div>
                 <div class="form-group">
@@ -42,12 +56,12 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink("Als neuer Benutzer registrieren", "Register")
+                    @*@Html.ActionLink("Als neuer Benutzer registrieren", "Register")*@
                 </p>
-                @* Diese Option aktivieren, nachdem Sie die Kontobestätigung für die Funktion zum Zurücksetzen des Kennworts aktiviert haben
+                @* Diese Option aktivieren, nachdem Sie die Kontobestätigung für die Funktion zum Zurücksetzen des Kennworts aktiviert haben*@
                     <p>
                         @Html.ActionLink("Kennwort vergessen?", "ForgotPassword")
-                    </p>*@
+                    </p>
             }
         </section>
     </div>

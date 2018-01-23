@@ -16,9 +16,18 @@
         <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
             <input type="text" id="Search" placeholder="Search" class="form-control" />
-            <button class="customer-overview">Search</button>
+            @Html.ActionLink("Search", "CustomerOverview", new { searchstring =  ""}, new { @class = "customer-overview" })
         </div>
     </div>
+
+        @*@using (Html.BeginForm())
+        {
+            <p>
+                @Html.TextBox("SearchString") <br />
+                @Html.ActionLink("Search", "CustomerOverview", new { searchstring =  }, new { @class = "customer-overview" })
+            </p>
+        }*@
+
 </div>
 
 
@@ -26,8 +35,7 @@
     <table class="table" id="tbl_cust">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Sex)
-              
+                @Html.DisplayNameFor(model => model.GenderId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FName)
@@ -58,11 +66,8 @@
         {
             <tr>
                 <td>
-                    
-                        
+                    @Html.DisplayFor(modelItem => item.GenderId)
                     </td>
-
-
                     <td>
                         @Html.DisplayFor(modelItem => item.FName)
                     </td>
@@ -71,23 +76,15 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.LName)
                     </td>
-
-
                     <td>
                         @Html.DisplayFor(modelItem => item.PostalCode)
                     </td>
-
-
                     <td>
                         @Html.DisplayFor(modelItem => item.CityName)
                     </td>
-
-
                     <td>
                         @Html.DisplayFor(modelItem => item.Street)
                     </td>
-
-
                      <td>
                         @Html.DisplayFor(modelItem => item.Country)
                     </td>
@@ -165,6 +162,7 @@
         $(function () {
             $('.customer-overview').on('click', function (e) {
                 $.get($(this).prop('href'), function (response) {
+                    
                     $('#CustomerMaster').html(response)
                 });
                 e.preventDefault();
@@ -172,13 +170,19 @@
         });
 
 
+        $("#Search").keyup(function (e) {
+
+            var Searchtext = $("#Search").val().toLowerCase();
+
+            $(".customer-overview").attr("href", "/CustomerVisit/CustomerOverview?searchstring=" + Searchtext);
+        });
 
 
 
        /* $("#Search").keyup( function (e) {
 
             //get filter
-            var Searchtext = $("#Search").val().toLowerCase();
+            
 
 
             var table, tr, td;

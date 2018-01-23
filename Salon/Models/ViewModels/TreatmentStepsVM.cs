@@ -6,24 +6,22 @@ using System.Web;
 
 namespace Salon.Models
 {
-    public class TreatmentsVM
-    {
-        [Key]
-        public int TreatmentId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public bool isActive { get; set; }
-    }
     public class StepsVM
     {
         [Key]
         public int StepsId { get; set; }
         public int TreatmentId { get; set; }
+        [Display(Name = "Titel")]
         public string Title { get; set; }
+        [Display(Name = "Beschreibung")]
         public string Description { get; set; }
+        [Display(Name = "Sensibel")]
         public bool isSensitive { get; set; }
-        public string Duration { get; set; }
-        public string Order { get; set; }
-
+        [Display(Name = "Aktiv")]
+        public bool isActive{ get; set; }
+        [Display(Name = "Dauer in Min")]
+        public int Duration { get; set; }
+        [Display(Name = "Reihenfolge")]
+        public int Order { get; set; }
     }
 }
