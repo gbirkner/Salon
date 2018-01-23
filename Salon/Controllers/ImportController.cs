@@ -135,7 +135,6 @@ namespace Salon.Controllers
                             }
                         }
                     }
-
                     return Redirect("/users");
 
                 }
@@ -195,7 +194,24 @@ namespace Salon.Controllers
             Text = Text.Replace("ö", "oe");
             Text = Text.Replace("ß", "ss");
             Text = Text.Replace(" ", "");
+            Text = Text.Replace("è","e");
+            Text = Text.Replace("é", "e");
             return Text;
+        }
+
+        private void Export(List<UserCSV> exportUserList, string fileName)
+        {
+            //int count = 1;
+
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
