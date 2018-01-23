@@ -110,9 +110,16 @@ namespace Salon.Controllers
             //AspNetUsers stylist = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             AspNetUsers stylist = db.AspNetUsers.Find(User.Identity.GetUserId());
 
+            
             //TODO: read session variables 4 teacher & room!
             AspNetUsers teacher = db.AspNetUsers.Find("33abf8c7-5ae1-4ed6-819f-9d325e57d7bb");
             Rooms room = db.Rooms.Find(2);
+            if (Session["room"] != null) {
+                room = db.Rooms.Find(Int32.Parse(Session["room"].ToString()));
+            }
+            if(Session["teacher"] != null) {
+                teacher = db.AspNetUsers.Find(Session["teacher"]);
+            }
             int duration = 0;
 
             Visits visit;
