@@ -30,10 +30,9 @@
                         <div class="inline-text">
                             @Html.HiddenFor(modelItem => modelItem[i].TreatmentId)
                             @Html.HiddenFor(modelItem => modelItem[i].StepsId)
-                            <div class="form-group addStepContainer" >
+                            <div class="form-group" >
                                 @Html.EditorFor(modelItem => modelItem[i].Title, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(modelItem => modelItem[i].Title, "", new { @class = "text-danger" })
-                                @Html.ActionLink(" ", "Steps", null, new { @class = "add_step btn btn-success glyphicon glyphicon-search", data_toggle = "modal", data_target = "#myModal", data_panel = @i})
                             </div>
                             <div class="form-group">
                                 @Html.EditorFor(modelItem => modelItem[i].Description, new { htmlAttributes = new { @class = "form-control" } })
@@ -135,6 +134,7 @@
 
             var titleCell = '@Html.EditorFor(modelItem => modelItem[0].Title, new { htmlAttributes = new { @class = "form-control" } })';
             var titleValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Title, "", new { @class = "text-danger" })';
+            var selectStep = '@Html.ActionLink(" ", "Steps", null, new { @class = "add_step btn btn-success glyphicon glyphicon-search", data_toggle = "modal", data_target = "#myModal", data_panel = ''index'' })'
 
             var descriptionCell = '@Html.EditorFor(modelItem => modelItem[0].Description, new { htmlAttributes = new { @class = "form-control" } })';
             var descriptionValidation = '@Html.ValidationMessageFor(modelItem => modelItem[0].Description, "", new { @class = "text-danger" })';
@@ -159,9 +159,10 @@
                         '<div class="inline-text">' +
                             '<div class="ignore-cell input-field">' + treatmentIndexCell + '</div>' +
                             '<div class="input-field">' + stepIndexCell +'</div>' +
-                            '<div class="form-group input-field">' +
+                            '<div class="form-group input-field ">' +
                                 titleCell +
                                 titleValidation +
+                                @Html.ActionLink(" ", "Steps", null, new { @class = "add_step btn btn-success glyphicon glyphicon-search", data_toggle = "modal", data_target = "#myModal", data_panel = @i })
                             '</div>' +
                             '<div class="form-group input-field">' +
                                 descriptionCell +

@@ -172,14 +172,24 @@ namespace Salon.Controllers
 
             foreach (TreatmentSteps s in tsteps)
             {
-                if (s.StepId != 0)
-                    db.Entry(s).State = EntityState.Modified;
-                else
+                //if (s.StepId != 0)
+                //    db.Entry(s).State = EntityState.Modified;
+
+                //else
+                //    db.Entry(s).State = EntityState.Added;
+                if (s.StepId == 0)
                     db.Entry(s).State = EntityState.Added;
-            }
+
+                else if (!db.TreatmentSteps.Any(x => x.TreatmentId == s.TreatmentId && x.StepId == s.StepId))
+                    db.Entry(s).State = EntityState.Added;
+
+                else
+                    db.Entry(s).State = EntityState.Modified;
+
+             }
 
             for (int i = 0; i < steps.Count(); i++)
-            {
+            {   
                 if (tsteps[i].StepId == 0)
                 {
                     tsteps[i].StepId = steps[i].StepId;
@@ -204,7 +214,7 @@ namespace Salon.Controllers
                 }
             } while (SaveFailed == true);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("CreateEditSteps", new { id = svm[0].TreatmentId });
         }
 
         public ActionResult CreatEditStepOptions(int? id = null)
