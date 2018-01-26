@@ -48,6 +48,7 @@
                         <li>@Html.ActionLink("Statistiken", "Index", "StatisticTypes", null, new { @class = "dark-header-link" })</li>
                     }
                     @if (User.IsInRole("Admin")) {
+                        <li>@Html.ActionLink("Einstellungen", "Index", "Settings")</li>
                         <li class="dropdown">
                             <a class="dropdown-toggle dark-header-link" data-toggle="dropdown" href="#">Einstellungen <span class="caret"></span>
                                 <ul class="dropdown-menu">

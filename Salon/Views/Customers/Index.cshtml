@@ -6,30 +6,25 @@
 
 <h2>Kunden</h2>
 
+@*<input type="text" id="cusid" value="">*@
+
+
+@*<div class="container">
+    <div class="form-group">
+        <div class="input-group">*@
+@*<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>*@
+@*<input type="text" id="Search" placeholder="Search" class="form-control" />*@
+<input type="text" id="Search" placeholder="Search..">
+<div style="visibility: hidden">
+    @Html.ActionLink("Search", "CustomerOverview", new { searchstring = "" }, new { @class = "customer-overview" })
+</div>
+@*</div>
+        </div>
+</div>*@
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-
-<div class="container">
-    <div class="form-group">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-            <input type="text" id="Search" placeholder="Search" class="form-control" />
-            @Html.ActionLink("Search", "CustomerOverview", new { searchstring = "" }, new { @class = "customer-overview" })
-        </div>
-    </div>
-
-    @*@using (Html.BeginForm())
-        {
-            <p>
-                @Html.TextBox("SearchString") <br />
-                @Html.ActionLink("Search", "CustomerOverview", new { searchstring =  }, new { @class = "customer-overview" })
-            </p>
-        }*@
-
-</div>
-
 
 <div id="CustomerMaster" style="height : 310px; overflow:auto;">
     <table class="table" id="tbl_cust">
@@ -62,11 +57,11 @@
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach(var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GenderID)
+                    @Html.DisplayFor(modelItem => item.GenderTitle)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FName)
@@ -98,8 +93,10 @@
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
                     @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
-                    @Html.ActionLink("View Visits", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
-                    @Html.ActionLink("View Connections", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
+                    @Html.ActionLink("Besuche", "VisitShort", new { id = item.CustomerId }, new { @class = "customer-visitshort" }) |
+                    @Html.ActionLink("Kontaktdaten", "CustomerConnection", new { id = item.CustomerId }, new { @class = "customer-connection" })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.CustomerId }) |
+                    @Html.ActionLink("Anonymisieren", "Anonymisieren", new { id = item.CustomerId })*@
 
                 </td>
             </tr>
@@ -115,55 +112,61 @@
 
 </div>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script>
-    $(document).ready(function () {
-
-        $("#Search").keyup(function () {
-                            var SearchText = $("#Search").val().toLowerCase();
-
-
-
-                        });
-                    });
-</script>
-
 
 @section scripts {
 
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
 
-
+</script>
     <script type="text/javascript">
         $(function ()
         {
             $('.customer-visitshort').on('click', function (e)
             {
-                $.get($(this).prop('href'), function (response)
-                {
-                    $('#MasterDetail').html(response)
-                });
-                                e.preventDefault();
-                            });
-                        });
+                localStorage.setItem('cusid', $(this).prop('href'));
 
-        $(function ()
-        {
-            $('.customer-connection').on('click', function (e)
-            {
                 $.get($(this).prop('href'), function (response)
                 {
                     $('#MasterDetail').html(response)
                 });
-                                e.preventDefault();
-                            });
+                e.preventDefault();
+            });
         });
+
+        //$(function ()
+        //{
+        $('body').on('click', '.customer-connection', function (e)
+            {
+               // alert("amz")
+
+                localStorage.setItem('cusid', $(this).prop('href'));
+
+                $.get($(this).prop('href'), function (response)
+                {
+                    $('#MasterDetail').html(response)
+                });
+                e.preventDefault();
+            });
+        //});
+
+        //$(document).ready(function ()
+        //{
+        //    $("#Search").keyup(function ()
+        //    {
+        //        var SearchText = $("#Search").val().toLowerCase();
+        //    });
+        //});
 
 
         $(function () {
-            $('.customer-overview').on('click', function (e) {
-                $.get($(this).prop('href'), function (response) {
-
+            $('.customer-overview').on('click', function (e)
+            {
+                $.get($(this).prop('href'), function (response)
+                {
                     $('#CustomerMaster').html(response)
+                    //$('#MasterDetail').html("")
+                    //localStorage.clear();
                 });
                 e.preventDefault();
             });
@@ -171,49 +174,28 @@
 
 
         $("#Search").keyup(function (e) {
-
+            //localStorage.clear();
+            //alert("Amk");
             var Searchtext = $("#Search").val().toLowerCase();
 
-            $(".customer-overview").attr("href", "/CustomerVisit/CustomerOverview?searchstring=" + Searchtext);
+            //MasterDetail.html("");
+
+            $(".customer-overview").attr("href", "/Customers/CustomerOverview?searchstring=" + Searchtext);
+            //$(".customer-overview").click();
+            //getElementsByClassName("customer-overview").click();
+            document.querySelector('.customer-overview').click();
         });
 
+        window.onload = function () {
+            if (localStorage.getItem('cusid') != null)
+            {
+                var link = localStorage.getItem('cusid');
+                link = link.substring(21);
 
-
-       /* $("#Search").keyup( function (e) {
-
-            //get filter
-
-
-
-            var table, tr, td;
-            table = document.getElementById("tbl_cust");
-            tr = table.$("#Search").keyup("tr");
-
-            var hitrow = 0;
-            var hit = false;
-
-            for (var i = 1; i < tr.length; i++)
-            {       //loop through table rows
-                td = tr[i].getElementsByTagName("td");
-                for (var j = 0; j < td.length; j++)
-                {
-
-                    if (td[j].innerHTML.indexOf(Searchtext))
-                    {
-                        hit = true;
-                    }
-                }
-                if (hit)
-                {
-                    tr[i].style.display = "";
-                }
-                else
-                {
-                    tr[i].style.display = "none";
-                }
-
+                $("a[href$='" + link + "']").click();
+                //localStorage.clear();
             }
-        });*/
+        };
     </script>
 }
 

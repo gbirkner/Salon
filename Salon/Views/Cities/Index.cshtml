@@ -4,36 +4,123 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<!DOCTYPE html>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Countries.Title)
-        </th>
-        <th></th>
-    </tr>
+<h2>Städte</h2>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Countries.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+<input type="text" id="Search" placeholder="Search..">
+<div style="visibility: hidden">
+    @Html.ActionLink("Search", "CitiesOverview", new { searchstring = "" }, new { @class = "cities-overview" })
+</div>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <div id="CitiesMaster" style="height : 310px; overflow:auto;">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Countries.Title)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PostalCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Countries.Title)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.CityId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.CityId }) 
+                        
+                       @* @if (item.IsDeletable == "1") {*@
+
+                            <span> | </span>
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CityId }, new { @class = "del" })
+                        @*}*@
+                        
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+</body>
+</html>
+
+
+
+
+
+
+@section scripts {
+
+
+
+    <script type="text/javascript">
+
+        $("#Search").keyup(function (e) {
+
+            var Searchtext = $("#Search").val().toLowerCase();
+
+            $(".cities-overview").attr("href", "/Cities/CitiesOverview?searchstring=" + Searchtext);
+        });
+
+        $("#Search").keyup(function (event) {
+            //if (event.keyCode === 13) {
+                $(".cities-overview").click();
+            //}
+        });
+
+        $(function () {
+            $('.cities-overview').on('click', function (e) {
+                $.get($(this).prop('href'), function (response) {
+
+                    $('#CitiesMaster').html(response)
+                });
+                e.preventDefault();
+            });
+        });
+
+
+        $(".del").on('click', function (e) {
+            e.preventDefault();
+            CheckDelete()
+        });
+
+        @*function CheckDelete(cid) {
+
+            var link = '@Url.Action("CheckDelete", "Cities")' + "?cid=" + cid;
+
+            var ok = $.ajax({
+                url: link,
+                async: false,
+            }).responseText;
+
+            alert(ok);
+        }*@
+
+
+    </script>
 }
-
-</table>

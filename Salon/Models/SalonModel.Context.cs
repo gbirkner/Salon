@@ -46,6 +46,7 @@ namespace Salon.Models
         public virtual DbSet<TreatmentSteps> TreatmentSteps { get; set; }
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
+        public virtual DbSet<vCustomers> vCustomers { get; set; }
         public virtual DbSet<C_MigBackup> C_MigBackup { get; set; }
     
         public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()

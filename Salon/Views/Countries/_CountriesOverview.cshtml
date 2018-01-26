@@ -1,21 +1,12 @@
-﻿@model IEnumerable<Salon.Models.CustomerViewModel>
-
-@{
-    ViewBag.Title = "CustomerMasterdata";
-}
-
-<div id="CustomerMasterdata">
-    <h2>Masterdata</h2>
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+﻿@model IEnumerable<Salon.Models.CountriesViewModel>
+<div id="CountriesMaster" style="height : 310px; overflow:auto;">
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FName)
+                @Html.DisplayNameFor(model => model.CountryId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LName)
+                @Html.DisplayNameFor(model => model.Title)
             </th>
             <th></th>
         </tr>
@@ -24,10 +15,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FName)
+                    @Html.DisplayFor(modelItem => item.CountryId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LName)
+                    @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.CountryId }) |
@@ -36,5 +27,7 @@
                 </td>
             </tr>
         }
+
     </table>
+
 </div>

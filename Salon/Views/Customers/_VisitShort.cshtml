@@ -3,9 +3,9 @@
 @{
     ViewBag.Title = "_VisitShort";
 }
-
 <div id="VisitShort">
     <h2>Visits</h2>
+    <div style="height : 310px; overflow:auto;">
     <table class="table">
         <tr>
             <th>
@@ -28,10 +28,10 @@
                     @item.customer.FName
                 </td>
                 <td>
-                    @item.stylist.UserName
+                    @item.stylist
                 </td>
             </tr>
         }
     </table>
-    @Model.Count() Ergebnisse
+   </div>
 </div>
