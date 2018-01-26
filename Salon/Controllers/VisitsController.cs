@@ -12,11 +12,19 @@ using Microsoft.AspNet.Identity;
 
 namespace Salon.Controllers
 {
+    /**
+     * Controller to Handle the Views Visits/Index, Visits/VisitCreate, Visits/_CustomerPicker, Visits/_TreatmentView, CustomerVisit
+     */
     public class VisitsController : Controller
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Visits
+        /**
+         * Returns the View for the Index page, selects 50 visits and skips 'skip' visits if given
+         * @param int? skip: if given, skip a number of entries
+         * @param bool? success: if given, display a notification that the save was successful or not (Redirect after visit save)
+         * @return /Visits/Index.cshtml View
+         */
         public ActionResult Index(int? skip, bool? success)
         {
             if (skip == null || skip < 0)
@@ -51,6 +59,11 @@ namespace Salon.Controllers
             return View(shortVisitViewModels);
         }
 
+        /**
+         * returns partial view filled w/ a given visit
+         * @param int? id: id of the visit to display
+         * @return PartialView Visits/VisitDetails 
+         */
         public ActionResult VisitDetails(int? id) {
             var visit = db.Visits.Find(id);
             VisitDetailViewModel visitDetails = new VisitDetailViewModel();
@@ -66,6 +79,11 @@ namespace Salon.Controllers
             return PartialView(visitDetails);
         }
 
+        /**
+         * gets the VisitTreatments of a visit (since they arent just saved in the friggin' database)
+         * @param Visit v: Visit to get treatments of
+         * @return List of VisitTreatments
+         */
         private List<VisitTreatment> getVisitTreatments(Visits v) {
             List<VisitTreatment> treatments = new List<VisitTreatment>();
 
@@ -287,6 +305,20 @@ namespace Salon.Controllers
             } else {
                 return Redirect("/Visits/VisitCreate/" + id);
             }
+        }
+
+        public ActionResult deleteVisit(int id) {
+            Visits visit = db.Visits.Find(id);
+
+            var delete = db.VisitTasks.Where(x => x.VisitId == id);
+            foreach (var row in delete) {
+                db.VisitTasks.Remove(row);
+            }
+
+            db.Visits.Remove(visit);
+            db.SaveChanges();
+
+            return Redirect("/Visits/Index");
         }
 
         public ActionResult _CustomerPicker() {

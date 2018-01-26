@@ -137,6 +137,12 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
         speichern
     </button>
+    @if (vId != 0) {
+        <a href="@Url.Action("deleteVisit", "Visits", new { id = vId })" class="btn btn-danger">
+            l&ouml;schen
+        </a>
+    }
+    
 </form>
 
 
@@ -343,7 +349,6 @@
                                     changeCustomer(id, fName, lName, true);
                                     return;
                                 }
-                                //alert(msg);
                                 con.html(msg);
                                 modal.modal();
                             } else {
@@ -370,11 +375,8 @@
 
                 }); //get
 
-
-
                 $(".addTreatmentEntry").each(function (e) {
                     $(this).on('click', function (event) {
-                        //TODO load according treatment view
                         var id = $(this).find(".inp_addTreatmentId").val();
                         var name = $(this).find(".inp_addTreatmentName").val();
                         var con = $("#selectedTreatmentsContainer");
@@ -396,16 +398,12 @@
                                     "<div class='form_treatment' id='form_treatment_" + entryId + "'>" + data + "</div>");
                                 switchTreatment(entryId);
                                 calculateDuration();
-                                //visitTreatmentListeners();
                             });
                             var tmp = entryId + 1;
                             con.data("nextid", tmp);
                         });
                     }); //onclick
                 }); //each
-
-
-
 
                 visitTreatmentListeners();
 

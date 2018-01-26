@@ -11,7 +11,11 @@
         @Html.DisplayNameFor(x => x.customer)
     </dt>
     <dd>
-        @Model.customer.FName @Model.customer.LName
+       @if (Model.customer != null && Model.customer.FName != null && Model.customer.LName != null) {
+        <span>@Model.customer.FName @Model.customer.LName</span>
+       } else {
+        <span>n/A</span>
+       }
     </dd>
     <dt>
         @Html.DisplayNameFor(x => x.stylist)
