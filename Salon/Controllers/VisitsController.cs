@@ -309,6 +309,21 @@ namespace Salon.Controllers
             }
         }
 
+        public ActionResult deleteVisit(int id) {
+            Visits visit = db.Visits.Find(id);
+
+            var delete = db.VisitTasks.Where(x => x.VisitId == id);
+            foreach (var row in delete) {
+                db.VisitTasks.Remove(row);
+            }
+
+            db.Visits.Remove(visit);
+            db.SaveChanges();
+
+            return Redirect("/Visits/Index");
+        }
+
+
         public ActionResult _CustomerPicker() {
             var customers = db.Customers;
             IEnumerable<CustomerPicker> picker = (from c in customers
