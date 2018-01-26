@@ -16,7 +16,12 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Visits
+        /**
+         * Returns the View for the Index page, selects 50 visits and skips 'skip' visits if given
+         * @param int? skip: if given, skip a number of entries
+         * @param bool? success: if given, display a notification that the save was successful or not (Redirect after visit save)
+         * @return /Visits/Index.cshtml View
+         */
         public ActionResult Index(int? skip, bool? success)
         {
             if (skip == null || skip < 0)
