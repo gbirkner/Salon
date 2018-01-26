@@ -137,6 +137,11 @@
         <span class="glyphicon glyphicon-floppy-disk"></span>
         speichern
     </button>
+    @if (vId != 0) {
+        <a href="@Url.Action("deleteVisit", "Visits", new { id = vId })" class="btn btn-danger">
+            l&ouml;schen
+        </a>
+    }
 </form>
 
 
