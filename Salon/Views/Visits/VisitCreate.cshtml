@@ -306,16 +306,21 @@
                 });//each
             }//filterList
 
+            /**
+             * calls a controller function that checks the sensitive data settings of 2 customers and displays the steps that differ
+             */
             function getSwitchCustomerMessage(oldCustomer, newCustomer) {
                 var visitId = $("#visitId").val();
                 var link = '@Url.Action("checkCustomerSwitch", "Visits")' + "?cusId1=" + oldCustomer + "&cusId2=" + newCustomer + "&visitId=" + visitId;
-                //alert(link);
                 return $.ajax({
                     url: link,
                     async: false
                 }).responseText;
             }
 
+            /**
+             * 
+             */
             function changeCustomer(id, fName, lName, reload) {
                 $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
                 $("#slc_customerId").val(id);
