@@ -63,19 +63,6 @@ namespace Salon.Models
 
         [Display(Name = "Stadt")]
         public int? CityId { get; set; }
-
-
-        public virtual AspNetUsers AspNetUsers { get; set; }
-
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
-
-        public virtual Cities Cities { get; set; }
-
-        public virtual ICollection<Connections> Connections { get; set; }
-
-        public virtual Genders Genders { get; set; }
-
-        public virtual ICollection<Visits> Visits { get; set; }
     }
 
     [MetadataType(typeof(CustomersMetaData))]

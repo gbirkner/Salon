@@ -14,8 +14,6 @@ namespace Salon.Models
         [Display(Name = "Kontakt")]
         public int ConnectionId;
 
-       
-
         [Display(Name = "Kontakttyp")]
         [Required]
         public int ConnectionTypeId;
@@ -32,13 +30,6 @@ namespace Salon.Models
         [Display(Name = "Beschreibung")]
         [StringLength(500)]
         public string Description;
-
-        [Display(Name = "Kontakttyp")]
-        public virtual ConnectionTypes ConnectionTypes { get; set; }
-
-        [Display(Name = "Kunde")]
-        public virtual Customers Customers { get; set; }
-
     }
 
     [MetadataType(typeof(ConnectionsMetaData))]

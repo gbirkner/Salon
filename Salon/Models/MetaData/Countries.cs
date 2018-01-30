@@ -19,8 +19,6 @@ namespace Salon.Models
         [StringLength(255, MinimumLength = 1)]
         [Required]
         public string Title { get; set; }
-
-        public virtual ICollection<Cities> Cities { get; set; }
     }
 
     [MetadataType(typeof(CountriesMetaData))]

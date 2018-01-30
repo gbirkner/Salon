@@ -17,9 +17,6 @@ namespace Salon.Models
         [Display(Name = "Geschlecht")]
         [StringLength(20, MinimumLength = 1)]
         public string GenderTitle { get; set; }
-
-
-        public virtual ICollection<Customers> Customers { get; set; }
     }
 
     [MetadataType(typeof(GendersMetaData))]

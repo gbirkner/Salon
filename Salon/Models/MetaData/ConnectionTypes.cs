@@ -23,9 +23,6 @@ namespace Salon.Models
         [Display(Name = "Beschreibung")]
         [StringLength(500)]
         public string Description { get; set; }
-
-
-        public virtual ICollection<Connections> Connections { get; set; }
     }
 
     [MetadataType(typeof(ConnectionTypesMetaData))]

@@ -12,7 +12,6 @@ namespace Salon.Models
         [Key]
         public int CityId { get; set; }
 
-
         [Display(Name = "Land")]
         [Required]
         [StringLength(2, MinimumLength = 2)]
@@ -28,11 +27,6 @@ namespace Salon.Models
         [StringLength(255, MinimumLength = 1)]
         public string Title { get; set; }
 
-
-
-        public virtual Countries Countries { get; set; }
-
-        public virtual ICollection<Customers> Customers { get; set; }
     }
 
     [MetadataType(typeof(CitiesMetaData))]
