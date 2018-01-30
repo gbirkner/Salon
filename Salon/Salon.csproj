@@ -261,6 +261,7 @@
     <Compile Include="Models\insSteps_Result.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelHelper\spExtensions.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
