@@ -12,11 +12,19 @@ using Microsoft.AspNet.Identity;
 
 namespace Salon.Controllers
 {
+    /**
+     * Controller to Handle the Views Visits/Index, Visits/VisitCreate, Visits/_CustomerPicker, Visits/_TreatmentView, CustomerVisit
+     */
     public class VisitsController : Controller
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Visits
+        /**
+         * Returns the View for the Index page, selects 50 visits and skips 'skip' visits if given
+         * @param int? skip: if given, skip a number of entries
+         * @param bool? success: if given, display a notification that the save was successful or not (Redirect after visit save)
+         * @return /Visits/Index.cshtml View
+         */
         public ActionResult Index(int? skip, bool? success)
         {
             if (skip == null || skip < 0)
@@ -51,6 +59,11 @@ namespace Salon.Controllers
             return View(shortVisitViewModels);
         }
 
+        /**
+         * returns partial view filled w/ a given visit
+         * @param int? id: id of the visit to display
+         * @return PartialView Visits/VisitDetails 
+         */
         public ActionResult VisitDetails(int? id) {
             var visit = db.Visits.Find(id);
             VisitDetailViewModel visitDetails = new VisitDetailViewModel();
@@ -70,6 +83,11 @@ namespace Salon.Controllers
             return PartialView(visitDetails);
         }
 
+        /**
+         * gets the VisitTreatments of a visit (since they arent just saved in the friggin' database)
+         * @param Visit v: Visit to get treatments of
+         * @return List of VisitTreatments
+         */
         private List<VisitTreatment> getVisitTreatments(Visits v) {
             List<VisitTreatment> treatments = new List<VisitTreatment>();
 
@@ -304,6 +322,24 @@ namespace Salon.Controllers
             }
         }
 
+        public ActionResult deleteVisit(int id) {
+            Visits visit = db.Visits.Find(id);
+
+            var delete = db.VisitTasks.Where(x => x.VisitId == id);
+            foreach (var row in delete) {
+                db.VisitTasks.Remove(row);
+            }
+
+            db.Visits.Remove(visit);
+            db.SaveChanges();
+
+            return Redirect("/Visits/Index");
+        }
+
+        /**
+         * loads the partial view to select a customer
+         * @return PartialView 
+         */
         public ActionResult _CustomerPicker() {
             var customers = db.Customers;
             IEnumerable<CustomerPicker> picker = (from c in customers
@@ -317,7 +353,12 @@ namespace Salon.Controllers
             return PartialView(picker);
         }
 
-        
+        /**
+         * loads partial view for a treatment
+         * @param int id: Id of the treatment to load
+         * @param bool sensitive: include sensitive steps 
+         * @return PartialView
+         */
         public ActionResult _TreatmentForm(int id, bool sensitive) {
             Treatments treatment = db.Treatments.Find(id);
             VisitTreatment model = new VisitTreatment();
@@ -338,11 +379,23 @@ namespace Salon.Controllers
             return PartialView(model);
         }
 
+        /**
+         * checks if given customer allows sensitive data
+         * @param int customerId: id of the customer
+         * @return bool 
+         */
         public bool getCustomerSensitive(int customerId) {
             Customers c = db.Customers.Find(customerId);
             return c.allowSensitive;
         }
 
+        /**
+         * checks the sensitive data settings of 2 customers, returns message including the treatment steps that have to be removed/added
+         * in case the settings are different ( ͡° ͜ʖ ͡°)
+         * @param int cusId1: id of the first customer
+         * @param int cusId2: id of the second customer
+         * @param int visitId: id of the visit (visit has to be saved to change customer)
+         */
         public string checkCustomerSwitch(int cusId1, int cusId2, int visitId) {
             if(visitId == 0) {
                 return makeAlert("Der Besuch mus vor der &Auml;nderung des Kunden abgespeichert werden!<br /> Bitte speichern Sie den Besuch ab und veruchen es erneut!", "Speichern!", "danger");
