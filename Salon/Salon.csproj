@@ -211,7 +211,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\Reports\ReportsController.cs" />
+    <Compile Include="Controllers\Statistics\StatisticsController.cs" />
     <Compile Include="Controllers\Statistics\ChartController.cs" />
     <Compile Include="Models\AspNetRoles.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
@@ -515,7 +515,6 @@
     <Content Include="Views\Shared\DrawSketch.cshtml" />
     <Content Include="Views\Shared\GraphicsView.cshtml" />
     <Content Include="Views\Shared\AddPhoto.cshtml" />
-    <Content Include="Views\Statistics\StatisticsMainMenu.cshtml" />
     <Content Include="Views\ConnectionTypes\Create.cshtml" />
     <Content Include="Views\ConnectionTypes\Delete.cshtml" />
     <Content Include="Views\ConnectionTypes\Details.cshtml" />
@@ -542,9 +541,6 @@
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Import\Import.cshtml" />
-    <Content Include="Views\CustomerVisit\Index.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
-    <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
     <Content Include="Views\Visits\Create.cshtml" />
     <Content Include="Views\Visits\Delete.cshtml" />
     <Content Include="Views\Visits\Details.cshtml" />
@@ -556,16 +552,7 @@
     <Content Include="Views\TreatmentStepsVMs\Index.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\_TreatmentStepOptions.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\_TreatmentSteps.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
-    <Content Include="Views\CustomerVisit\EditCustomer.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
-    <Content Include="Views\Settings\Create.cshtml" />
-    <Content Include="Views\Settings\Delete.cshtml" />
-    <Content Include="Views\Settings\Details.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
-    <Content Include="Views\Settings\Index.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerConnection.cshtml" />
-    <Content Include="Views\CustomerVisit\_CustomerOverview.cshtml" />
     <Content Include="Views\Genders\Create.cshtml" />
     <Content Include="Views\Genders\Delete.cshtml" />
     <Content Include="Views\Genders\Details.cshtml" />
@@ -591,7 +578,6 @@
     <Content Include="Views\Connections\_ConnectionsOverview.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\EditTreatment.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\CreateEditSteps.cshtml" />
@@ -614,6 +600,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\bootstrap\mixins\" />
     <Folder Include="Content\fonts\" />
+    <Folder Include="Controllers\Reports\" />
     <Folder Include="Views\AverageCustomersTimeSpan\" />
     <Folder Include="Views\AverageCustomerTimeSpan\" />
     <Folder Include="Views\CustomerViewModel\" />

@@ -16,7 +16,10 @@ namespace Salon.Controllers.Statistics
 
         public object Streamreader { get; private set; }
 
-        // GET: StatisticTypes
+        /// <summary>
+        /// Controller of the statistics main menu
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             definedStatistics.Add(new StatisticTypes(
