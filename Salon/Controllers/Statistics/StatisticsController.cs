@@ -14,9 +14,13 @@ namespace Salon.Controllers.Statistics
 {
     public class StatisticsController : Controller
     {
+        //static variable that shows if the file was downloaded
         public static bool Download = false;
+        //static variable that shows if the file was downloaded successfully
         public static bool SuccessfullDownload = false;
+        //static variable that shows if there was an error during download
         public static string ErrorMessage = string.Empty;
+        public static string Path = string.Empty;
         private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
         private static List<WorkPerClassViewModel> myWorkList = new List<WorkPerClassViewModel>();
@@ -34,19 +38,20 @@ namespace Salon.Controllers.Statistics
                 //Gets the directory of the logged in windows user
                 string path = Directory.GetParent(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)).FullName;
 
-                if (Environment.OSVersion.Version.Major >= 6)
+                if (Environment.OSVersion.Version.Major >= 6) //checks the OSVersion
                 {
-                    path = Directory.GetParent(path).ToString() + @"\downloads\";
+                    path = Directory.GetParent(path).ToString() + @"\downloads\"; //adds download to the path
                 }
 
-                string fullPath = path + @"\" + fileName + ".csv";
-                while (System.IO.File.Exists(fullPath))
+                string fullPath = path + @"\" + fileName + ".csv"; //adds filename and extension to the path
+                while (System.IO.File.Exists(fullPath)) //checks if a file with that name allready exists
                 {
-                    fullPath = path + @"\" + fileName + "_" + count + ".csv";
+                    fullPath = path + @"\" + fileName + "_" + count + ".csv"; //adds a number to the filename (like a version)
+                    Path = fullPath;
                     count++;
                 }
 
-                System.IO.File.WriteAllLines(fullPath, exportList, System.Text.Encoding.UTF8);
+                System.IO.File.WriteAllLines(fullPath, exportList, System.Text.Encoding.UTF8); //saves the file
                 SuccessfullDownload = true;
             }
             catch (Exception ex)
@@ -245,9 +250,12 @@ namespace Salon.Controllers.Statistics
         }
 
         /// <summary>
-        /// Get: WorkPerClassViewModel
+        /// Shows the work per class
         /// </summary>
         /// <param name="cl">class</param>
+        /// <param name="sort">sort-options</param>
+        /// <param name="teacher">teacher</param>
+        /// <param name="room">room</param>
         /// <returns></returns>
         public ActionResult WorkPerClass(string cl = "", string sort = "", string teacher = "", string room = "")
         {
@@ -255,17 +263,18 @@ namespace Salon.Controllers.Statistics
             ViewBag.Downloaded = Download;
             ViewBag.Success = SuccessfullDownload;
             ViewBag.ErrorMessage = ErrorMessage;
+            ViewBag.Path = Path;
             workPerClassList.Clear();
 
             if (Download == true)
-                Download = false;
+                Download = false; //reset static variable
             if (SuccessfullDownload == true)
-                SuccessfullDownload = false;
+                SuccessfullDownload = false; //reset static variable
 
-            string teacherLast = "";
-            string teacherFirst = "";
+            string teacherLast = ""; //teacher lastname
+            string teacherFirst = ""; //teacher firstname
 
-            if (cl != "" || teacher != "" || room != "")
+            if (cl != "" || teacher != "" || room != "") //if there is something filterd
             {
                 if (cl == "Alle")
                     cl = null;
@@ -283,6 +292,7 @@ namespace Salon.Controllers.Statistics
                     teacherLast = null;
                 }
 
+                //Get WorkPerClass from DB with the selected filter-options
                 IEnumerable<WorkPerClassViewModel> WorkPerClass =
                     db.GetWorkPerClass(cl, teacherFirst, teacherLast, room)
                         .Select(c => new WorkPerClassViewModel()
@@ -296,7 +306,7 @@ namespace Salon.Controllers.Statistics
                             Room = c.Room
                         }).ToList();
 
-                switch(sort)
+                switch(sort) //switch on sort-options
                 {
                     case "Datum aufsteigend":
                         workPerClassList = WorkPerClass.OrderBy(w => w.Date).ThenBy(w => w.StudentName).ToList();
@@ -334,10 +344,10 @@ namespace Salon.Controllers.Statistics
         }
 
         /// <summary>
-        /// Gets all treatments, assigned to a step
+        /// Get all steps of a treatment
         /// </summary>
-        /// <param name="treatmentId"></param>
-        /// <returns></returns>
+        /// <param name="treatmentId">Id of the treatment</param>
+        /// <returns>List of steps</returns>
         private List<WorkPerClassViewModel.Step> GetStepsPerTreatment(int treatmentId)
         {
             List<WorkPerClassViewModel.Step> returnValue = new List<WorkPerClassViewModel.Step>();
@@ -351,12 +361,12 @@ namespace Salon.Controllers.Statistics
                   }).ToList();
 
             return returnValue;
-
         }
 
         /// <summary>
-        /// Table to stringlist for .csv export
+        /// Creates a list of strings from the data for the .csv export
         /// </summary>
+        /// <param name="name">Name of the statistic</param>
         /// <returns>Action</returns>
         public ActionResult WorkPerClassExport(string name)
         {
@@ -367,9 +377,9 @@ namespace Salon.Controllers.Statistics
             var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
             int number = 1;
 
-            if (name == "WorkPerClass")
+            if (name == "WorkPerClass") //if name of the statistic is WorkPerClass
             {
-                foreach (var property in properties) //headers
+                foreach (var property in properties) //creates header of the document
                 {
                     var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
 
@@ -385,25 +395,26 @@ namespace Salon.Controllers.Statistics
                 }
                 returnValue.Add(headers);
 
-                foreach (var entry in workPerClassList)  //data
+                foreach (var entry in workPerClassList)  //loops through all treatments
                 {
-                    foreach (var step in entry.StepsPerTreatment)
+                    foreach (var step in entry.StepsPerTreatment) //loops through all steps for a treatment
                     {
+                        //connects all variables in string seperated by ';'
                         returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
                     }
                     number++;
                 }
 
                 var cl = workPerClassList.FirstOrDefault();
-                if (cl != null)
+                if (cl != null) //if there is a item in exportlist
                 {
-                    this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                    this.Export(returnValue, "Arbeit_" + workPerClassList.First().Class + "_" + DateTime.Now.ToShortDateString().Replace(".", "")); //calls the export method
                 }
                 return RedirectToAction("WorkPerClass");
             }
-            else if (name == "MyWork")
+            else if (name == "MyWork") //if name of the statistic is MyWork
             {
-                foreach (var property in properties) //headers
+                foreach (var property in properties) //creates headers of the document
                 {
                     var display = (property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute);
 
@@ -419,19 +430,20 @@ namespace Salon.Controllers.Statistics
                 }
                 returnValue.Add(headers);
 
-                foreach (var entry in myWorkList)  //data
+                foreach (var entry in myWorkList)  //loops through all treatments
                 {
-                    foreach (var step in entry.StepsPerTreatment)
+                    foreach (var step in entry.StepsPerTreatment) //loops through all steps for a treatment
                     {
+                        //connects all variables in string seperated by ';'
                         returnValue.Add(number + ";" + entry.StudentName + ";" + entry.Class + ";" + entry.TeacherName + ";" + entry.Treatment + ";" + entry.Date.ToShortDateString() + ";" + entry.Room + ";" + step.StepTitle + ";" + step.StepDescription);
                     }
                     number++;
                 }
 
                 var cl = myWorkList.FirstOrDefault();
-                if (cl != null)
+                if (cl != null)//if there is a item in exportlist
                 {
-                    this.Export(returnValue, "MeineArbeit_" + User.Identity.Name + "_" + DateTime.Now.ToShortDateString().Replace(".", ""));
+                    this.Export(returnValue, "MeineArbeit_" + User.Identity.Name + "_" + DateTime.Now.ToShortDateString().Replace(".", "")); //calls the export method
                 }
                 return RedirectToAction("MyWork");
             }
@@ -439,12 +451,12 @@ namespace Salon.Controllers.Statistics
         }
 
         /// <summary>
-        /// Shows the work for the currently loggedon User
+        /// Shows the work for the User that is currently logged in
         /// </summary>
         /// <returns></returns>
         public ActionResult MyWork()
         {
-            var userId = User.Identity.GetUserId();
+            var userId = User.Identity.GetUserId(); //Get id of logged in user
             var visits = db.Visits;
             ViewBag.Downloaded = Download;
             ViewBag.Success = SuccessfullDownload;
@@ -452,10 +464,11 @@ namespace Salon.Controllers.Statistics
             workPerClassList.Clear();
 
             if (Download == true)
-                Download = false;
+                Download = false; //reset variables
             if (SuccessfullDownload == true)
-                SuccessfullDownload = false;
+                SuccessfullDownload = false; //reset variables
 
+            //get data from database
             IEnumerable<WorkPerClassViewModel> MyWork =
                 db.GetMyWork(userId)
                     .Select(c => new WorkPerClassViewModel()
