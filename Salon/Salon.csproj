@@ -600,7 +600,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\bootstrap\mixins\" />
     <Folder Include="Content\fonts\" />
-    <Folder Include="Controllers\Reports\" />
     <Folder Include="Views\AverageCustomersTimeSpan\" />
     <Folder Include="Views\AverageCustomerTimeSpan\" />
     <Folder Include="Views\CustomerViewModel\" />

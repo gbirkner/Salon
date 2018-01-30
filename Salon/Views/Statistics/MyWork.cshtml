@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<Salon.Views.ViewModels.WorkPerClassViewModel>
 
-<link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" media="screen" runat="server" />
-
 @{
     ViewBag.Title = "Work per student";
 }
@@ -44,138 +42,145 @@
     Die Auswertung wurde erfolgreich unter "Downloads" heruntergeladen.
 </div>
 
-<h2>Meine Arbeit</h2> @*header of the statistic*@
+@if (User.IsInRole("Schueler"))
+{
+    <h2>Meine Arbeit</h2> @*header of the statistic*@
 
-<div id="header" style="margin-top: 20px;">
-    <button id="export" style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Statistics", new { name = "MyWork" })'">Download &#x21e9</button> @*Download button*@
-</div>
-<br />
-<div id="ajaxContent" style="overflow: auto; margin-top: 30px">
-    @if (Model.FirstOrDefault() != null)
-    {
-        <table class="table">
-            <thead>
-                <tr style="font-size: 16px; cursor: pointer">
-                    <th>
-                        @Html.DisplayNameFor(model => model.StudentName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Class)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TeacherName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Room)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Date)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Treatment)
-                    </th>
-                    <th>
-                        Schritt
-                    </th>
-                    <th>
-                        Schrittbeschreibung
-                    </th>
-                </tr>
-            </thead>
-            <tbody style="overflow: auto; height: 50%">
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StudentName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Class)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TeacherName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Room)
-                        </td>
-                        <td>
-                            @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Treatment)
-                        </td>
-                        <td></td>
-                        <td></td>
+    <div id="header" style="margin-top: 20px;">
+        <button id="export" style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Statistics", new { name = "MyWork" })'">Download &#x21e9</button> @*Download button*@
+    </div>
+    <br />
+    <div id="ajaxContent" style="overflow: auto; margin-top: 30px">
+        @if (Model.FirstOrDefault() != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr style="font-size: 16px; cursor: pointer">
+                        <th>
+                            @Html.DisplayNameFor(model => model.StudentName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Class)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TeacherName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Room)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Treatment)
+                        </th>
+                        <th>
+                            Schritt
+                        </th>
+                        <th>
+                            Schrittbeschreibung
+                        </th>
                     </tr>
-                    if (item.StepsPerTreatment.Count > 0)
+                </thead>
+                <tbody style="overflow: auto; height: 50%">
+                    @foreach (var item in Model)
                     {
-                        foreach (var step in item.StepsPerTreatment)
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StudentName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Class)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TeacherName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Room)
+                            </td>
+                            <td>
+                                @Convert.ToString(string.Format("{0:dd.MM.yyyy}", item.Date))
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Treatment)
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        if (item.StepsPerTreatment.Count > 0)
                         {
-                            <tr>
-                                <td style="border: none"></td>
-                                <td style="border: none"></td>
-                                <td style="border: none"></td>
-                                <td style="border: none"></td>
-                                <td style="border: none"></td>
-                                <td style="border: none"></td>
-                                <td style="border: none">
-                                    @Html.DisplayFor(x => step.StepTitle)
-                                </td>
-                                <td style="border: none">
-                                    @Html.DisplayFor(x => step.StepDescription)
-                                </td>
-                            </tr>
+                            foreach (var step in item.StepsPerTreatment)
+                            {
+                                <tr>
+                                    <td style="border: none"></td>
+                                    <td style="border: none"></td>
+                                    <td style="border: none"></td>
+                                    <td style="border: none"></td>
+                                    <td style="border: none"></td>
+                                    <td style="border: none"></td>
+                                    <td style="border: none">
+                                        @Html.DisplayFor(x => step.StepTitle)
+                                    </td>
+                                    <td style="border: none">
+                                        @Html.DisplayFor(x => step.StepDescription)
+                                    </td>
+                                </tr>
+                            }
                         }
                     }
-                }
-            </tbody>
-        </table>
-    }
-    else
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>Kein Datensatz vorhanden!</h3>
+        }
+    </div>
+    
+    
+    
+    @*Shows if the download was succesfull*@
+    if (ViewBag.Downloaded == true)
     {
-        <h3>Kein Datensatz vorhanden!</h3>
-    }
-</div>
-
-
-
-@*Shows if the download was succesfull*@
-@if (ViewBag.Downloaded == true)
-{
-    if (ViewBag.Success == true)
-    {
-        <script type="text/javascript">
-	    		window.onload = function () {
-	    		    $(".alert").css('opacity', '1.0');
-	    		    $(".alert").show();
-	    		};
-        </script>
-    }
-    else
-    {
-        string message = "Die Datei konnte nicht heruntergeladen werden!\r\n" + ViewBag.Message;
-    }
-}
-
-<!-- script to fade out alert -->
-<script>
-    // Get all elements with class="closebtn"
-    var close = document.getElementsByClassName("closebtn");
-    var i;
-
-    // Loop through all close buttons
-    for (i = 0; i < close.length; i++) {
-        // When someone clicks on a close button
-        close[i].onclick = function () {
-
-            // Get the parent of <span class="closebtn"> (<div class="alert">)
-            var div = this.parentElement;
-
-            // Set the opacity of div to 0 (transparent)
-            div.style.opacity = "0";
-
-            // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
-            setTimeout(function () { div.style.display = "none"; }, 600);
+        if (ViewBag.Success == true)
+        {
+            <script type="text/javascript">
+    	    		window.onload = function () {
+    	    		    $(".alert").css('opacity', '1.0');
+    	    		    $(".alert").show();
+    	    		};
+            </script>
+        }
+        else
+        {
+            string message = "Die Datei konnte nicht heruntergeladen werden!\r\n" + ViewBag.Message;
         }
     }
-</script>
+    
+    <!-- script to fade out alert -->
+    <script>
+        // Get all elements with class="closebtn"
+        var close = document.getElementsByClassName("closebtn");
+        var i;
+    
+        // Loop through all close buttons
+        for (i = 0; i < close.length; i++) {
+            // When someone clicks on a close button
+            close[i].onclick = function () {
+    
+                // Get the parent of <span class="closebtn"> (<div class="alert">)
+                var div = this.parentElement;
+    
+                // Set the opacity of div to 0 (transparent)
+                div.style.opacity = "0";
+    
+                // Hide the div after 600ms (the same amount of milliseconds it takes to fade out)
+                setTimeout(function () { div.style.display = "none"; }, 600);
+            }
+        }
+    </script>
+}
+else
+{
+    <h2 style="color: red">Sie haben keine Berechtigung für diese Auswertung!</h2>
+}
