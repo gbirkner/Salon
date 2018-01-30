@@ -37,6 +37,7 @@
 
 @foreach (var item in Model) {
     <tr>
+        @Html.HiddenFor(modelItem => item.Id, new { id = "UserID" })
         <td>
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
@@ -59,11 +60,41 @@
         @Html.DisplayFor(modelItem => item.Email)
     </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="javascript:EditUserClick();">Edit</a> |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) 
+            @if (User.IsInRole("Admin"))
+            {
+                <span>|</span>
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
         </td>
     </tr>
 }
 
 </table>
+
+<div class="modal fade" role="dialog" id="modNotAuthorized">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nicht berechtigt</h4>
+            </div>
+            <div class="modal-body" id="modNotAuthorizedBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        function EditUserClick() {
+            $.get("/Users/Edit/" + $("#UserID").val(), function (response) {
+                $("#modNotAuthorizedBody").html(response);
+            })
+            $("#modNotAuthorized").modal();
+        }
+    </script>
+}

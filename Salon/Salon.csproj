@@ -467,6 +467,9 @@
     <Content Include="Views\Statistics\WorkPerClassResponse.cshtml" />
     <Content Include="Views\Statistics\MyWork.cshtml" />
     <Content Include="Views\Statistics\CustomerVisits.cshtml" />
+    <Content Include="Views\Users\_ResetPasswordSuccess.cshtml" />
+    <Content Include="Views\Users\_ResetPasswordFailure.cshtml" />
+    <Content Include="Views\Users\_NotAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
