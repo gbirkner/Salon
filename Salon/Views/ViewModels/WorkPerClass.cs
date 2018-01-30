@@ -40,7 +40,7 @@ namespace Salon.Views.ViewModels
         /// <summary>
         /// Get all classes
         /// </summary>
-        /// <returns></returns>
+        /// <returns>list of classes</returns>
         public List<string> GetClasses()
         {
             List<string> returnValue = new List<string>();
@@ -61,7 +61,7 @@ namespace Salon.Views.ViewModels
         /// <summary>
         /// Get all teachers
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of teachers</returns>
         public SelectList GetTeachers()
         {
             List<string> teacherList = new List<string>();
@@ -82,7 +82,7 @@ namespace Salon.Views.ViewModels
         /// <summary>
         /// Get all rooms
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of rooms</returns>
         public SelectList GetRooms()
         {
             List<string> roomList = new List<string>();
@@ -97,6 +97,11 @@ namespace Salon.Views.ViewModels
             return new SelectList(roomList);
         }
 
+        #region Classes
+
+        /// <summary>
+        /// class for steps
+        /// </summary>
         public class Step
         {
             [Display(Name = "Schritt")]
@@ -106,10 +111,15 @@ namespace Salon.Views.ViewModels
             public string StepDescription { get; set; }
         }
 
+        /// <summary>
+        /// class for teachers
+        /// </summary>
         public class Teacher
         {
             public string TeacherId { get; set; }
             public string TeacherName { get; set; }
         }
+
+        #endregion
     }
 }
