@@ -261,6 +261,9 @@
     <Compile Include="Models\insSteps_Result.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Logging.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ModelHelper\spExtensions.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
@@ -471,6 +474,7 @@
     <Content Include="Views\Users\_ResetPasswordSuccess.cshtml" />
     <Content Include="Views\Users\_ResetPasswordFailure.cshtml" />
     <Content Include="Views\Users\_NotAuthorized.cshtml" />
+    <Content Include="Views\Shared\NotAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
