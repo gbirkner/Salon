@@ -21,7 +21,6 @@ namespace Salon.Controllers.Statistics
         //static variable that shows if there was an error during download
         public static string ErrorMessage = string.Empty;
         public static string Path = string.Empty;
-        private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
         private static List<WorkPerClassViewModel> myWorkList = new List<WorkPerClassViewModel>();
         private SalonEntities db = new SalonEntities();
