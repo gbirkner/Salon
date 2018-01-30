@@ -123,16 +123,6 @@
           <Property Name="GenderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GenderTitle" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
-        <EntityType Name="Logging">
-          <Key>
-            <PropertyRef Name="LogID" />
-          </Key>
-          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FunctionName" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ControllerName" Type="nvarchar" MaxLength="128" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="LogDateTime" Type="datetime2" Precision="7" Nullable="false" />
-        </EntityType>
         <EntityType Name="Pictures">
           <Key>
             <PropertyRef Name="PictureId" />
@@ -344,7 +334,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId">
-          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1" />
+          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Connections" Type="Self.Connections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ConnectionTypes">
@@ -467,18 +459,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_LoggingAspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Logging" Type="Self.Logging" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Logging">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_VisitModifiedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
@@ -570,11 +550,6 @@
           <Parameter Name="teacherLast" Type="nvarchar" Mode="In" />
           <Parameter Name="room" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="InsertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FunctionName" Type="nvarchar" Mode="In" />
-          <Parameter Name="ControllerName" Type="nvarchar" Mode="In" />
-          <Parameter Name="UserID" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="insSteps" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="title" Type="nvarchar" Mode="In" />
           <Parameter Name="description" Type="nvarchar" Mode="In" />
@@ -595,7 +570,6 @@
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Genders" EntityType="Self.Genders" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Logging" EntityType="Self.Logging" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
@@ -676,10 +650,6 @@
           <AssociationSet Name="FK_dbo_VisitTasks_dbo_Visits_VisitId" Association="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId">
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
-          </AssociationSet>
-          <AssociationSet Name="fk_LoggingAspNetUsers" Association="Self.fk_LoggingAspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Logging" EntitySet="Logging" />
           </AssociationSet>
           <AssociationSet Name="fk_VisitModifiedBy" Association="Self.fk_VisitModifiedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -1762,18 +1732,6 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Logging">
-            <EntityTypeMapping TypeName="SalonModel.Logging">
-              <MappingFragment StoreEntitySet="Logging">
-                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
-                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
-                <ScalarProperty Name="LogID" ColumnName="LogID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="InsertLog" FunctionName="SalonModel.Store.InsertLog" />
           <FunctionImportMapping FunctionImportName="isCityDeletable" FunctionName="SalonModel.Store.isCityDeletable" />
         </EntityContainerMapping>
       </Mapping>
