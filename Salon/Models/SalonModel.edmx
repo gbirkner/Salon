@@ -850,6 +850,9 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <FunctionImport Name="isCityDeletable" ReturnType="Collection(Int32)">
+          <Parameter Name="CityId" Mode="In" Type="Int32" />
+          </FunctionImport>
           <EntitySet Name="Logging" EntityType="SalonModel.Logging" />
           <AssociationSet Name="fk_LoggingAspNetUsers" Association="SalonModel.fk_LoggingAspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -859,9 +862,6 @@
             <Parameter Name="FunctionName" Mode="In" Type="String" />
             <Parameter Name="ControllerName" Mode="In" Type="String" />
             <Parameter Name="UserID" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="isCityDeletable" ReturnType="Collection(Int32)">
-            <Parameter Name="CityId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="insSteps_Result">
@@ -1762,6 +1762,7 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="isCityDeletable" FunctionName="SalonModel.Store.isCityDeletable" />
           <EntitySetMapping Name="Logging">
             <EntityTypeMapping TypeName="SalonModel.Logging">
               <MappingFragment StoreEntitySet="Logging">
@@ -1774,7 +1775,6 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="InsertLog" FunctionName="SalonModel.Store.InsertLog" />
-          <FunctionImportMapping FunctionImportName="isCityDeletable" FunctionName="SalonModel.Store.isCityDeletable" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

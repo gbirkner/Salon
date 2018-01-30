@@ -175,6 +175,15 @@ namespace Salon.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<insSteps_Result>("insSteps", titleParameter, descriptionParameter, isSensitiveParameter);
         }
     
+        public virtual ObjectResult<Nullable<int>> isCityDeletable(Nullable<int> cityId)
+        {
+            var cityIdParameter = cityId.HasValue ?
+                new ObjectParameter("CityId", cityId) :
+                new ObjectParameter("CityId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("isCityDeletable", cityIdParameter);
+        }
+    
         public virtual int InsertLog(string functionName, string controllerName, string userID)
         {
             var functionNameParameter = functionName != null ?
@@ -190,15 +199,6 @@ namespace Salon.Models
                 new ObjectParameter("UserID", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertLog", functionNameParameter, controllerNameParameter, userIDParameter);
-        }
-    
-        public virtual ObjectResult<Nullable<int>> isCityDeletable(Nullable<int> cityId)
-        {
-            var cityIdParameter = cityId.HasValue ?
-                new ObjectParameter("CityId", cityId) :
-                new ObjectParameter("CityId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("isCityDeletable", cityIdParameter);
         }
     }
 }

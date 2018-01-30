@@ -264,6 +264,7 @@
     <Compile Include="Models\Logging.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModelHelper\spExtensions.cs" />
     <Compile Include="Models\Pictures.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -370,9 +371,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Images\default_logo.svg" />
     <Content Include="Views\Visits\VisitStyle.css" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -474,6 +473,7 @@
     <Content Include="Views\Statistics\CustomerVisits.cshtml" />
     <Content Include="Views\Users\_ResetPasswordSuccess.cshtml" />
     <Content Include="Views\Users\_ResetPasswordFailure.cshtml" />
+    <Content Include="Views\Users\_NotAuthorized.cshtml" />
     <Content Include="Views\Shared\NotAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>

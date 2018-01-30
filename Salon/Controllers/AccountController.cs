@@ -141,6 +141,7 @@ namespace Salon.Controllers
                     }
                     else
                     {
+                        db.InsertLog("Login", "AccountController", user.Id);
                         return RedirectToLocal(returnUrl);
                     }
                 case SignInStatus.LockedOut:
@@ -331,6 +332,7 @@ namespace Salon.Controllers
                     user.ChangedPassword = true;
                     UserManager.Update(user);
 
+                    db.InsertLog("ResetPassword", "AccountController", user.Id);
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
             }

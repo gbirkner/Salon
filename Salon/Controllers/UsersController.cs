@@ -18,6 +18,7 @@ namespace Salon.Controllers
     public class UsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private SalonEntities salondb = new SalonEntities();
 
         public UsersController()
         {
@@ -33,7 +34,6 @@ namespace Salon.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
-
 
         // GET: User
         public async Task<ActionResult> Index()
@@ -80,7 +80,10 @@ namespace Salon.Controllers
                 UserManager.Update(user);
 
                 if (passwordChangeResult == IdentityResult.Success)
+                {
+                    salondb.InsertLog("_ResetPassword", "UsersController", User.Identity.GetUserId());
                     return PartialView("_ResetPasswordSuccess");
+                }
             }
             return PartialView("_ResetPasswordFailure");
         }
@@ -120,8 +123,8 @@ namespace Salon.Controllers
                     ModelState.AddModelError("", adminresult.Errors.First().ToString());
                     ViewBag.RoleId = new SelectList(RoleManager.Roles, "Id", "Name");
                     return View();
-
                 }
+                salondb.InsertLog("Create", "UsersController", User.Identity.GetUserId());
                 return RedirectToAction("Index");
             }
             else
@@ -211,6 +214,7 @@ namespace Salon.Controllers
                         return View();
                     }
                 }
+                salondb.InsertLog("Edit", "UsersController", User.Identity.GetUserId());
                 return RedirectToAction("Index");
             }
             else
