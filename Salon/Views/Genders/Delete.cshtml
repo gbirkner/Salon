@@ -18,6 +18,12 @@
         <h4>Genders</h4>
         <hr />
         <dl class="dl-horizontal">
+
+            <div style="margin-bottom: 20px;">
+                @Html.ValidationMessageFor(model => model.GenderID, "", new { @class = "text-danger" })
+            </div>
+
+
             <dt>
                 @Html.DisplayNameFor(model => model.GenderTitle)
             </dt>

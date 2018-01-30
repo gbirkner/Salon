@@ -14,7 +14,10 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Connections
+        /// <summary>
+        /// Index View Connection
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             var connections = db.Connections.Include(c => c.ConnectionTypes).Include(c => c.Customers);
@@ -22,7 +25,11 @@ namespace Salon.Controllers
             
         }
 
-        // GET: Connections/Details/5
+        /// <summary>
+        /// Detail View Connection
+        /// </summary>
+        /// <param name="id">ConnectionId</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,7 +44,10 @@ namespace Salon.Controllers
             return View(connections);
         }
 
-        // GET: Connections/Create
+        /// <summary>
+        /// Create View Connection
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title");
@@ -46,17 +56,11 @@ namespace Salon.Controllers
             return View();
         }
 
-        //public ActionResult CreateCon()
-        //{
-        //    ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title");
-        //    ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull");
-
-        //    return View();
-        //}
-
-        // POST: Connections/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create Connection in DB
+        /// </summary>
+        /// <param name="connections"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
@@ -64,7 +68,15 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Connections.Add(connections);
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("ConnectionId", "Es ist ein Fehler aufgetreten!");
+                    return View(connections);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -73,26 +85,11 @@ namespace Salon.Controllers
             return View(connections);
         }
 
-        //// POST: Connections/Create
-        //// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        //// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult CreateCon([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Connections.Add(connections);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
-        //    ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "NameFull", connections.CustomerId);
-        //    return View(connections);
-        //}
-
-        // GET: Connections/Edit/5
+        /// <summary>
+        /// Edit View Connection
+        /// </summary>
+        /// <param name="id">ConnectionId</param>
+        /// <returns></returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -109,7 +106,11 @@ namespace Salon.Controllers
             return View(connections);
         }
 
-
+        /// <summary>
+        /// Overview for Search
+        /// </summary>
+        /// <param name="searchstring">Searchstring</param>
+        /// <returns></returns>
         public ActionResult ConnectionsOverview(string searchstring = null)
         {
             var cons = db.Connections.Include(p => p.Customers).Include(p => p.ConnectionTypes);
@@ -131,11 +132,11 @@ namespace Salon.Controllers
             return PartialView("_ConnectionsOverview", ConVM);
         }
 
-
-
-        // POST: Connections/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit Connection in DB
+        /// </summary>
+        /// <param name="connections"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ConnectionId,ConnectionTypeId,CustomerId,Title,Description")] Connections connections)
@@ -143,7 +144,15 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(connections).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("ConnectionId", "Es ist ein Fehler aufgetreten!");
+                    return View(connections);
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.ConnectionTypeId = new SelectList(db.ConnectionTypes, "ConnectionTypeId", "Title", connections.ConnectionTypeId);
@@ -151,7 +160,11 @@ namespace Salon.Controllers
             return View(connections);
         }
 
-        // GET: Connections/Delete/5
+        /// <summary>
+        /// Delete View Connecion
+        /// </summary>
+        /// <param name="id">ConnectionId</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -166,14 +179,25 @@ namespace Salon.Controllers
             return View(connections);
         }
 
-        // POST: Connections/Delete/5
+        /// <summary>
+        /// Delete Connection in DB
+        /// </summary>
+        /// <param name="id">ConnectionId</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Connections connections = db.Connections.Find(id);
             db.Connections.Remove(connections);
-            db.SaveChanges();
+            try {
+                db.SaveChanges();
+
+            } catch (Exception ex) {
+                var ErrorCode = ex.InnerException.HResult;
+                ModelState.AddModelError("ConnectionId", "Es ist ein Fehler aufgetreten!");
+                return View(connections);
+            }
             return RedirectToAction("Index");
         }
 

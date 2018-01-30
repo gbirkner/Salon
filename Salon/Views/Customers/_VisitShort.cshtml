@@ -4,7 +4,7 @@
     ViewBag.Title = "_VisitShort";
 }
 <div id="VisitShort">
-    <h2>Visits</h2>
+    <h2>Besuche</h2>
     <div style="height : 310px; overflow:auto;">
     <table class="table">
         <tr>
@@ -17,6 +17,9 @@
             <th>
                 @Html.DisplayNameFor(x => x.stylist)
             </th>
+            <th>
+
+            </th>
         </tr>
         @foreach (var item in Model)
         {
@@ -25,10 +28,13 @@
                     @item.created
                 </td>
                 <td>
-                    @item.customer.FName
+                    @item.customer.FName @item.customer.LName
                 </td>
                 <td>
-                    @item.stylist
+                    @item.stylist.UserName
+                </td>
+                <td>
+                    <a href="Visits/VisitCreate/@item.visitId">Details</a>
                 </td>
             </tr>
         }

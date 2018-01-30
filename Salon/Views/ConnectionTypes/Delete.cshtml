@@ -11,6 +11,11 @@
     <h4>ConnectionTypes</h4>
     <hr />
     <dl class="dl-horizontal">
+
+        <div style="margin-bottom: 20px;">
+            @Html.ValidationMessageFor(model => model.ConnectionTypeId, "", new { @class = "text-danger" })
+        </div>
+
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>

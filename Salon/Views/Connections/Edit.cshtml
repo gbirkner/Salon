@@ -22,6 +22,9 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ConnectionId)
     
+            <div style="margin-bottom: 20px;">
+                @Html.ValidationMessageFor(model => model.ConnectionId, "", new { @class = "text-danger" })
+            </div>
 
     
             <div class="form-group">

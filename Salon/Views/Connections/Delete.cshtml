@@ -16,6 +16,11 @@
     <div>
         <h2>Delete</h2>
         <hr />
+
+        <div style="margin-bottom: 20px;">
+            @Html.ValidationMessageFor(model => model.ConnectionId, "", new { @class = "text-danger" })
+        </div>
+
         <dl class="dl-horizontal">
             <dt>
                 @Html.DisplayNameFor(model => model.Customers.FName)

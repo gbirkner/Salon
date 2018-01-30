@@ -5,6 +5,10 @@
     <hr />
     <dl class="dl-horizontal">
 
+        <div style="margin-bottom: 20px;">
+            @Html.ValidationMessageFor(model => model.ConnectionId, "", new { @class = "text-danger" })
+        </div>
+
         <dt>
             @Html.DisplayNameFor(model => model.Customers.FName)
         </dt>

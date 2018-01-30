@@ -26,6 +26,10 @@
             @Html.HiddenFor(model => model.Modified)
             @Html.HiddenFor(model => model.ModifiedBy)
 
+            <div style="margin-bottom: 20px;">
+                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
+            </div>
+
 
             <div class="form-group">
                 @*@Html.LabelFor(model => model.GenderID, "GenderID", htmlAttributes: new { @class = "control-label col-md-2" })*@

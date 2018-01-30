@@ -17,6 +17,11 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ConnectionTypeId)
 
+        <div style="margin-bottom: 20px;">
+            @Html.ValidationMessageFor(model => model.ConnectionTypeId, "", new { @class = "text-danger" })
+        </div>
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

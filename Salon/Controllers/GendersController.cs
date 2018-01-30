@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace Salon.Controllers
 {
@@ -14,13 +15,20 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Genders
+        /// <summary>
+        /// Index view Gender
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View(db.Genders.ToList());
         }
 
-        // GET: Genders/Details/5
+        /// <summary>
+        /// Detail View Gender
+        /// </summary>
+        /// <param name="id">GenderID</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,15 +43,20 @@ namespace Salon.Controllers
             return View(genders);
         }
 
-        // GET: Genders/Create
+        /// <summary>
+        /// Create View Gender
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Genders/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create Gender in DB
+        /// </summary>
+        /// <param name="genders"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "GenderID,GenderTitle")] Genders genders)
@@ -51,14 +64,25 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Genders.Add(genders);
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+
+                } catch (DbUpdateException ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("GenderID", "Es ist ein Fehler aufgetreten!");
+                    return View(genders);
+                }
                 return RedirectToAction("Index");
             }
 
             return View(genders);
         }
 
-        // GET: Genders/Edit/5
+        /// <summary>
+        /// Edit Gender View
+        /// </summary>
+        /// <param name="id">GenderID</param>
+        /// <returns></returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,9 +97,11 @@ namespace Salon.Controllers
             return View(genders);
         }
 
-        // POST: Genders/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit Gender in DB
+        /// </summary>
+        /// <param name="genders"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GenderID,GenderTitle")] Genders genders)
@@ -83,13 +109,24 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(genders).State = EntityState.Modified;
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+
+                } catch (DbUpdateException ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("GenderID", "Es ist ein Fehler aufgetreten!");
+                    return View(genders);
+                }
                 return RedirectToAction("Index");
             }
             return View(genders);
         }
 
-        // GET: Genders/Delete/5
+        /// <summary>
+        /// Delete View Gender
+        /// </summary>
+        /// <param name="id">GenderID</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,14 +141,29 @@ namespace Salon.Controllers
             return View(genders);
         }
 
-        // POST: Genders/Delete/5
+        /// <summary>
+        /// Delete Gender in DB
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Genders genders = db.Genders.Find(id);
             db.Genders.Remove(genders);
-            db.SaveChanges();
+
+
+            try {
+                db.SaveChanges();
+
+            } catch (DbUpdateException ex) {
+                var ErrorCode = ex.InnerException.HResult;
+                ModelState.AddModelError("GenderID", "Sie können dieses Geschlecht nicht löschen!");
+                return View(genders);
+            }
+
+
             return RedirectToAction("Index");
         }
 

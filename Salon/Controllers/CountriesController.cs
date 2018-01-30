@@ -17,13 +17,20 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Countries
+        /// <summary>
+        /// Index View Country
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View(db.Countries.ToList());
         }
 
-        // GET: Countries/Details/5
+        /// <summary>
+        /// Detail View Country
+        /// </summary>
+        /// <param name="id">CountryId</param>
+        /// <returns></returns>
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -38,14 +45,20 @@ namespace Salon.Controllers
             return View(countries);
         }
 
-        // GET: Countries/Create
+        /// <summary>
+        /// Create View Countr
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
 
-
-
+        /// <summary>
+        /// Overview Search
+        /// </summary>
+        /// <param name="searchstring">Searchstring</param>
+        /// <returns></returns>
         public ActionResult CountriesOverview(string searchstring = null)
         {
             var country = db.Countries;
@@ -64,11 +77,11 @@ namespace Salon.Controllers
         }
 
 
-
-
-        // POST: Countries/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create Country in DB
+        /// </summary>
+        /// <param name="countries"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CountryId,Title")] Countries countries)
@@ -82,13 +95,10 @@ namespace Salon.Controllers
 
                 } catch (DbUpdateException ex)
                 {
-                    //ViewBag.exceptionmessage = "Der Länderkürzel ist schon vorhanden!";
+                    var ErrorCode = ex.InnerException.HResult;
                     ModelState.AddModelError("CountryID", "Das Länderkürzel ist schon vorhanden!");
                     return View(countries);
                 }
-
-
-
 
                 return RedirectToAction("Index");
             }
@@ -96,7 +106,11 @@ namespace Salon.Controllers
             return View(countries);
         }
 
-        // GET: Countries/Edit/5
+        /// <summary>
+        /// Edit View Country
+        /// </summary>
+        /// <param name="id">CountryId</param>
+        /// <returns></returns>
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -111,23 +125,37 @@ namespace Salon.Controllers
             return View(countries);
         }
 
-        // POST: Countries/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit Country in DB
+        /// </summary>
+        /// <param name="countries"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CountryId,Title")] Countries countries)
         {
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 db.Entry(countries).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("CountryId", "Es ist ein Fehler aufgetreten!");
+                    return View(countries);
+                }
+                
                 return RedirectToAction("Index");
             }
             return View(countries);
         }
 
-        // GET: Countries/Delete/5
+        /// <summary>
+        /// Delete View Country
+        /// </summary>
+        /// <param name="id">CountryId</param>
+        /// <returns></returns>
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -142,14 +170,25 @@ namespace Salon.Controllers
             return View(countries);
         }
 
-        // POST: Countries/Delete/5
+        /// <summary>
+        /// Delete Country in DB
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
             Countries countries = db.Countries.Find(id);
             db.Countries.Remove(countries);
-            db.SaveChanges();
+            try {
+                db.SaveChanges();
+
+            } catch (Exception ex) {
+                var ErrorCode = ex.InnerException.HResult;
+                ModelState.AddModelError("CountryId", "Sie können dieses Land nicht löschen!");
+                return View(countries);
+            }
             return RedirectToAction("Index");
         }
 

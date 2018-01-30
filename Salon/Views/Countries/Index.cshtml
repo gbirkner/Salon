@@ -48,11 +48,9 @@
     </div>
 
     @section scripts {
-
-
-
         <script type="text/javascript">
 
+            //generate Searchstring
             $("#Search").keyup(function (e) {
 
                 var Searchtext = $("#Search").val().toLowerCase();
@@ -60,12 +58,12 @@
                 $(".countries-overview").attr("href", "/Countries/CountriesOverview?searchstring=" + Searchtext);
             });
 
+            //click actionlink on Keyupdate
             $("#Search").keyup(function (event) {
-                //if (event.keyCode === 13) {
                 $(".countries-overview").click();
-                //}
             });
 
+            //Catch Response and put it in the countriesmaster
             $(function () {
                 $('.countries-overview').on('click', function (e) {
                     $.get($(this).prop('href'), function (response) {
@@ -75,8 +73,6 @@
                     e.preventDefault();
                 });
             });
-
-
         </script>
     }
 

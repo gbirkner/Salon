@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="SalonModel.AspNetUsers" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Cities" Width="1.5" PointX="6" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Connections" Width="1.5" PointX="10.5" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SalonModel.ConnectionTypes" Width="1.5" PointX="8.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SalonModel.ConnectionTypes" Width="1.5" PointX="8.375" PointY="3" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Countries" Width="1.5" PointX="3.75" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Customers" Width="1.5" PointX="8.25" PointY="6.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SalonModel.Genders" Width="1.5" PointX="6" PointY="12.375" IsExpanded="true" />

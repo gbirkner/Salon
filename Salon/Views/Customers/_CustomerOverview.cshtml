@@ -75,22 +75,3 @@
         }
     </table>
 </div>
-
-@*@section scripts {
-
-    <script>
-
-        $(function () {
-            $('.customer-connection').on('click', function (e) {
-                alert("amz")
-
-                localStorage.setItem('cusid', $(this).prop('href'));
-
-                $.get($(this).prop('href'), function (response) {
-                    $('#MasterDetail').html(response)
-                });
-                e.preventDefault();
-            });
-        });
-    </script>
-    }*@

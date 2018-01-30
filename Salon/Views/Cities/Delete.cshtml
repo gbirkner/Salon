@@ -18,6 +18,11 @@
     <div>
         <hr />
         <dl class="dl-horizontal">
+            <div style="margin-bottom: 20px;">
+                @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+            </div>
+            
+
             <dt>
                 @Html.DisplayNameFor(model => model.PostalCode)
             </dt>

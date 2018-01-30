@@ -52,14 +52,8 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.CityId }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.CityId }) 
-                        
-                       @* @if (item.IsDeletable == "1") {*@
-
-                            <span> | </span>
-                            @Html.ActionLink("Delete", "Delete", new { id = item.CityId }, new { @class = "del" })
-                        @*}*@
-                        
+                        @Html.ActionLink("Details", "Details", new { id = item.CityId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.CityId }, new { @class = "del" })
                     </td>
                 </tr>
             }
@@ -75,11 +69,9 @@
 
 
 @section scripts {
-
-
-
     <script type="text/javascript">
 
+        //generate Searchstring
         $("#Search").keyup(function (e) {
 
             var Searchtext = $("#Search").val().toLowerCase();
@@ -87,12 +79,12 @@
             $(".cities-overview").attr("href", "/Cities/CitiesOverview?searchstring=" + Searchtext);
         });
 
+        //click actionlink on Keyupdate
         $("#Search").keyup(function (event) {
-            //if (event.keyCode === 13) {
                 $(".cities-overview").click();
-            //}
         });
 
+        //Catch Response and put it in the citiesmaster
         $(function () {
             $('.cities-overview').on('click', function (e) {
                 $.get($(this).prop('href'), function (response) {
@@ -102,25 +94,5 @@
                 e.preventDefault();
             });
         });
-
-
-        $(".del").on('click', function (e) {
-            e.preventDefault();
-            CheckDelete()
-        });
-
-        @*function CheckDelete(cid) {
-
-            var link = '@Url.Action("CheckDelete", "Cities")' + "?cid=" + cid;
-
-            var ok = $.ajax({
-                url: link,
-                async: false,
-            }).responseText;
-
-            alert(ok);
-        }*@
-
-
     </script>
 }

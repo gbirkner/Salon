@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace Salon.Controllers
 {
@@ -14,14 +15,21 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: Cities
+        /// <summary>
+        /// Index View Cities
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             var cities = db.Cities.Include(c => c.Countries);
             return View(cities.ToList());
         }
 
-        // GET: Cities/Details/5
+        /// <summary>
+        /// Detail View Cities
+        /// </summary>
+        /// <param name="id">CityId</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,16 +44,21 @@ namespace Salon.Controllers
             return View(cities);
         }
 
-        // GET: Cities/Create
+        /// <summary>
+        /// Create View City
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "Title");
             return View();
         }
 
-        // POST: Cities/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create City in DB
+        /// </summary>
+        /// <param name="cities"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CityId,CountryId,PostalCode,Title")] Cities cities)
@@ -53,7 +66,15 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Cities.Add(cities);
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("CityId", "Es ist ein Fehler aufgetreten!");
+                    return View(cities);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -61,7 +82,11 @@ namespace Salon.Controllers
             return View(cities);
         }
 
-
+        /// <summary>
+        /// Overview for Search
+        /// </summary>
+        /// <param name="searchstring">Searchstring</param>
+        /// <returns></returns>
         public ActionResult CitiesOverview(string searchstring = null)
         {
             var city = db.Cities.Include(p => p.Countries);
@@ -81,9 +106,11 @@ namespace Salon.Controllers
             return PartialView("_CitiesOverview", CitiesVM);
         }
 
-
-
-        // GET: Cities/Edit/5
+        /// <summary>
+        /// Edit View City
+        /// </summary>
+        /// <param name="id">CityId</param>
+        /// <returns></returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -99,9 +126,11 @@ namespace Salon.Controllers
             return View(cities);
         }
 
-        // POST: Cities/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit City in DB
+        /// </summary>
+        /// <param name="cities"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CityId,CountryId,PostalCode,Title")] Cities cities)
@@ -109,14 +138,26 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(cities).State = EntityState.Modified;
-                db.SaveChanges();
+
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("CityId", "Es ist ein Fehler aufgetreten!");
+                    return View(cities);
+                }
                 return RedirectToAction("Index");
             }
             ViewBag.CountryId = new SelectList(db.Countries, "CountryId", "Title", cities.CountryId);
             return View(cities);
         }
 
-        // GET: Cities/Delete/5
+        /// <summary>
+        /// Delete City View
+        /// </summary>
+        /// <param name="id">CityId</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -129,17 +170,30 @@ namespace Salon.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cities);
-        }
+            return View(cities);           
+            }
 
-        // POST: Cities/Delete/5
+        /// <summary>
+        /// Delete City in DB
+        /// </summary>
+        /// <param name="id">CityId</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Cities cities = db.Cities.Find(id);
             db.Cities.Remove(cities);
-            db.SaveChanges();
+
+            try {
+                db.SaveChanges();
+
+            } catch (DbUpdateException ex) {
+                var ErrorCode = ex.InnerException.HResult;
+                //FK for City -> can not be deleted
+                ModelState.AddModelError("CityId", "Sie können diese Stadt nicht löschen!");
+                return View(cities);
+            }
             return RedirectToAction("Index");
         }
 

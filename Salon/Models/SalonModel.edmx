@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Während der Generierung sind Fehler aufgetreten:
 Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.-->
         <EntityType Name="_MigBackup">
@@ -348,9 +348,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId">
-          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1" />
           <End Role="Connections" Type="Self.Connections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ConnectionTypes">
@@ -691,8 +689,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1345,27 +1342,27 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           </AssociationSet>
           <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeCustomerByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeUserByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteCustomerByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteUserByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
           <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
-            <Parameter Name="studentId" Mode="In" Type="String" />
+          <Parameter Name="studentId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
           <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
-            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
           <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">

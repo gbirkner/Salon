@@ -47,14 +47,14 @@ namespace Salon.Models
         [Display(Name = "geändert von")]
         public string ModifiedBy { get; set; }
 
-        [Display(Name = "geändert")]
+        [Display(Name = "geändert am")]
         public System.DateTime Modified { get; set; }
 
 
         [Display(Name = "erstellt von")]
         public string CreatedBy { get; set; }
 
-        [Display(Name = "erstellt von")]
+        [Display(Name = "erstellt am")]
         public System.DateTime Created { get; set; }
 
         [Required]

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Salon.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace Salon.Controllers
 {
@@ -14,13 +15,20 @@ namespace Salon.Controllers
     {
         private SalonEntities db = new SalonEntities();
 
-        // GET: ConnectionTypes
+        /// <summary>
+        /// Index View ConnectionType
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View(db.ConnectionTypes.ToList());
         }
 
-        // GET: ConnectionTypes/Details/5
+        /// <summary>
+        /// Detail View ConnectionType
+        /// </summary>
+        /// <param name="id">ConnectionTypeId</param>
+        /// <returns></returns>
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -35,15 +43,20 @@ namespace Salon.Controllers
             return View(connectionTypes);
         }
 
-        // GET: ConnectionTypes/Create
+        /// <summary>
+        /// Create View ConnectionType
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: ConnectionTypes/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Create ConnectionType in DB
+        /// </summary>
+        /// <param name="connectionTypes"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ConnectionTypeId,Title,Description")] ConnectionTypes connectionTypes)
@@ -51,14 +64,25 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.ConnectionTypes.Add(connectionTypes);
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("ConnectionTypeId", "Es ist ein Fehler aufgetreten!");
+                    return View(connectionTypes);
+                }
                 return RedirectToAction("Index");
             }
 
             return View(connectionTypes);
         }
 
-        // GET: ConnectionTypes/Edit/5
+        /// <summary>
+        /// Edit View ConnectionType
+        /// </summary>
+        /// <param name="id">ConnectionTypeId</param>
+        /// <returns></returns>
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -73,9 +97,11 @@ namespace Salon.Controllers
             return View(connectionTypes);
         }
 
-        // POST: ConnectionTypes/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// Edit ConnectionType in DB
+        /// </summary>
+        /// <param name="connectionTypes">ConnectionTypeId</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ConnectionTypeId,Title,Description")] ConnectionTypes connectionTypes)
@@ -83,13 +109,24 @@ namespace Salon.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(connectionTypes).State = EntityState.Modified;
-                db.SaveChanges();
+                try {
+                    db.SaveChanges();
+
+                } catch (Exception ex) {
+                    var ErrorCode = ex.InnerException.HResult;
+                    ModelState.AddModelError("ConnectionTypeId", "Es ist ein Fehler aufgetreten!");
+                    return View(connectionTypes);
+                }
                 return RedirectToAction("Index");
             }
             return View(connectionTypes);
         }
 
-        // GET: ConnectionTypes/Delete/5
+        /// <summary>
+        /// Delete ConnectionType View
+        /// </summary>
+        /// <param name="id">ConnectionTypeId</param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -104,14 +141,29 @@ namespace Salon.Controllers
             return View(connectionTypes);
         }
 
-        // POST: ConnectionTypes/Delete/5
+        /// <summary>
+        /// Delete View ConnectionType
+        /// </summary>
+        /// <param name="id">ConnectionTypeId</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             ConnectionTypes connectionTypes = db.ConnectionTypes.Find(id);
             db.ConnectionTypes.Remove(connectionTypes);
-            db.SaveChanges();
+
+
+            try {
+                db.SaveChanges();
+
+            } catch (DbUpdateException ex) {
+                var ErrorCode = ex.InnerException.HResult;
+                ModelState.AddModelError("ConnectionTypeId", "Sie können diesen Kontakttyp nicht löschen!");
+                return View(connectionTypes);
+            }
+
+
             return RedirectToAction("Index");
         }
 

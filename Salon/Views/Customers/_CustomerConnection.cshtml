@@ -4,6 +4,7 @@
     <h2>Kontaktdaten</h2>
 
     <p>
+        @* Custom Link zum hinzufügen von Kontaktdaten *@
         <a href="#" onclick="AddCon(@ViewBag.CustomerId)">Create new</a>
     </p>
     <div style="height : 310px; overflow:auto;">
@@ -37,8 +38,6 @@
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td>
-                        @* @Html.ActionLink("Edit", "EditCon", new { id = item.ConnectionId }, new { @class = "edit-btn" }) |*@
-                        @*@Html.ActionLink("Delete", "DeleteCon", new { id = item.ConnectionId }, new { @class = "delete-btn" })*@
                         <a href="#" onclick="EditCon(@item.ConnectionId)">Edit</a> |
                         <a href="#" onclick="DeleteCon(@item.ConnectionId)">Delete</a>
 
@@ -51,9 +50,6 @@
                 <td></td>
                 <td></td>
                 <td>
-                    @* @Html.ActionLink("Add Row", "CreateCon", null, new { @class = "create-btn" })*@
-                    @*//<a class="modal1">Add Row</a>*@
-                    @*<a href="#" onclick="AddCon(@ViewBag.CustomerId)">Add Kontakt</a>*@
                 </td>
             </tr>
 
@@ -82,7 +78,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close-btn-delete" style="float: right; cursor: pointer;">&times;</span>
-            <h2>Kontakt hinzufügen</h2>
+            <h2>Kontakt löschen</h2>
         </div>
         <div id="mbd" class="modal-body-delete">
 
@@ -96,7 +92,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <span class="close-btn-edit" style="float: right; cursor: pointer;">&times;</span>
-            <h2>Kontakt hinzufügen</h2>
+            <h2>Kontakt bearbeiten</h2>
         </div>
         <div id="mbe" class="modal-body-edit">
 
@@ -107,58 +103,44 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
 
-
+    //Create Modal schließen
     $(".close-btn-create").click(function () {
         $("#mc").hide();
     });
 
-
+    //Edit Modal schließen
     $(".close-btn-edit").click(function () {
         $("#me").hide();
     });
 
+    //Delete Modal schließen
     $(".close-btn-delete").click(function () {
         $("#md").hide();
     });
 
 
 
-    //End
-
+    //Kontaktdaten hinzufügen
     var AddCon = function (id) {
 
-        var url = "/Customers/_Create?id=" + id;            //?ConnectionId" + conid;
+        //Url für um die Controllerfunktion aufzurufen
+        var url = "/Customers/_Create?id=" + id;    
 
+        //Daten werden in den ModalBody geladen
+        //Das Modal wird angezeigt
         $("#mbc").load(url, function () {
             $("#mc").show();
         });
 
     }
 
-    //var AddConSub = function (id) {
-   
-
-
-
-    //    $.ajax({
-    //        type: "POST",
-    //        url: "/Customers/_Create", //in asp.net mvc using ActionResult
-    //        data:{CustomerId},
-    //        dataType: 'html',
-    //        success: function (result) {
-    //            //Your result is here
-    //            $("#yourContainerId").html(result);
-    //        }
-    //    });
-    //}
-
     var EditCon = function (id) {
 
-        //alert(id);
-
+        //Url für um die Controllerfunktion aufzurufen
         var url = "/Customers/_Edit?id=" + id;
-        //alert(url);
 
+        //Daten werden in den ModalBody geladen
+        //Das Modal wird angezeigt
         $("#mbe").load(url, function () {
             $("#me").show();
         })
@@ -167,11 +149,11 @@
 
     var DeleteCon = function (id) {
 
-        //alert(id);
-
+        //Url für um die Controllerfunktion aufzurufen
         var url = "/Customers/_Delete?id=" + id;
-        //alert(url);
 
+        //Daten werden in den ModalBody geladen
+        //Das Modal wird angezeigt
         $("#mbd").load(url, function () {
             $("#md").show();
         })
