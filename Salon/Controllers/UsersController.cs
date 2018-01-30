@@ -38,7 +38,7 @@ namespace Salon.Controllers
         // GET: User
         public async Task<ActionResult> Index()
         {
-            return View(await UserManager.Users.ToListAsync());
+            return View(await UserManager.Users.Include(x => x.Roles).ToListAsync());
         }
 
         //
@@ -149,7 +149,7 @@ namespace Salon.Controllers
             bool AllowEdit;
             AllowEdit = User.IsInRole("Admin");
             if (!AllowEdit)
-                AllowEdit = User.IsInRole("Lehrer") && user.Roles.Where(x => x.RoleId == "1").Count() == 1;
+                AllowEdit = User.IsInRole("Lehrer") && user.Roles.Count(x => x.RoleId == "2") == 1;
 
             if (AllowEdit)
             {
@@ -161,11 +161,11 @@ namespace Salon.Controllers
                 else
                     ViewBag.Roles = new SelectList(RoleManager.Roles, "Id", "Name");
 
-            Response.AddHeader("auth", "1");
-            return View(user);
-        }
+                Response.AddHeader("auth", "1");
+                return View(user);
+            }
             else
-                return PartialView("_NotAuthorized");
+                return View("NotAuthorized");            
     }
 
         //
