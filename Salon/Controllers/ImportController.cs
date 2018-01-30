@@ -74,6 +74,18 @@ namespace Salon.Controllers
                     List<UserCSV> users = new List<UserCSV>();
                     string headerLine = csvreader.ReadLine();
 
+                    var oldusernames = from u in db.Users
+                                       where u.UserName != null
+                                select u.UserName;
+
+                    if (oldusernames != null)
+                    {
+                        foreach (string oldusername in oldusernames)
+                        {
+                            usernamelist.Add(oldusername);
+                        }
+                    }
+
                     while (!csvreader.EndOfStream)
                     {
                         string line = csvreader.ReadLine();
