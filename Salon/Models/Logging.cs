@@ -15,27 +15,22 @@ namespace Salon.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Countries
+public partial class Logging
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Countries()
-    {
+    public int LogID { get; set; }
 
-        this.Cities = new HashSet<Cities>();
+    public string FunctionName { get; set; }
 
-    }
+    public string ControllerName { get; set; }
 
+    public string UserID { get; set; }
 
-    public string CountryId { get; set; }
-
-    public string Title { get; set; }
+    public System.DateTime LogDateTime { get; set; }
 
 
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Cities> Cities { get; set; }
+    public virtual AspNetUsers AspNetUsers { get; set; }
 
 }
 
