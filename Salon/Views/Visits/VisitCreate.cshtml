@@ -240,7 +240,7 @@
             } //END visitTreatmentListener
 
             /**
-             switches the treatment triggers when a treatment gets loaded and when the treatment in the list is clicked
+             * switches the treatment triggers when a treatment gets loaded and when the treatment in the list is clicked
              */
             function switchTreatment(id) {
                 var item = $("#item_treatment_" + id);
@@ -261,7 +261,7 @@
             }
 
             /**
-             Removes a treatment
+             * Removes a treatment
              */
             function removeTreatment(id) {
                 var item = $("#item_treatment_" + id);
@@ -272,7 +272,7 @@
             }
 
             /**
-             Calculates the duration of the Visit (from the steps) triggers when a treatment gets added/removed or a step gets added/removed
+             * Calculates the duration of the Visit (from the steps) triggers when a treatment gets added/removed or a step gets added/removed
              */
             function calculateDuration() {
                 var duration = 0;
@@ -285,7 +285,7 @@
             }
 
             /**
-             filters the name list of the customer picker
+             * filters the name list of the customer picker
              */
             function filterList() {
                 var fNameFilter = $("#inp_fName").val().toUpperCase();
@@ -324,7 +324,7 @@
             }
 
             /**
-             * 
+             * changes the customer, reloads if needed
              */
             function changeCustomer(id, fName, lName, reload) {
                 $("#slc_customer").html("<h5>" + fName + " " + lName + "</h5>");
@@ -334,6 +334,9 @@
                 }
             }
 
+            /**
+             * thx daniel (search treatments)
+             */
             function dankeDafuerDaniel() {
                 var search = $("#thxDaniel").val().toUpperCase();
 

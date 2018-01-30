@@ -84,7 +84,7 @@ namespace Salon.Controllers
         }
 
         /**
-         * gets the VisitTreatments of a visit (since they arent just saved in the friggin' database)
+         * gets the VisitTreatments of a visit (since they arent just saved in the friggin' database ლ(ಠ益ಠლ) )
          * @param Visit v: Visit to get treatments of
          * @return List of VisitTreatments
          */
@@ -102,7 +102,7 @@ namespace Salon.Controllers
                         break;
                     }
                 }
-                if (!ok) {
+                if (!ok) {              //kys
                     treatmentTemplate = vt.getTreatment();
                     VisitTreatment visitTreatment = new VisitTreatment();
                     visitTreatment.allowSensitive = v.Customers.allowSensitive;
@@ -116,6 +116,12 @@ namespace Salon.Controllers
             return treatments;
         }
 
+        /**
+         * loads view to create/update a visit
+         * @param int? id: if given, load the visit w/ given id, if not, create a new visit (yes the name is kinda missleading stfu)
+         * @param int? cusId: if given, load the new visit w/ the given customer selected (no, it is never used, I know)
+         * @return view /Visits/VisitCreate.cshtml
+         */
         [Authorize]
         public ActionResult VisitCreate(int? id, int? cusId) {
             Customers customer;
@@ -172,13 +178,20 @@ namespace Salon.Controllers
             return View(model);
         }
 
+        /**
+         * just sorts a list .... ༼ つ ◕_◕ ༽つ
+         */
         private List<Treatments> sortTheGoddamnedListThxDaniel(List<Treatments> fckingUnsorted) {
             return fckingUnsorted.OrderBy(x => x.Title).ToList();
         }
 
+        /**
+         * creates a new visit
+         * @return View Visits/VisitCreate.cshtml || Visits/Index.cshtml
+         */
         public ActionResult SaveVisit() {
             Visits visit = new Visits();
-            NameValueCollection nvc = Request.Form;
+            NameValueCollection nvc = Request.Form; //contains all inputfields of the posted form
 
             int cusId;
             string stylistId;
@@ -214,14 +227,14 @@ namespace Salon.Controllers
             int stepId;
             string inType;
             VisitTasks vt;
-            foreach (string key in nvc.AllKeys) {
-                if(i < 5) {
+            foreach (string key in nvc.AllKeys) {       //loop through all the keys of the form 
+                if(i < 5) {             //ignore the first 5 keys (cusId, stylistId, room, teacher, duration)
                     i++;
                 }else {
-                    if(key == "btn_save") {
+                    if(key == "btn_save") {     //the button is the last one, and musn't be saved, obviously
                         break;
                     }
-                    treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());
+                    treatmentId = Int32.Parse(key.Split('_').GetValue(2).ToString().Trim());    //read the id from the name
                     stepId = Int32.Parse(key.Split('_').GetValue(3).ToString());
                     inType = key.Split('_').GetValue(0).ToString();
                     vt = new VisitTasks();
@@ -244,11 +257,13 @@ namespace Salon.Controllers
             }else {
                 return Redirect("/Visits/VisitCreate/" + visit.VisitId);
             }
-            
-            //return Redirect("/Visits/VisitCreate/" + visit.VisitId);
-            //return VisitCreate(visit.VisitId);
         }
 
+        /**
+         * updates an existing visit (works like the save, but deletes all existing steps before it saves the new ones)
+         * @param int id: id of the visit to update
+         * @return view Visits/VisitCreate || Visits/Index
+         */
         public ActionResult updateVisit(int id) {
             Visits visit = db.Visits.Find(id);
             NameValueCollection nvc = Request.Form;
@@ -290,7 +305,7 @@ namespace Salon.Controllers
             int stepId;
             string inType;
             VisitTasks vt;
-            foreach (string key in nvc.AllKeys) {
+            foreach (string key in nvc.AllKeys) {       //same as save
                 if (i < 5) {
                     i++;
                 } else {
@@ -322,6 +337,10 @@ namespace Salon.Controllers
             }
         }
 
+        /**
+         * deletes a visit
+         * @param int id: 
+         */
         public ActionResult deleteVisit(int id) {
             Visits visit = db.Visits.Find(id);
 
@@ -431,15 +450,31 @@ namespace Salon.Controllers
             return res;
         }
 
+        /**
+         * creates html for a bootstrap alert
+         * @param string msg: text for the alert
+         * @param string label: head for the alert
+         * @param string type: class of the alert
+         * @return html for a bootstrap alert
+         */
         private string makeAlert(string msg, string label, string type) {
             string res = String.Format("<div class='alert alert-{0}'><strong>{1}</strong> {2}</div>", type, label, msg);
             return res;
         }
 
-        /*public ActionResult _TreatmentForm(VisitTreatment vt) {
-            return PartialView(vt);
-        }*/
+        //private int getCustomerTreatmentCount(int cusId, int treatementId) {
+        //    Customers c = db.Customers.Find(cusId);
+        //    Treatments t = db.Treatments.Find(treatementId);
 
+        //    foreach(var v in c.Visits) {
+        //        foreach(var vt in v.VisitTasks) {
+        //            if(vt.)
+        //        }
+        //    }
+
+
+        //    return 0;
+        //}
 
 
         // GET: Visits/Details/5
