@@ -60,12 +60,16 @@
         @Html.DisplayFor(modelItem => item.Email)
     </td>
         <td>
-            <a href="javascript:EditUserClick();">Edit</a> |
+            @if (User.IsInRole("Admin") || (User.IsInRole("Lehrer") && item.Roles.Count(x => x.RoleId == "2") == 1))
+            {
+                @Html.ActionLink("Bearbeiten", "Edit", new { id = item.Id })
+                <span>|</span>
+            }
             @Html.ActionLink("Details", "Details", new { id=item.Id }) 
             @if (User.IsInRole("Admin"))
             {
                 <span>|</span>
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Löschen", "Delete", new { id = item.Id })
             }
         </td>
     </tr>
@@ -73,28 +77,7 @@
 
 </table>
 
-<div class="modal fade" role="dialog" id="modNotAuthorized">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Nicht berechtigt</h4>
-            </div>
-            <div class="modal-body" id="modNotAuthorizedBody">
-
-            </div>
-        </div>
-    </div>
-</div>
 
 @section scripts{
-    <script>
 
-        function EditUserClick() {
-            $.get("/Users/Edit/" + $("#UserID").val(), function (response) {
-                $("#modNotAuthorizedBody").html(response);
-            })
-            $("#modNotAuthorized").modal();
-        }
-    </script>
 }
