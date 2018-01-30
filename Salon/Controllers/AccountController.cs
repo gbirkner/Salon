@@ -137,11 +137,11 @@ namespace Salon.Controllers
                         var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-                        db.InsertLog("Login", "AccountController", User.Identity.GetUserId());
                         return Redirect(callbackUrl);
                     }
                     else
                     {
+                        db.InsertLog("Login", "AccountController", user.Id);
                         return RedirectToLocal(returnUrl);
                     }
                 case SignInStatus.LockedOut:
@@ -332,7 +332,7 @@ namespace Salon.Controllers
                     user.ChangedPassword = true;
                     UserManager.Update(user);
 
-                    db.InsertLog("ResetPassword", "AccountController", User.Identity.GetUserId());
+                    db.InsertLog("ResetPassword", "AccountController", user.Id);
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
             }
