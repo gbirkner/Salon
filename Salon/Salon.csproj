@@ -182,7 +182,6 @@
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\GendersController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\UserCSV.cs" />
@@ -240,16 +239,6 @@
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\GetMyWork_Result.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GetRooms_Result.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GetStepsPerTreatment_Result.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GetWorkPerClass_Result.cs" />
     <Compile Include="Models\C_MigBackup.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
@@ -274,7 +263,11 @@
     <Compile Include="Models\GetWorkPerClass.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetWorkPerClass_Result.cs" />
     <Compile Include="Models\insSteps_Result.cs">
+      <DependentUpon>SalonModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Logging.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MetaData\Cities.cs" />
@@ -317,9 +310,6 @@
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TreatmentSteps.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vCustomers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\CitiesVM.cs" />
@@ -540,7 +530,6 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Import\Import.cshtml" />
     <Content Include="Views\Visits\Create.cshtml" />
     <Content Include="Views\Visits\Delete.cshtml" />
     <Content Include="Views\Visits\Details.cshtml" />
@@ -576,6 +565,7 @@
     <Content Include="Views\Customers\_Delete.cshtml" />
     <Content Include="Views\Countries\_CountriesOverview.cshtml" />
     <Content Include="Views\Connections\_ConnectionsOverview.cshtml" />
+    <Content Include="Views\Users\import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />

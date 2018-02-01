@@ -1,6 +1,6 @@
 ﻿@model Salon.Models.UserCSVViewModel
 
-@using (Html.BeginForm("Import", "Import", FormMethod.Post,
+@using (Html.BeginForm("Import", "Users", FormMethod.Post,
                                new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
