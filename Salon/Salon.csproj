@@ -19,10 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -588,14 +586,12 @@
     <Content Include="Views\Visits\_TreatmentForm.cshtml" />
     <Content Include="Views\StatisticTypes\Index.cshtml" />
     <Content Include="Views\Chart\LineChart.cshtml" />
-    <Content Include="Views\Statistics\Customers.cshtml" />
     <Content Include="Views\Chart\BarChart.cshtml" />
     <Content Include="Views\Statistics\CustomerStatistics.cshtml" />
     <Content Include="Views\Statistics\CustomerConnections.cshtml" />
     <Content Include="Views\Statistics\WorkPerClass.cshtml" />
     <Content Include="Views\Statistics\WorkPerClassResponse.cshtml" />
     <Content Include="Views\Statistics\MyWork.cshtml" />
-    <Content Include="Views\Statistics\CustomerVisits.cshtml" />
     <Content Include="Views\TreatmentStepsVMs\_Steps.cshtml" />
   </ItemGroup>
   <ItemGroup>
