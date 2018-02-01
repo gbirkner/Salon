@@ -566,6 +566,8 @@
     <Content Include="Views\Countries\_CountriesOverview.cshtml" />
     <Content Include="Views\Connections\_ConnectionsOverview.cshtml" />
     <Content Include="Views\Users\import.cshtml" />
+    <Content Include="Views\Users\_ResetPasswordFailure.cshtml" />
+    <Content Include="Views\Users\_ResetPasswordSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TreatmentStepsVMs\_CreatEditStepOptions.cshtml" />

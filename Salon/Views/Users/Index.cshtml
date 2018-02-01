@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Neuen Benutzer erstellen", "Create")
 </p>
 <table class="table">
     <tr>
@@ -37,6 +37,7 @@
 
 @foreach (var item in Model) {
     <tr>
+        @Html.HiddenFor(modelItem => item.Id, new { id = "UserID" })
         <td>
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
@@ -59,11 +60,24 @@
         @Html.DisplayFor(modelItem => item.Email)
     </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @if (User.IsInRole("Admin") || (User.IsInRole("Lehrer") && item.Roles.Count(x => x.RoleId == "2") == 1))
+            {
+                @Html.ActionLink("Bearbeiten", "Edit", new { id = item.Id })
+                <span>|</span>
+            }
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) 
+            @if (User.IsInRole("Admin"))
+            {
+                <span>|</span>
+                @Html.ActionLink("Löschen", "Delete", new { id = item.Id })
+            }
         </td>
     </tr>
 }
 
 </table>
+
+
+@section scripts{
+
+}
