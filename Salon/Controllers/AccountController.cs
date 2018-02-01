@@ -97,18 +97,6 @@ namespace Salon.Controllers
 
 
             var user = db.AspNetUsers.Where(a => a.UserName.Equals(model.UserName)).FirstOrDefault();
-            if (user != null)
-            {
-                if (user.entryDate != null && user.resignationDate != null)
-                {
-                    if (!(user.entryDate < DateTime.Now) || !(user.resignationDate > DateTime.Now))
-                    {
-                        ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzuloggen.");
-                        return View(model);
-                    }
-                }
-            }
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
             model.Rooms = db.Rooms.ToList().Select(c => new SelectListItem
             {
@@ -125,6 +113,19 @@ namespace Salon.Controllers
                 Text = c.UserName,
                 Value = c.Id.ToString(),
             }).ToList();
+
+            if (user != null)
+            {
+                if (user.entryDate != null && user.resignationDate != null)
+                {
+                    if (!(user.entryDate < DateTime.Now) || !(user.resignationDate > DateTime.Now))
+                    {
+                        ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzuloggen.");
+                        return View(model);
+                    }
+                }
+            }
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
             switch (result)
             {
