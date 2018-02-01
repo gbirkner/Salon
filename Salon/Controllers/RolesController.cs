@@ -13,6 +13,11 @@ namespace Salon.Controllers
 {
     public class RolesController : Controller
     {
+
+        /// <summary>
+        /// Management of Roles
+        /// </summary>
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
         public RolesController()
@@ -77,7 +82,7 @@ namespace Salon.Controllers
         }
 
         //
-        // GET: /Roles/Edit/Admin
+        // GET: /Roles/Edit/5
         public async Task<ActionResult> Edit(string id)
         {
             if (id == null)

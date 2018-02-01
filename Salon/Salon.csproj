@@ -179,7 +179,6 @@
     <Compile Include="Controllers\CustomerVisitController.cs" />
     <Compile Include="Controllers\ConnectionTypesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
-    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\UserCSV.cs" />
@@ -431,7 +430,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Import\Import.cshtml" />
+    <Content Include="Views\Users\Import.cshtml" />
     <Content Include="Views\CustomerVisit\Index.cshtml" />
     <Content Include="Views\CustomerVisit\_CustomerMasterdata.cshtml" />
     <Content Include="Views\CustomerVisit\_VisitShort.cshtml" />
