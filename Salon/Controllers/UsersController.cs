@@ -24,6 +24,8 @@ namespace Salon.Controllers
 
         /// <summary>
         /// Manage user and add them to roles
+        /// Import student csv and export csv with all usernames and passwords
+        /// unique username generation
         /// </summary>
 
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -303,6 +305,10 @@ namespace Salon.Controllers
                             oldUser.entryDate = DateTime.Parse(user.EntryDate);
                             oldUser.resignationDate = DateTime.Parse(user.ResignationDate);
                             oldUser.ChangedPassword = false;
+                            user.UserName = oldUser.UserName;
+
+                            var provider = new DpapiDataProtectionProvider("Salon");
+                            UserManager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("Import"));
 
                             string resetToken = await UserManager.GeneratePasswordResetTokenAsync(oldUser.Id);
                             IdentityResult passwordChangeResult = await UserManager.ResetPasswordAsync(oldUser.Id, resetToken, user.Password);
