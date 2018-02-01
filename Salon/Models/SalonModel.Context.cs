@@ -46,8 +46,8 @@ namespace Salon.Models
         public virtual DbSet<TreatmentSteps> TreatmentSteps { get; set; }
         public virtual DbSet<Visits> Visits { get; set; }
         public virtual DbSet<VisitTasks> VisitTasks { get; set; }
-        public virtual DbSet<vCustomers> vCustomers { get; set; }
         public virtual DbSet<C_MigBackup> C_MigBackup { get; set; }
+        public virtual DbSet<Logging> Logging { get; set; }
     
         public virtual ObjectResult<Nullable<int>> AnonymizeCustomerByDays()
         {
@@ -174,6 +174,32 @@ namespace Salon.Models
                 new ObjectParameter("isSensitive", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<insSteps_Result>("insSteps", titleParameter, descriptionParameter, isSensitiveParameter);
+        }
+    
+        public virtual int InsertLog(string functionName, string controllerName, string userID)
+        {
+            var functionNameParameter = functionName != null ?
+                new ObjectParameter("FunctionName", functionName) :
+                new ObjectParameter("FunctionName", typeof(string));
+    
+            var controllerNameParameter = controllerName != null ?
+                new ObjectParameter("ControllerName", controllerName) :
+                new ObjectParameter("ControllerName", typeof(string));
+    
+            var userIDParameter = userID != null ?
+                new ObjectParameter("UserID", userID) :
+                new ObjectParameter("UserID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertLog", functionNameParameter, controllerNameParameter, userIDParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> isCityDeletable(Nullable<int> cityId)
+        {
+            var cityIdParameter = cityId.HasValue ?
+                new ObjectParameter("CityId", cityId) :
+                new ObjectParameter("CityId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("isCityDeletable", cityIdParameter);
         }
     }
 }

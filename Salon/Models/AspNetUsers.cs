@@ -25,6 +25,7 @@ namespace Salon.Models
             this.Visits1 = new HashSet<Visits>();
             this.Visits2 = new HashSet<Visits>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
+            this.Logging = new HashSet<Logging>();
         }
     
         public string Id { get; set; }
@@ -63,5 +64,7 @@ namespace Salon.Models
         public virtual ICollection<Visits> Visits2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Logging> Logging { get; set; }
     }
 }

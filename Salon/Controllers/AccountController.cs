@@ -14,7 +14,7 @@ namespace Salon.Controllers
 {
     [Authorize]
     public class AccountController : Controller
-    { 
+    {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private SalonEntities db = new SalonEntities();
@@ -114,6 +114,7 @@ namespace Salon.Controllers
                 Value = c.Id.ToString(),
             }).ToList();
 
+
             if (user != null)
             {
                 if (user.entryDate != null && user.resignationDate != null)
@@ -142,6 +143,7 @@ namespace Salon.Controllers
                     }
                     else
                     {
+                        db.InsertLog("Login", "AccountController", user.Id);
                         return RedirectToLocal(returnUrl);
                     }
                 case SignInStatus.LockedOut:
@@ -332,6 +334,7 @@ namespace Salon.Controllers
                     user.ChangedPassword = true;
                     UserManager.Update(user);
 
+                    db.InsertLog("ResetPassword", "AccountController", user.Id);
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
             }
