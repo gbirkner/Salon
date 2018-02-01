@@ -14,7 +14,7 @@ namespace Salon.Controllers
 {
     [Authorize]
     public class AccountController : Controller
-    {
+    { 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private SalonEntities db = new SalonEntities();
@@ -101,7 +101,7 @@ namespace Salon.Controllers
             {
                 if (user.entryDate != null && user.resignationDate != null)
                 {
-                    if (user.entryDate > DateTime.Now && user.resignationDate < DateTime.Now)
+                    if (!(user.entryDate < DateTime.Now) || !(user.resignationDate > DateTime.Now))
                     {
                         ModelState.AddModelError("", "Sie sind aktuell nicht befugt sich einzuloggen.");
                         return View(model);
