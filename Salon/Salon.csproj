@@ -239,9 +239,6 @@
     <Compile Include="Models\Customers.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\C_MigBackup.cs">
-      <DependentUpon>SalonModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Genders.cs">
       <DependentUpon>SalonModel.tt</DependentUpon>
     </Compile>
