@@ -54,22 +54,19 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Besuche", "Index", "Visits", null, new { @class="dark-header-link" })</li>
-                    <li>@Html.ActionLink("Kundendaten", "ACTION", "CONTROLLER", new { @class = "dark-header-link" })</li>
+                    <li>@Html.ActionLink("Kundendaten", "Index", "Customers", null, new { @class = "dark-header-link" })</li>
                     @if (User.IsInRole("Lehrer") || User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Statistiken", "Index", "StatisticTypes", null, new { @class = "dark-header-link" })</li>
                     }
                     @if (User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("Einstellungen", "Index", "Settings")</li>
                         <li class="dropdown">
                             <a class="dropdown-toggle dark-header-link" data-toggle="dropdown" href="#">Einstellungen <span class="caret"></span>
                                 <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("Behandlungen", "ACTION", "CONTROLLER")</li>
-                                    <li>@Html.ActionLink("Benutzerverwaltung", "ACTION", "CONTROLLER")</li>
-                                    <li>@Html.ActionLink("Datenschutz", "ACTION", "CONTROLLER")</li>
-                                    
+                                    <li>@Html.ActionLink("Behandlungen", "Index", "TreatmentStepsVMs")</li>
+                                    <li>@Html.ActionLink("Benutzerverwaltung", "Index", "Users")</li>
+                                    <li>@Html.ActionLink("Einstellungen", "Edit", "Settings")</li>                                    
                                 </ul>
                             </a>
-
                         </li>
                     }
                 </ul>
