@@ -91,17 +91,17 @@ namespace Salon.Models
 
 
 
-        public virtual AspNetUsers AspNetUsers { get; set; }
+        //public virtual AspNetUsers AspNetUsers { get; set; }
 
-        public virtual AspNetUsers AspNetUsers1 { get; set; }
+        //public virtual AspNetUsers AspNetUsers1 { get; set; }
 
 
 
-        public virtual List<Cities> Cities { get; set; }
+        //public virtual List<Cities> Cities { get; set; }
 
-        public virtual List<Genders> Genders { get; set; }
+        //public virtual List<Genders> Genders { get; set; }
 
-        public virtual List<Countries> Countries { get; set; }
+        //public virtual List<Countries> Countries { get; set; }
 
 
 

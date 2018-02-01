@@ -19,7 +19,7 @@ namespace Salon.Models
         [Required]
         public string Title { get; set; }
 
-        public virtual ICollection<Cities> Cities { get; set; }
+        //public virtual ICollection<Cities> Cities { get; set; }
 
     }
 }
