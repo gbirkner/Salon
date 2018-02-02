@@ -42,9 +42,11 @@
     Die Auswertung wurde erfolgreich unter "Downloads" heruntergeladen.
 </div>
 
+@*only show statistic if user is in role "Schüler"*@
 @if (User.IsInRole("Schueler"))
 {
-    <h2>Meine Arbeit</h2> @*header of the statistic*@
+    @*header of the statistic*@
+    <h2>Meine Arbeit</h2>
 
     <div id="header" style="margin-top: 20px;">
         <button id="export" style="float: right; display: inline-block; width: 150px; height: 40px;" class="btn btn-primary" onclick="location.href='@Url.Action("WorkPerClassExport", "Statistics", new { name = "MyWork" })'">Download &#x21e9</button> @*Download button*@
@@ -182,5 +184,6 @@
 }
 else
 {
+    //Only shows if the user is not authorized
     <h2 style="color: red">Sie haben keine Berechtigung für diese Auswertung!</h2>
 }

@@ -34,7 +34,7 @@ namespace Salon.Controllers.Statistics
         /// Exports list to a .csv file
         /// </summary>
         /// <returns></returns>
-        public void Export(List<string> exportList, string fileName)
+        public void Export(List<string> exportList, string fileName) //Todo
         {
             int count = 1;
             Download = true;
@@ -56,11 +56,11 @@ namespace Salon.Controllers.Statistics
                 }
 
                 System.IO.File.WriteAllLines(fullPath, exportList, System.Text.Encoding.UTF8); //saves the file
-                SuccessfullDownload = true;
+                SuccessfullDownload = true; //sets the static variable for showing a success-message on screen
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = ex.Message; //sets the static variable for the errormessage
                 SuccessfullDownload = false;
             }
         }
@@ -278,7 +278,7 @@ namespace Salon.Controllers.Statistics
             string teacherLast = ""; //teacher lastname
             string teacherFirst = ""; //teacher firstname
 
-            if (cl != "" || teacher != "" || room != "") //if there is something filterd
+            if (cl != "" || teacher != "" || room != "") //if there are filters selected
             {
                 if (cl == "Alle")
                     cl = null;
@@ -329,6 +329,7 @@ namespace Salon.Controllers.Statistics
             }
             else
             {
+                //creates a empty list with default values
                 IEnumerable<WorkPerClassViewModel> empty =
                     (
                     from cu in db.Customers
@@ -379,7 +380,7 @@ namespace Salon.Controllers.Statistics
 
             var properties = typeof(WorkPerClassViewModel).GetProperties();
             var propertiesStep = typeof(WorkPerClassViewModel.Step).GetProperties();
-            int number = 1;
+            int number = 1; //numbered the treatements
 
             if (name == "WorkPerClass") //if name of the statistic is WorkPerClass
             {
@@ -457,7 +458,7 @@ namespace Salon.Controllers.Statistics
         /// <summary>
         /// Shows the work for the User that is currently logged in
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Action</returns>
         public ActionResult MyWork()
         {
             var userId = User.Identity.GetUserId(); //Get id of logged in user
@@ -467,10 +468,10 @@ namespace Salon.Controllers.Statistics
             ViewBag.ErrorMessage = ErrorMessage;
             workPerClassList.Clear();
 
-            if (Download == true)
-                Download = false; //reset variables
+            if (Download == true) //if a file was downloaded befor reset variable
+                Download = false; //reset variable
             if (SuccessfullDownload == true)
-                SuccessfullDownload = false; //reset variables
+                SuccessfullDownload = false; //reset variable
 
             //get data from database
             IEnumerable<WorkPerClassViewModel> MyWork =
