@@ -36,9 +36,10 @@
         }
 </style>
 
-<!-- div to show alerts for ajax responses -->
+@*Statistic is only shown if the user is in role "Lehrer" or "Admin"*@
 @if (User.IsInRole("Lehrer") || User.IsInRole("Admin"))
 {
+    <!-- div to show alerts for ajax responses -->
     <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         Die Auswertung wurde erfolgreich unter "Downloads" heruntergeladen.
@@ -58,26 +59,26 @@
             <text style="width: 160px; display: inline-block">Raum</text>
             <text style="display:inline-block">Sortieren nach</text>
             <br />
-            <select class="form-control" style="width: 150px; height:40px; display: inline-block" id="classSelector"> @*Selector Class*@
+            <select class="form-control" style="width: 150px; height:40px; display: inline-block" id="classSelector"> @*Selector for Class*@
                 @foreach (var item in Model.First().GetClasses())
                 {
                     <option>@item</option>
                 }
             </select>
     
-            <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="teacherSelector"> @*Selector Teacher*@
+            <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="teacherSelector"> @*Selector for Teacher*@
                 @foreach (var item in Model.First().GetTeachers())
                 {
                     <option>@item.Text</option>}
             </select>
     
-            <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="roomSelector"> @*Selector Room*@
+            <select class="form-control" style="width: 150px; height:40px; display: inline-block; margin-left: 10px;" id="roomSelector"> @*Selector for Room*@
                 @foreach (var item in Model.First().GetRooms())
                 {
                     <option>@item.Text</option>}
             </select>
     
-            <select class="form-control" style="width: 180px; height:40px; display: inline-block; margin-left: 10px;" id="sortSelector"> @*Selector Sortoptions*@
+            <select class="form-control" style="width: 180px; height:40px; display: inline-block; margin-left: 10px;" id="sortSelector"> @*Selector for Sortoptions*@
                 <option>Datum aufsteigend</option>
                 <option>Datum absteigend</option>
                 <option>Schüler aufsteigend</option>
@@ -86,11 +87,11 @@
         </div>
     </div>
 
-    <div id="workTable" style="display: none; overflow: auto; height: 40%; margin-top: 20px;"> @*Placeholder*@
+    <div id="workTable" style="display: none; overflow: auto; height: 40%; margin-top: 20px;"> @*Placeholder for the Result, name of the paritalview: WorkPerClassResponse.cshtml*@
     
     </div>
 
-    @*Shows if the download was succesfull*@
+    @*Shows if the download was succesfull or not*@
     if (ViewBag.Downloaded == true)
     {
         if (ViewBag.Success == true)
@@ -109,6 +110,7 @@
     }
 
     <script>
+        @*Calls method in controller and passes the parameters*@
     	function changeClass() {
     		$.ajax({
     		    url: "/Statistics/workperclass?cl=" + $("#classSelector").val() + "&sort=" + $("#sortSelector").val() + "&teacher=" + $("#teacherSelector").val() + "&room=" + $("#roomSelector").val(),
@@ -117,7 +119,7 @@
     				$("#workTable").html(result);
     				$("#workTable").show();
     			}
-    		}); @*Calls method in controller and passes the parameters*@
+    		});
     	}
     </script>
 
@@ -146,5 +148,6 @@
 }
 else
 {
+    //Only shows if the user is not authorized
     <h2 style="color: red">Sie haben keine Berechtigung für diese Auswertung!</h2>
 }
