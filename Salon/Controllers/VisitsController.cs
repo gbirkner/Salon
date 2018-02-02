@@ -102,7 +102,7 @@ namespace Salon.Controllers
                         break;
                     }
                 }
-                if (!ok) {              //kys
+                if (!ok) { 
                     treatmentTemplate = vt.getTreatment();
                     VisitTreatment visitTreatment = new VisitTreatment();
                     visitTreatment.allowSensitive = v.Customers.allowSensitive;
@@ -461,21 +461,6 @@ namespace Salon.Controllers
             string res = String.Format("<div class='alert alert-{0}'><strong>{1}</strong> {2}</div>", type, label, msg);
             return res;
         }
-
-        //private int getCustomerTreatmentCount(int cusId, int treatementId) {
-        //    Customers c = db.Customers.Find(cusId);
-        //    Treatments t = db.Treatments.Find(treatementId);
-
-        //    foreach(var v in c.Visits) {
-        //        foreach(var vt in v.VisitTasks) {
-        //            if(vt.)
-        //        }
-        //    }
-
-
-        //    return 0;
-        //}
-
 
         // GET: Visits/Details/5
         public ActionResult Details(int? id)

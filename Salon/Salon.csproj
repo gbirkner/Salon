@@ -356,7 +356,6 @@
     <Compile Include="Controllers\Statistics\StatisticTypesController.cs" />
     <Compile Include="Models\Statistics\StatisticTypes.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Test\Test.cs" />
     <Compile Include="Views\ViewModels\CustomersViewModel.cs" />
     <Compile Include="Views\ViewModels\WorkPerClass.cs" />
   </ItemGroup>
