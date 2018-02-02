@@ -37,9 +37,9 @@ namespace Salon.Models
 
 
 
-        public virtual Countries Countries { get; set; }
+        //public virtual Countries Countries { get; set; }
 
-        public virtual ICollection<Customers> Customers { get; set; }
+        //public virtual ICollection<Customers> Customers { get; set; }
 
     }
 }

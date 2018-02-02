@@ -4,21 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Während der Generierung sind Fehler aufgetreten:
-Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.-->
-        <EntityType Name="_MigBackup">
-          <Key>
-            <PropertyRef Name="migid" />
-            <PropertyRef Name="ContextKey" />
-            <PropertyRef Name="Model" />
-            <PropertyRef Name="ProductVersion" />
-          </Key>
-          <Property Name="migid" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="SalonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -136,6 +122,16 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           </Key>
           <Property Name="GenderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GenderTitle" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FunctionName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ControllerName" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LogDateTime" Type="datetime2" Precision="7" Nullable="false" />
         </EntityType>
         <EntityType Name="Pictures">
           <Key>
@@ -348,9 +344,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_Connections_dbo_ConnectionTypes_ConnectionTypeId">
-          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="ConnectionTypes" Type="Self.ConnectionTypes" Multiplicity="1" />
           <End Role="Connections" Type="Self.Connections" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ConnectionTypes">
@@ -473,6 +467,18 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_LoggingAspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Logging" Type="Self.Logging" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Logging">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_VisitModifiedBy">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Visits" Type="Self.Visits" Multiplicity="*" />
@@ -564,10 +570,18 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <Parameter Name="teacherLast" Type="nvarchar" Mode="In" />
           <Parameter Name="room" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="InsertLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FunctionName" Type="nvarchar" Mode="In" />
+          <Parameter Name="ControllerName" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserID" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="insSteps" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="title" Type="nvarchar" Mode="In" />
           <Parameter Name="description" Type="nvarchar" Mode="In" />
           <Parameter Name="isSensitive" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="isCityDeletable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CityId" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="SalonModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -581,6 +595,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Genders" EntityType="Self.Genders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logging" EntityType="Self.Logging" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pictures" EntityType="Self.Pictures" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
@@ -590,14 +605,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visits" EntityType="Self.Visits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="_MigBackup" EntityType="Self._MigBackup" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [_MigBackup].[migid] AS [migid], 
-    [_MigBackup].[ContextKey] AS [ContextKey], 
-    [_MigBackup].[Model] AS [Model], 
-    [_MigBackup].[ProductVersion] AS [ProductVersion]
-    FROM [dbo].[_MigBackup] AS [_MigBackup]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="fk_cities_countries" Association="Self.fk_cities_countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Cities" EntitySet="Cities" />
@@ -670,6 +677,10 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
             <End Role="Visits" EntitySet="Visits" />
             <End Role="VisitTasks" EntitySet="VisitTasks" />
           </AssociationSet>
+          <AssociationSet Name="fk_LoggingAspNetUsers" Association="Self.fk_LoggingAspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Logging" EntitySet="Logging" />
+          </AssociationSet>
           <AssociationSet Name="fk_VisitModifiedBy" Association="Self.fk_VisitModifiedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Visits" EntitySet="Visits" />
@@ -691,8 +702,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
             <End Role="Visits" EntitySet="Visits" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SalonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -756,6 +766,7 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <NavigationProperty Name="Visits1" Relationship="Self.fk_VisitsCreatedBy" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="Visits2" Relationship="Self.fk_VisitsTeacherID" FromRole="AspNetUsers" ToRole="Visits" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Logging" Relationship="SalonModel.fk_LoggingAspNetUsers" FromRole="AspNetUsers" ToRole="Logging" />
         </EntityType>
         <EntityType Name="Cities">
           <Key>
@@ -943,18 +954,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <NavigationProperty Name="StepOptions" Relationship="Self.FK_dbo_VisitTasks_dbo_StepOptions_StepOptionId" FromRole="VisitTasks" ToRole="StepOptions" />
           <NavigationProperty Name="TreatmentSteps" Relationship="Self.FK_dbo_VisitTasks_dbo_TreatmentSteps_TreatmentId_StepId" FromRole="VisitTasks" ToRole="TreatmentSteps" />
           <NavigationProperty Name="Visits" Relationship="Self.FK_dbo_VisitTasks_dbo_Visits_VisitId" FromRole="VisitTasks" ToRole="Visits" />
-        </EntityType>
-        <EntityType Name="C_MigBackup">
-          <Key>
-            <PropertyRef Name="migid" />
-            <PropertyRef Name="ContextKey" />
-            <PropertyRef Name="Model" />
-            <PropertyRef Name="ProductVersion" />
-          </Key>
-          <Property Name="migid" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
@@ -1254,7 +1253,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <EntitySet Name="TreatmentSteps" EntityType="Self.TreatmentSteps" />
           <EntitySet Name="Visits" EntityType="Self.Visits" />
           <EntitySet Name="VisitTasks" EntityType="Self.VisitTasks" />
-          <EntitySet Name="C_MigBackup" EntityType="Self.C_MigBackup" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -1345,27 +1343,27 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           </AssociationSet>
           <FunctionImport Name="AnonymizeCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeCustomerByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="AnonymizeUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="AnonymizeUserByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteCustomerByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteCustomerByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserByDays" ReturnType="Collection(Int32)" />
           <FunctionImport Name="DeleteUserByID">
-            <Parameter Name="CustomerID" Mode="In" Type="Int32" />
+          <Parameter Name="CustomerID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetClasses" ReturnType="Collection(SalonModel.GetClasses)" />
           <FunctionImport Name="GetMyWork" ReturnType="Collection(SalonModel.GetMyWork)">
-            <Parameter Name="studentId" Mode="In" Type="String" />
+          <Parameter Name="studentId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetRooms" ReturnType="Collection(SalonModel.GetRooms)" />
           <FunctionImport Name="GetStepsPerTreatment" ReturnType="Collection(SalonModel.GetStepsPerTreatment)">
-            <Parameter Name="treatmentId" Mode="In" Type="Int32" />
+          <Parameter Name="treatmentId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetTeachers" ReturnType="Collection(SalonModel.GetTeachers)" />
           <FunctionImport Name="GetWorkPerClass" ReturnType="Collection(SalonModel.GetWorkPerClass)">
@@ -1378,6 +1376,19 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
             <Parameter Name="title" Mode="In" Type="String" />
             <Parameter Name="description" Mode="In" Type="String" />
             <Parameter Name="isSensitive" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="InsertLog">
+            <Parameter Name="FunctionName" Mode="In" Type="String" />
+            <Parameter Name="ControllerName" Mode="In" Type="String" />
+            <Parameter Name="UserID" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Logging" EntityType="SalonModel.Logging" />
+          <AssociationSet Name="fk_LoggingAspNetUsers" Association="SalonModel.fk_LoggingAspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Logging" EntitySet="Logging" />
+          </AssociationSet>
+          <FunctionImport Name="isCityDeletable" ReturnType="Collection(Int32)">
+          <Parameter Name="CityId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="insSteps_Result">
@@ -1419,6 +1430,29 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
           <Property Type="DateTime" Name="Date" Nullable="true" />
           <Property Type="String" Name="Room" Nullable="false" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="Logging">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FunctionName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ControllerName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LogDateTime" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="AspNetUsers" Relationship="SalonModel.fk_LoggingAspNetUsers" FromRole="Logging" ToRole="AspNetUsers" />
+        </EntityType>
+        <Association Name="fk_LoggingAspNetUsers">
+          <End Type="SalonModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="SalonModel.Logging" Role="Logging" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Logging">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1645,16 +1679,6 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="C_MigBackup">
-            <EntityTypeMapping TypeName="SalonModel.C_MigBackup">
-              <MappingFragment StoreEntitySet="_MigBackup">
-                <ScalarProperty Name="migid" ColumnName="migid" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="SalonModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
@@ -1738,6 +1762,19 @@ Warnung 6002: Für Tabelle/Sicht 'Salon.dbo._MigBackup' ist kein Primärschlüss
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertLog" FunctionName="SalonModel.Store.InsertLog" />
+          <EntitySetMapping Name="Logging">
+            <EntityTypeMapping TypeName="SalonModel.Logging">
+              <MappingFragment StoreEntitySet="Logging">
+                <ScalarProperty Name="LogDateTime" ColumnName="LogDateTime" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="isCityDeletable" FunctionName="SalonModel.Store.isCityDeletable" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

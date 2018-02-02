@@ -42,8 +42,8 @@ namespace Salon.Models
         public string TypTitle { get; set; }
 
 
-        public virtual ConnectionTypes ConnectionTypes { get; set; }
+        //public virtual ConnectionTypes ConnectionTypes { get; set; }
 
-        public virtual Customers Customers { get; set; }
+        //public virtual Customers Customers { get; set; }
     }
 }

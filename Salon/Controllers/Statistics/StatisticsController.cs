@@ -14,6 +14,11 @@ namespace Salon.Controllers.Statistics
 {
     public class StatisticsController : Controller
     {
+        //This is the controller for all the statistics (graphs have a sperate controller)
+
+        //Todo When the app is installed on the servers IIS and you want to download a statistic, it is downloaded on the server
+        //The statistic should be downloaded on the machine your opening the site on
+
         //static variable that shows if the file was downloaded
         public static bool Download = false;
         //static variable that shows if the file was downloaded successfully
@@ -21,7 +26,6 @@ namespace Salon.Controllers.Statistics
         //static variable that shows if there was an error during download
         public static string ErrorMessage = string.Empty;
         public static string Path = string.Empty;
-        private static List<CustomersViewModel> customerList = new List<CustomersViewModel>();
         private static List<WorkPerClassViewModel> workPerClassList = new List<WorkPerClassViewModel>();
         private static List<WorkPerClassViewModel> myWorkList = new List<WorkPerClassViewModel>();
         private SalonEntities db = new SalonEntities();
